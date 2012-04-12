@@ -1,5 +1,7 @@
 <?php return array
 	(
+		'theme.default' => 'classic',
+		'style.default' => 'default',
 		'themes.dir'    => 'themes', # root, relative to App/
 		'themes.config' => '!config',
 		'style.dir.default' => 'Styles',

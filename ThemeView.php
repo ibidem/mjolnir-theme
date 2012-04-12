@@ -25,9 +25,27 @@ class ThemeView extends \app\Instantiatable
 	protected $target;
 	
 	/**
+	 * @var string 
+	 */
+	protected $control;
+	
+	/**
 	 * @var \ibidem\types\Layer
 	 */
 	protected $layer;
+	
+	/**
+	 * @return \ibidem\theme\ThemeView 
+	 */
+	public static function instance()
+	{
+		$instance = parent::instance();
+		$config = \app\CFS::config('ibidem/themes');
+		$instance->theme = $config['theme.default'];
+		$instance->style = $config['style.default'];
+		
+		return $instance;
+	}
 	
 	/**
 	 * @param string theme name
@@ -66,11 +84,10 @@ class ThemeView extends \app\Instantiatable
 	 * error prone since the theme file won't necesarily use those variables, or
 	 * even if one theme file uses them another may not.
 	 * 
-	 * Thus, you need to pass an object and the theme needs to grab it's values
-	 * from methods. Typically you might pass the controller object but any
-	 * object will do. There is no abstraction between the passed object and the
-	 * theme files since it's assumed the theme files were designed specifically
-	 * to be coupled to the object, and vise versa.
+	 * You need to pass an object and the theme needs to grab it's values from 
+	 * methods. There is no abstraction between the passed object and the theme 
+	 * files since it's assumed the theme files were designed specifically to be
+	 * coupled to the object, and vise versa.
 	 * 
 	 * @param mixed context object
 	 * @return \ibidem\theme\ThemeView
@@ -78,6 +95,18 @@ class ThemeView extends \app\Instantiatable
 	public function context($context)
 	{
 		$this->context = $context;
+		return $this;
+	}
+	
+	/**
+	 * Typically this would be the controller.
+	 * 
+	 * @param mixed control object
+	 * @return \ibidem\theme\ThemeView 
+	 */
+	public function control($control)
+	{
+		$this->control = $control;
 		return $this;
 	}
 	
@@ -137,48 +166,57 @@ class ThemeView extends \app\Instantiatable
 			$base_file = \app\View::instance()
 				->file_path($view_file, '')
 				->variable('context', $this->context)
+				->variable('control', $this->control)
 				->variable('view', $base_file);
 		}
 		
 		// send styles
 		$style_config = \app\Layer_Theme::style_config($this->theme, $this->style);
-		$url = \app\Relay::route(__NAMESPACE__.'\Layer_ThemeResource::style')
-			->url
-				(
-					array
+		
+		if (isset($style_config['targets'][$this->target]))
+		{
+			$url = \app\Relay::route(__NAMESPACE__.'\Layer_ThemeResource::style')
+				->url
 					(
-						'theme' => $this->theme,
-						'style' => $this->style,
-						'version' => $style_config['version'],
-						'target' => $this->target
-					)
+						array
+						(
+							'theme' => $this->theme,
+							'style' => $this->style,
+							'version' => $style_config['version'],
+							'target' => $this->target
+						)
+					);
+			$this->layer->dispatch
+				(
+					\app\Event::instance()
+						->subject(\ibidem\types\Event::css_style)
+						->contents($url)
 				);
-		$this->layer->dispatch
-			(
-				\app\Event::instance()
-					->subject(\ibidem\types\Event::css_style)
-					->contents($url)
-			);
+		}
 		
 		// send script
 		$script_config = \app\Layer_Theme::script_config($this->theme);
-		$url = \app\Relay::route(__NAMESPACE__.'\Layer_ThemeResource::script')
-			->url
-				(
-					array
+		
+		if (isset($script_config['targets'][$this->target]))
+		{
+			$url = \app\Relay::route(__NAMESPACE__.'\Layer_ThemeResource::script')
+				->url
 					(
-						'theme' => $this->theme,
-						'style' => $this->style,
-						'version' => $script_config['version'],
-						'target' => $this->target
-					)
+						array
+						(
+							'theme' => $this->theme,
+							'style' => $this->style,
+							'version' => $script_config['version'],
+							'target' => $this->target
+						)
+					);
+			$this->layer->dispatch
+				(
+					\app\Event::instance()
+						->subject(\ibidem\types\Event::js_script)
+						->contents($url)
 				);
-		$this->layer->dispatch
-			(
-				\app\Event::instance()
-					->subject(\ibidem\types\Event::js_script)
-					->contents($url)
-			);
+		}
 		
 		return $base_file->render();
 	}
