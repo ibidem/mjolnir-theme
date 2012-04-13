@@ -150,7 +150,9 @@ class ThemeView extends \app\Instantiatable
 		
 		$base_file = \app\View::instance()
 			->file_path($view_file)
-			->variable('context', $this->context);
+			->variable('context', $this->context)
+			->variable('control', $this->control)
+			->variable('theme_path', $base_path);
 		
 		$files = \array_reverse($files);
 		foreach ($files as $file)
@@ -167,6 +169,7 @@ class ThemeView extends \app\Instantiatable
 				->file_path($view_file, '')
 				->variable('context', $this->context)
 				->variable('control', $this->control)
+				->variable('theme_path', $base_path)
 				->variable('view', $base_file);
 		}
 		
