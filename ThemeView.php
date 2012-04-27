@@ -178,7 +178,7 @@ class ThemeView extends \app\Instantiatable
 		
 		if (isset($style_config['targets'][$this->target]))
 		{
-			$url = \app\Relay::route(__NAMESPACE__.'\Layer_ThemeResource::style')
+			$url = \app\Relay::route(__NAMESPACE__.'\Layer_Theme::style')
 				->url
 					(
 						array
@@ -202,7 +202,7 @@ class ThemeView extends \app\Instantiatable
 		
 		if (isset($script_config['targets'][$this->target]))
 		{
-			$url = \app\Relay::route(__NAMESPACE__.'\Layer_ThemeResource::script')
+			$url = \app\Relay::route(__NAMESPACE__.'\Layer_Theme::script')
 				->url
 					(
 						array
