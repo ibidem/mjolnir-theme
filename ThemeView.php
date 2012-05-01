@@ -35,6 +35,11 @@ class ThemeView extends \app\Instantiatable
 	protected $layer;
 	
 	/**
+	 * @var array|null
+	 */
+	protected $errors;
+	
+	/**
 	 * @return \ibidem\theme\ThemeView 
 	 */
 	public static function instance()
@@ -99,6 +104,16 @@ class ThemeView extends \app\Instantiatable
 	}
 	
 	/**
+	 * @param array|null errors
+	 * @return \ibidem\theme\ThemeView $this
+	 */
+	public function errors(array & $errors = null)
+	{
+		$this->errors = & $errors;
+		return $this;
+	}
+	
+	/**
 	 * Typically this would be the controller.
 	 * 
 	 * @param mixed control object
@@ -152,6 +167,7 @@ class ThemeView extends \app\Instantiatable
 			->file_path($view_file)
 			->variable('context', $this->context)
 			->variable('control', $this->control)
+			->variable('errors', $this->errors)
 			->variable('theme_path', $base_path);
 		
 		$files = \array_reverse($files);
@@ -169,6 +185,7 @@ class ThemeView extends \app\Instantiatable
 				->file_path($view_file, '')
 				->variable('context', $this->context)
 				->variable('control', $this->control)
+				->variable('errors', $this->errors)
 				->variable('theme_path', $base_path)
 				->variable('view', $base_file);
 		}
