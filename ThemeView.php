@@ -143,7 +143,7 @@ class ThemeView extends \app\Instantiatable
 
 		if ( ! isset($config['targets'][$this->target]))
 		{
-			throw new \app\Exception_NotFound('Invalid target specified.');
+			throw new \app\Exception_NotFound('['.$this->target.'] is not a valid target.');
 		}
 		
 		$files = $config['targets'][$this->target];
