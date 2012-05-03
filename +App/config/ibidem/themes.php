@@ -3,9 +3,9 @@
 		'theme.default' => 'classic',
 		'style.default' => 'default',
 		'themes.dir'    => 'themes', # root, relative to +App/
-		'themes.config' => '+config',
+		'themes.config' => '+theme',
 		'style.dir.default' => 'Styles',
-		'style.config'  => '+config',
+		'style.config'  => '+style',
 		'script.dir.default' => 'Scripts',
-		'script.config' => '+config',
+		'script.config' => '+script',
 	);
