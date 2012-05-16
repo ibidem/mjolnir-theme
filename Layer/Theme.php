@@ -242,7 +242,25 @@ class Layer_Theme extends \app\Layer
 									)
 							. PHP_EOL.PHP_EOL;
 					}
+					
+					// compute bootstrap
+					$bootstrap_config = \app\CFS::config('ibidem/js-bootstrap');
+					$bootstrap = "// application data\nvar ibidem = {\n\t";
+					
+					$bootstrap .= \app\Collection::implode
+						(
+							",\n\t", 
+							$bootstrap_config, 
+							function ($key, $func) 
+							{
+								return '"'.$key.'": '.($func());
+							}
+						);
+						
+					$bootstrap .= "\n};\n\n";
 
+					$output = $bootstrap.$output;	
+					
 					$this->contents($output);
 				}
 				catch (\Exception $exception)
