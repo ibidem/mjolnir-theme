@@ -9,7 +9,7 @@
  */
 class Layer_Theme extends \app\Layer
 	implements \ibidem\types\RelayCompatible
-{
+{	
 	/**
 	 * @var string
 	 */
@@ -107,8 +107,14 @@ class Layer_Theme extends \app\Layer
 							throw new \app\Exception_NotFound
 								("Missing target [$target] in style [$style] of theme [$theme].");
 						}
-
-						$target_files = $style_config['targets'][$target];
+						
+						$target_files = $style_config['common'];
+					
+						// merge target files to common files; preserving order
+						foreach ($style_config['targets'][$target] as $target_file)
+						{
+							$target_files[] = $target_file;
+						}
 
 						// combine all files; if necesary
 						$output = '';
@@ -197,7 +203,7 @@ class Layer_Theme extends \app\Layer
 					{
 						throw new \app\Exception_NotFound
 							(
-								'Missing script.'
+								'Missing script dir.'
 							);
 					}
 
@@ -229,12 +235,23 @@ class Layer_Theme extends \app\Layer
 							("Missing target [$target] in scripts, for theme [$theme].");
 					}
 
-					$target_files = $script_config['targets'][$target];
+					$target_files = $script_config['common'];
+					
+					// merge target files to common files; preserving order
+					foreach ($script_config['targets'][$target] as $target_file)
+					{
+						$target_files[] = $target_file;
+					}
 
 					// combine all files; if necesary
 					$output = '';
 					foreach ($target_files as $file)
 					{
+						// this header is included for easier development
+						$no_path_file = \preg_replace('#(.*/)#', '', $file);
+						$output .= PHP_EOL.'// '.\str_repeat('-', 77).PHP_EOL;
+						$output .= '// '.$no_path_file.'.js'.PHP_EOL.PHP_EOL;
+						
 						$output 
 							.= \file_get_contents
 									(
@@ -275,7 +292,7 @@ class Layer_Theme extends \app\Layer
 							. "   \t".$exception->getMessage().PHP_EOL.PHP_EOL
 							. '*/'.PHP_EOL
 							. PHP_EOL.PHP_EOL.PHP_EOL
-							. ";(function () { alert('{$safe_string}') }) ();"
+							. ";(function () { alert('{$safe_string}') }());".PHP_EOL
 						);
 							
 					throw $exception;

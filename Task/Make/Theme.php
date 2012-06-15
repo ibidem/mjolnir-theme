@@ -46,9 +46,7 @@ class Task_Make_Theme extends \app\Task
 			. "\t(".PHP_EOL
 			. "\t\t'version' => '1.0', # used in cache busting; update as necesary".PHP_EOL
 			. PHP_EOL
-			. "\t\t// set the script.root to '' (empty string) when writing (entirely) just".PHP_EOL
-			. "\t\t// plain old js files; and not compiling coffee scripts, etc".PHP_EOL
-			. "\t\t'script.root' => 'Script.root'.DIRECTORY_SEPARATOR,".PHP_EOL
+			. "\t\t'script.root' => '',".PHP_EOL
 			. PHP_EOL
 			. "\t\t// mapping targets to files".PHP_EOL
 			. "\t\t'targets' => array".PHP_EOL
@@ -61,20 +59,6 @@ class Task_Make_Theme extends \app\Task
 			. "\t\t\t\t\t),".PHP_EOL
 			. "\t\t\t),".PHP_EOL
 			. "\t);".PHP_EOL
-			. PHP_EOL
-			;
-	}
-	
-	/**
-	 * @return string
-	 */
-	private function coffee_start()
-	{
-		return
-			  ':: change to directory (and partition) of the script'.PHP_EOL
-			. 'cd /d %~dp0'.PHP_EOL
-			. ':: run coffee compiler'.PHP_EOL
-			. 'coffee -o Script.root/ -cw src/'.PHP_EOL
 			. PHP_EOL
 			;
 	}
@@ -137,26 +121,11 @@ class Task_Make_Theme extends \app\Task
 		$path = $theme_path.$settings['script.dir.default'];
 		\file_exists($path) or \mkdir($path, 0777, true);
 		
-		// themes/$theme/Scripts/src
-		$path = $theme_path.$settings['script.dir.default'].$ds.'src';
-		\file_exists($path) or \mkdir($path, 0777, true);
-		
-		// themes/$theme/Scripts/Script.root
-		$path = $theme_path.$settings['script.dir.default'].$ds.'Script.root';
-		\file_exists($path) or \mkdir($path, 0777, true);
-		
 		// themes/$theme/Scripts/!config
 		\file_put_contents
 			(
 				$theme_path.$settings['script.dir.default'].$ds.$settings['script.config'].EXT, 
 				self::script_config()
-			);
-		
-		// themes/$theme/Scripts/!start.cmd
-		\file_put_contents
-			(
-				$theme_path.$settings['script.dir.default'].$ds.'!start.cmd', 
-				self::coffee_start()
 			);
 		
 		$this->writer->status('Success', 'Theme created.')->eol();

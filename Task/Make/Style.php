@@ -21,7 +21,7 @@ class Task_Make_Style extends \app\Task
 			. PHP_EOL
 			. "\t\t// set the style.root to '' (empty string) when writing (entirely) just".PHP_EOL
 			. "\t\t// plain old css files; and not compiling sass scripts, etc".PHP_EOL
-			. "\t\t'style.root' => 'Style.root'.DIRECTORY_SEPARATOR,".PHP_EOL
+			. "\t\t'style.root' => 'root'.DIRECTORY_SEPARATOR,".PHP_EOL
 			. PHP_EOL
 			. "\t\t// mapping targets to files".PHP_EOL
 			. "\t\t'targets' => array".PHP_EOL
@@ -44,10 +44,10 @@ class Task_Make_Style extends \app\Task
 	private function compass_start()
 	{
 		return
-			  ':: change to directory (and partition) of the script'.PHP_EOL
-			. 'cd /d %~dp0'.PHP_EOL
-			. ':: run compass compiler'.PHP_EOL
-			. 'compass watch -c !compass.rb'.PHP_EOL
+			  '# change to script dir'.PHP_EOL
+			. 'Dir.chdir File.expand_path(File.dirname(__FILE__))'.PHP_EOL
+			. '# run compass compiler'.PHP_EOL
+			. 'Kernel.exec(\'compass watch -c +compass.rb\')'.PHP_EOL
 			. PHP_EOL
 			;
 	}
@@ -120,7 +120,7 @@ class Task_Make_Style extends \app\Task
 		\file_exists($path) or \mkdir($path, 0777, true);
 		
 		// styles/$style/Style.root
-		$path = $style_path.$ds.'Style.root';
+		$path = $style_path.$ds.'root';
 		\file_exists($path) or \mkdir($path, 0777, true);
 		
 		// styles/$style/!config
@@ -133,14 +133,14 @@ class Task_Make_Style extends \app\Task
 		// styles/$style/!start.cmd
 		\file_put_contents
 			(
-				$style_path.'!start.cmd', 
+				$style_path.'+start.cmd', 
 				self::compass_start()
 			);
 		
 		// styles/$style/!compass.rb
 		\file_put_contents
 			(
-				$style_path.'!compass.rb', 
+				$style_path.'+compass.rb', 
 				self::compass_rb()
 			);
 		

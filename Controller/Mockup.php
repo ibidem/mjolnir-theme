@@ -10,6 +10,11 @@
 class Controller_Mockup extends \app\Controller_HTTP
 {
 	/**
+	 * @var \app\ThemeView 
+	 */
+	protected $theme_view = null;
+	
+	/**
 	 * The mockup main action. Targets pass in and are processed. Note a 
 	 * \app\ Mockup class is required to act as a mockup content provider. If 
 	 * you need $control functions just extend this class in a mockup module in
@@ -21,7 +26,34 @@ class Controller_Mockup extends \app\Controller_HTTP
 	{
 		$target = $this->params->get('target');
 		
-		$this->body
+		$this->layer->dispatch
+			(
+				\app\Event::instance()
+					->subject(\ibidem\types\Event::title)
+					->contents('Mockup for '.$target)
+			);
+		
+		if ( ! \defined('DEVELOPMENT'))
+		{
+			\define('DEVELOPMENT', true);
+		}
+		
+		if (DEVELOPMENT)
+		{
+			$user_role = isset($_GET['view_as']) ? $_GET['view_as'] : \app\A12n::guest();
+			\app\A12n::instance()->set_role($user_role);
+		}
+		
+		// check if theme is set and if them_view isn't overwritten
+		if (isset($_GET['theme']) && $this->theme_view === null)
+		{
+			$this->theme_view = \app\ThemeView::instance()
+				->theme($_GET['theme']);
+		}
+		
+		if ($this->theme_view === null)
+		{
+			$this->body
 			(
 				\app\ThemeView::instance()
 					->target($target)
@@ -30,6 +62,20 @@ class Controller_Mockup extends \app\Controller_HTTP
 					->layer($this->layer)
 					->render()
 			);
+		}
+		else # theme view defined
+		{
+			$this->body
+			(
+				$this->theme_view
+					->target($target)
+					->context(\app\Mockup::instance())
+					->control($this)
+					->layer($this->layer)
+					->render()
+			);
+		}
+		
 	}	
 	
 	/**
