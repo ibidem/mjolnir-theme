@@ -195,7 +195,7 @@ class ThemeView extends \app\Instantiatable
 		
 		if (isset($style_config['targets'][$this->target]))
 		{
-			$url = \app\Relay::route(__NAMESPACE__.'\Layer_Theme::style')
+			$url = \app\Relay::route('\ibidem\theme\Layer_Theme::style')
 				->url
 					(
 						array
@@ -206,6 +206,7 @@ class ThemeView extends \app\Instantiatable
 							'target' => $this->target
 						)
 					);
+			
 			$this->layer->dispatch
 				(
 					\app\Event::instance()
@@ -219,7 +220,7 @@ class ThemeView extends \app\Instantiatable
 		
 		if (isset($script_config['targets'][$this->target]))
 		{
-			$url = \app\Relay::route(__NAMESPACE__.'\Layer_Theme::script')
+			$url = \app\Relay::route('\ibidem\theme\Layer_Theme::script')
 				->url
 					(
 						array
@@ -263,8 +264,9 @@ class ThemeView extends \app\Instantiatable
 		// ie. whenever it decides to convert to a string. It's not worth it.
 		\app\Layer::get_top()->exception
 			(
-				\app\Exception_NotApplicable::instance
-					('Casting to string not allowed for Views.')
+				new \app\Exception_NotApplicable
+					('Casting to string not allowed for Theme Views.'),
+				true # no throw
 			);
 	}
 

@@ -11,7 +11,34 @@ $theme_resource_regex = array
 
 return array      
 	(
-		__NAMESPACE__.'\Layer_Theme::script' => array
+		'\ibidem\theme\mockup' => array
+			(
+				'route' => \app\Route_Pattern::instance()
+					->standard
+						(
+							'mockup/<target>', 
+							array
+							(
+								'target' => '[a-zA-Z-/]+',
+							)
+						),
+				'enabled' => false,
+			// MVC
+				'controller' => '\app\Controller_Mockup',
+				'action' => 'action_testing',
+			),
+	
+		'\ibidem\theme\mockup-form' => array
+			(
+				'route' => \app\Route_Path::instance()
+					->path('form-mockup'),
+				'enabled' => false,
+			// MVC
+				'controller' => '\app\Controller_Mockup',
+				'action' => 'action_form',
+			),
+	
+		'\ibidem\theme\Layer_Theme::script' => array
 			(
 				'route' => \app\Route_Pattern::instance()
 					->standard
@@ -28,7 +55,7 @@ return array
 				'mode' => 'script',
 			),
 	
-		__NAMESPACE__.'\Layer_Theme::style' => array
+		'\ibidem\theme\Layer_Theme::style' => array
 			(
 				'route' => \app\Route_Pattern::instance()
 					->standard
@@ -45,7 +72,7 @@ return array
 				'mode' => 'style',
 			),
 	
-		__NAMESPACE__.'\Layer_Theme::resource' => array
+		'\ibidem\theme\Layer_Theme::resource' => array
 			(
 				'route' => \app\Route_Pattern::instance()
 					->standard
