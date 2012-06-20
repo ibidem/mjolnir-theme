@@ -97,8 +97,7 @@ class Controller_Mockup extends \app\Controller_HTTP
 	 */	
 	public function action($action)
 	{
-		$relay_config = \app\CFS::config('ibidem/relays');
-		return $relay_config['!mockup-form']['route']->url();
+		return \app\Relay::route('\ibidem\theme\mockup-form')->url();
 	}
 
 } # class
