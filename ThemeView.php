@@ -40,6 +40,11 @@ class ThemeView extends \app\Instantiatable
 	protected $errors;
 	
 	/**
+	 * @var string theme path
+	 */
+	protected $base_path;
+	
+	/**
 	 * @return \ibidem\theme\ThemeView 
 	 */
 	public static function instance()
@@ -132,13 +137,13 @@ class ThemeView extends \app\Instantiatable
 	{
 		$settings = \app\CFS::config('ibidem/themes');
 		
-		$base_path = $settings['themes.dir'].DIRECTORY_SEPARATOR
+		$this->base_path = $settings['themes.dir'].DIRECTORY_SEPARATOR
 			. $this->theme.DIRECTORY_SEPARATOR;
 		
 		// load theme configuration
 		$config = include \app\CFS::file
 			(
-				$base_path.$settings['themes.config']
+				$this->base_path.$settings['themes.config']
 			);
 
 		if ( ! isset($config['targets'][$this->target]))
@@ -154,7 +159,7 @@ class ThemeView extends \app\Instantiatable
 				("Missing view files for [$this->target]");
 		}
 		
-		$file = $base_path.\array_pop($files);
+		$file = $this->base_path.\array_pop($files);
 		$view_file = \app\CFS::file($file);
 		
 		if ( ! $view_file)
@@ -168,17 +173,17 @@ class ThemeView extends \app\Instantiatable
 			->variable('context', $this->context)
 			->variable('control', $this->control)
 			->variable('errors', $this->errors)
-			->variable('theme_path', $base_path);
+			->variable('theme', $this);
 		
 		$files = \array_reverse($files);
 		foreach ($files as $file)
 		{
-			$view_file = \app\CFS::file($base_path.$file);
+			$view_file = \app\CFS::file($this->base_path.$file);
 			
 			if ( ! $view_file)
 			{
 				throw new \app\Exception_NotFound
-					("Missing [$base_path$file].");
+					("Missing [{$this->base_path}$file].");
 			}
 			
 			$base_file = \app\View::instance()
@@ -186,7 +191,7 @@ class ThemeView extends \app\Instantiatable
 				->variable('context', $this->context)
 				->variable('control', $this->control)
 				->variable('errors', $this->errors)
-				->variable('theme_path', $base_path)
+				->variable('theme', $this)
 				->variable('view', $base_file);
 		}
 		
@@ -250,6 +255,14 @@ class ThemeView extends \app\Instantiatable
 	{
 		$this->layer = $layer;
 		return $this;
+	}
+	
+	public function partial($path)
+	{
+		return \app\View::instance()
+			->file_path(\app\CFS::dir($this->base_path).$path.EXT)
+			->variable('control', $this->control)
+			->variable('context', $this->context);
 	}
 	
 	/**
