@@ -133,7 +133,7 @@ class Task_Make_Style extends \app\Task
 		// styles/$style/!start.cmd
 		\file_put_contents
 			(
-				$style_path.'+start.cmd', 
+				$style_path.'+start.rb', 
 				self::compass_start()
 			);
 		
