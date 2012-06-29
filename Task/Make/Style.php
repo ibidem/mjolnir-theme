@@ -62,8 +62,8 @@ class Task_Make_Style extends \app\Task
 			. PHP_EOL
 			. '# required ibidem configuration'.PHP_EOL
 			. 'http_path = ""'.PHP_EOL
-			. 'css_dir = "Style.root"'.PHP_EOL
-			. 'images_dir = "Style.root/images"'.PHP_EOL
+			. 'css_dir = "root"'.PHP_EOL
+			. 'images_dir = "root/images"'.PHP_EOL
 			. 'relative_assets = true'.PHP_EOL
 			. PHP_EOL
 			. '# Output style'.PHP_EOL
