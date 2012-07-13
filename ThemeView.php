@@ -54,21 +54,7 @@ class ThemeView extends \app\Instantiatable
 		$instance->theme = $config['theme.default'];
 		$instance->style = $config['style.default'];
 		
-		$env_config = include DOCROOT.'environment'.EXT;
-		$env_is_set = isset($env_config['themes']) && isset($env_config['themes'][$instance->theme]);
 		
-		if ($env_is_set)
-		{
-			$instance->base_path = $env_config['themes'][$instance->theme].DIRECTORY_SEPARATOR;
-		}
-		else # env is not set
-		{
-			$instance->base_path = \app\CFS::dir
-				(
-					$config['themes.dir'].DIRECTORY_SEPARATOR
-						. $instance->theme.DIRECTORY_SEPARATOR
-				);
-		}
 		
 		return $instance;
 	}
@@ -152,6 +138,22 @@ class ThemeView extends \app\Instantiatable
 	public function render()
 	{
 		$settings = \app\CFS::config('ibidem/themes');
+		
+		$env_config = include DOCROOT.'environment'.EXT;
+		$env_is_set = isset($env_config['themes']) && isset($env_config['themes'][$this->theme]);
+		
+		if ($env_is_set)
+		{
+			$this->base_path = $env_config['themes'][$this->theme].DIRECTORY_SEPARATOR;
+		}
+		else # env is not set
+		{
+			$this->base_path = \app\CFS::dir
+				(
+					$settings['themes.dir'].DIRECTORY_SEPARATOR
+						. $this->theme.DIRECTORY_SEPARATOR
+				);
+		}
 		
 		// load theme configuration
 		$config = include $this->base_path.$settings['themes.config'].EXT;
@@ -270,7 +272,7 @@ class ThemeView extends \app\Instantiatable
 	public function partial($path)
 	{
 		return \app\View::instance()
-			->file_path(\app\CFS::dir($this->base_path).$path.EXT)
+			->file_path($this->base_path.$path.EXT)
 			->variable('control', $this->control)
 			->variable('context', $this->context);
 	}
