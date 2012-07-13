@@ -35,14 +35,24 @@ class Layer_Theme extends \app\Layer
 			# we don't process version; version is only for the useragent
 			
 			$settings = \app\CFS::config('ibidem/themes');
-
-			$theme_path = $settings['themes.dir'].DIRECTORY_SEPARATOR
-				. $theme.DIRECTORY_SEPARATOR;
+			$env_config = include DOCROOT.'environment'.EXT;
+			$env_is_set = isset($env_config['themes']) && isset($env_config['themes'][$theme]);
 			
-			$theme_config_file = \app\CFS::file
-				(
-					$theme_path.$settings['themes.config']
-				);
+			if ($env_is_set)
+			{
+				$theme_path = $env_config['themes'][$theme].DIRECTORY_SEPARATOR;
+				$theme_config_file = $theme_path.$settings['themes.config'].EXT;
+			}
+			else # search for theme
+			{
+				$theme_path = $settings['themes.dir'].DIRECTORY_SEPARATOR
+					. $theme.DIRECTORY_SEPARATOR;
+
+				$theme_config_file = \app\CFS::file
+					(
+						$theme_path.$settings['themes.config']
+					);
+			}
 			
 			if ($theme_config_file)
 			{
@@ -61,8 +71,15 @@ class Layer_Theme extends \app\Layer
 				$style_dir = $theme_path.$theme_config['styles'].DIRECTORY_SEPARATOR
 						. $style.DIRECTORY_SEPARATOR;
 
-				// theme styles are static content dependent
-				$absolute_style_dir = \app\CFS::dir($style_dir);
+				if ($env_is_set)
+				{
+					$absolute_style_dir = $style_dir;
+				}
+				else # environment
+				{
+					// theme styles are static content dependent
+					$absolute_style_dir = \app\CFS::dir($style_dir);
+				}
 
 				if ($absolute_style_dir)
 				{
@@ -75,7 +92,7 @@ class Layer_Theme extends \app\Layer
 							'Missing style.'
 						);
 				}
-
+				
 				if ($style_config_file)
 				{
 					$style_config = include $style_config_file;
@@ -193,7 +210,7 @@ class Layer_Theme extends \app\Layer
 					$script_dir = $theme_path.$theme_config['scripts'].DIRECTORY_SEPARATOR;
 
 					// theme styles are static content dependent
-					$absolute_script_dir = \app\CFS::dir($script_dir);
+					$absolute_script_dir = $script_dir;
 
 					if ($absolute_script_dir)
 					{
@@ -320,14 +337,23 @@ class Layer_Theme extends \app\Layer
 	public static function script_config($theme)
 	{	
 		$settings = \app\CFS::config('ibidem/themes');
+		$env_config = include DOCROOT.'environment'.EXT;
+		$env_is_set = isset($env_config['themes']) && isset($env_config['themes'][$theme]);
 
-		$theme_path = $settings['themes.dir'].DIRECTORY_SEPARATOR
-			. $theme.DIRECTORY_SEPARATOR;
-
-		$theme_config_file = \app\CFS::file
-			(
-				$theme_path.$settings['themes.config']
-			);
+		if ($env_is_set)
+		{
+			$theme_path = $env_config['themes'][$theme].DIRECTORY_SEPARATOR;
+		}
+		else # env not set
+		{
+			$theme_path = \app\CFS::dir
+				(
+					$settings['themes.dir'].DIRECTORY_SEPARATOR
+						. $theme.DIRECTORY_SEPARATOR
+				);
+		}
+		
+		$theme_config_file = $theme_path.$settings['themes.config'].EXT;
 
 		if ($theme_config_file)
 		{
@@ -344,7 +370,7 @@ class Layer_Theme extends \app\Layer
 		$script_dir = $theme_path.$theme_config['scripts'].DIRECTORY_SEPARATOR;
 
 		// theme styles are static content dependent
-		$absolute_script_dir = \app\CFS::dir($script_dir);
+		$absolute_script_dir = $script_dir;
 
 		if ($absolute_script_dir)
 		{
@@ -382,13 +408,23 @@ class Layer_Theme extends \app\Layer
 	{
 		$settings = \app\CFS::config('ibidem/themes');
 
-		$theme_path = $settings['themes.dir'].DIRECTORY_SEPARATOR
-			. $theme.DIRECTORY_SEPARATOR;
+		$env_config = include DOCROOT.'environment'.EXT;
+		$env_is_set = isset($env_config['themes']) && isset($env_config['themes'][$theme]);
 
-		$theme_config_file = \app\CFS::file
-			(
-				$theme_path.$settings['themes.config']
-			);
+		if ($env_is_set)
+		{
+			$theme_path = $env_config['themes'][$theme].DIRECTORY_SEPARATOR;
+		}
+		else # env not set
+		{
+			$theme_path = \app\CFS::dir
+				(
+					$settings['themes.dir'].DIRECTORY_SEPARATOR
+						. $theme.DIRECTORY_SEPARATOR
+				);
+		}
+		
+		$theme_config_file = $theme_path.$settings['themes.config'].EXT;
 
 		if ($theme_config_file)
 		{
@@ -406,7 +442,7 @@ class Layer_Theme extends \app\Layer
 				. $style.DIRECTORY_SEPARATOR;
 
 		// theme styles are static content dependent
-		$absolute_style_dir = \app\CFS::dir($style_dir);
+		$absolute_style_dir = $style_dir;
 
 		if ($absolute_style_dir)
 		{

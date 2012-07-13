@@ -54,6 +54,22 @@ class ThemeView extends \app\Instantiatable
 		$instance->theme = $config['theme.default'];
 		$instance->style = $config['style.default'];
 		
+		$env_config = include DOCROOT.'environment'.EXT;
+		$env_is_set = isset($env_config['themes']) && isset($env_config['themes'][$instance->theme]);
+		
+		if ($env_is_set)
+		{
+			$instance->base_path = $env_config['themes'][$instance->theme].DIRECTORY_SEPARATOR;
+		}
+		else # env is not set
+		{
+			$instance->base_path = \app\CFS::dir
+				(
+					$config['themes.dir'].DIRECTORY_SEPARATOR
+						. $instance->theme.DIRECTORY_SEPARATOR
+				);
+		}
+		
 		return $instance;
 	}
 	
@@ -137,14 +153,8 @@ class ThemeView extends \app\Instantiatable
 	{
 		$settings = \app\CFS::config('ibidem/themes');
 		
-		$this->base_path = $settings['themes.dir'].DIRECTORY_SEPARATOR
-			. $this->theme.DIRECTORY_SEPARATOR;
-		
 		// load theme configuration
-		$config = include \app\CFS::file
-			(
-				$this->base_path.$settings['themes.config']
-			);
+		$config = include $this->base_path.$settings['themes.config'].EXT;
 
 		if ( ! isset($config['targets'][$this->target]))
 		{
@@ -159,8 +169,8 @@ class ThemeView extends \app\Instantiatable
 				("Missing view files for [$this->target]");
 		}
 		
-		$file = $this->base_path.\array_pop($files);
-		$view_file = \app\CFS::file($file);
+		$file = $this->base_path.\array_pop($files).EXT;
+		$view_file = $file;
 		
 		if ( ! $view_file)
 		{
@@ -178,7 +188,7 @@ class ThemeView extends \app\Instantiatable
 		$files = \array_reverse($files);
 		foreach ($files as $file)
 		{
-			$view_file = \app\CFS::file($this->base_path.$file);
+			$view_file = $this->base_path.$file.EXT;
 			
 			if ( ! $view_file)
 			{
