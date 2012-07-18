@@ -45,15 +45,15 @@ class Layer_Theme extends \app\Layer
 			}
 			else # search for theme
 			{
-				$theme_path = $settings['themes.dir'].DIRECTORY_SEPARATOR
-					. $theme.DIRECTORY_SEPARATOR;
-
-				$theme_config_file = \app\CFS::file
+				$theme_path = \app\CFS::dir
 					(
-						$theme_path.$settings['themes.config']
+						$settings['themes.dir'].DIRECTORY_SEPARATOR
+							. $theme.DIRECTORY_SEPARATOR
 					);
+
+				$theme_config_file = $theme_path.$settings['themes.config'].EXT;
 			}
-			
+
 			if ($theme_config_file)
 			{
 				$theme_config = include $theme_config_file;
@@ -78,7 +78,7 @@ class Layer_Theme extends \app\Layer
 				else # environment
 				{
 					// theme styles are static content dependent
-					$absolute_style_dir = \app\CFS::dir($style_dir);
+					$absolute_style_dir = $style_dir;
 				}
 
 				if ($absolute_style_dir)
