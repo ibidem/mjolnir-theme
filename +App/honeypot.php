@@ -2,7 +2,7 @@
 
 // This is a IDE honeypot. :)
 
-// HowTo: minion honeypot -n "ibidem\\theme"
+// HowTo: order honeypot -n 'ibidem\theme'
 
 class Controller_Mockup extends \ibidem\theme\Controller_Mockup { /** @return \ibidem\theme\Controller_Mockup */ static function instance() { return parent::instance(); } }
 class Layer_Theme extends \ibidem\theme\Layer_Theme { /** @return \ibidem\theme\Layer_Theme */ static function instance() { return parent::instance(); } }
