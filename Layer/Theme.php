@@ -161,6 +161,49 @@ class Layer_Theme extends \app\Layer
 						throw $exception;
 					}
 				}
+				else if (\preg_match('#.js.map$#', $params->get('path', '')))
+				{
+					$path = $params->get('path');
+				
+					$script_dir = $theme_path.$theme_config['scripts'].DIRECTORY_SEPARATOR;
+
+					// theme styles are static content dependent
+					$absolute_script_dir = $script_dir;
+
+					if ($absolute_script_dir)
+					{
+						$script_config_file = $absolute_script_dir.$settings['script.config'].EXT;
+					}
+					else # path not found
+					{
+						throw new \app\Exception_NotFound
+							(
+								'Missing script dir.'
+							);
+					}
+					
+					if ($script_config_file)
+					{
+						$script_config = include $script_config_file;
+					}
+					else # no style configuration
+					{
+						throw new \app\Exception_NotFound
+							(
+								'Missing script configuration.'
+							);
+					}
+					
+					// we don't allow parent references
+					if (\strpos($path, '..') !== false)
+					{
+						throw new \app\Exception_NotApplicable();
+					}
+					
+					\app\GlobalEvent::fire('http:expires', strtotime('-1 day'));
+					$file = $absolute_script_dir.$script_config['script.root'].'../closure/'.$path;
+					$this->contents(\file_get_contents($file));
+				}
 				else # $mode === 'resource'
 				{
 					try 
@@ -172,7 +215,8 @@ class Layer_Theme extends \app\Layer
 						{
 							throw new \app\Exception_NotApplicable();
 						}
-
+						
+						
 						$file = $absolute_style_dir.$style_config['style.root'].$path;
 
 						if (\file_exists($file))
@@ -231,38 +275,57 @@ class Layer_Theme extends \app\Layer
 
 					// mime type
 					\app\GlobalEvent::fire('http:content-type', 'text/javascript');
-
-					if ( ! isset($script_config['targets'][$target]))
-					{
-						throw new \app\Exception_NotFound
-							("Missing target [$target] in scripts, for theme [$theme].");
-					}
-
-					$target_files = $script_config['common'];
 					
-					// merge target files to common files; preserving order
-					foreach ($script_config['targets'][$target] as $target_file)
+					// check output mode
+					if (isset($script_config['closure-mode']) && $script_config['closure-mode'])
 					{
-						$target_files[] = $target_file;
-					}
-
-					// combine all files; if necesary
-					$output = '';
-					foreach ($target_files as $file)
-					{
-						// this header is included for easier development
-						$no_path_file = \preg_replace('#(.*/)#', '', $file);
-						$output .= PHP_EOL.'// '.\str_repeat('-', 77).PHP_EOL;
-						$output .= '// '.$no_path_file.'.js'.PHP_EOL.PHP_EOL;
+						$target = \str_replace('\\', '/', $target);
 						
-						$output 
-							.= \file_get_contents
-									(
-										$absolute_script_dir.$script_config['script.root'].$file.'.js'
-									)
-							. PHP_EOL.PHP_EOL;
+						if (\preg_match('#src#', $target))
+						{
+							// this is mapped file from the closure
+							$output = \file_get_contents($absolute_script_dir.$target.'.js');
+						}
+						else # this is the actual closure file
+						{
+							\app\GlobalEvent::fire('http:attributes', ['X-SourceMap' => $target.'.min.js.map']);
+							$output = \file_get_contents($absolute_script_dir.'/closure/'.$target.'.min.js');
+						}
 					}
-					
+					else # standard mode
+					{
+						if ( ! isset($script_config['targets'][$target]))
+						{
+							throw new \app\Exception_NotFound
+								("Missing target [$target] in scripts, for theme [$theme].");
+						}
+
+						$target_files = $script_config['common'];
+
+						// merge target files to common files; preserving order
+						foreach ($script_config['targets'][$target] as $target_file)
+						{
+							$target_files[] = $target_file;
+						}
+
+						// combine all files; if necesary
+						$output = '';
+						foreach ($target_files as $file)
+						{
+							// this header is included for easier development
+							$no_path_file = \preg_replace('#(.*/)#', '', $file);
+							$output .= PHP_EOL.'// '.\str_repeat('-', 77).PHP_EOL;
+							$output .= '// '.$no_path_file.'.js'.PHP_EOL.PHP_EOL;
+
+							$output 
+								.= \file_get_contents
+										(
+											$absolute_script_dir.$script_config['script.root'].$file.'.js'
+										)
+								. PHP_EOL.PHP_EOL;
+						}
+					}
+
 					// compute bootstrap
 					$bootstrap_config = \app\CFS::config('ibidem/js-bootstrap');
 					if ( ! empty($bootstrap_config))
@@ -278,10 +341,9 @@ class Layer_Theme extends \app\Layer
 								}
 							);
 						$bootstrap .= "\n};\n\n";
-
-						$output = $bootstrap.$output;	
 					}
 					
+					// $this->contents($bootstrap.$output);
 					$this->contents($output);
 				}
 				catch (\Exception $exception)
