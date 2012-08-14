@@ -1,5 +1,7 @@
 <?php namespace ibidem\theme;
 
+require_once \app\CFS::dir('vendor/php-closure').'php-closure'.EXT;
+
 /**
  * @package    ibidem
  * @category   Themes
@@ -111,13 +113,7 @@ class Layer_Theme extends \app\Layer
 					{
 						$target = $params->get('target');
 
-						// mime type
-						$this->dispatch
-							(
-								\app\Event::instance()
-									->subject(\ibidem\types\Event::content_type)
-									->contents('text/css')
-							);
+						\app\GlobalEvent::fire('http:content-type', 'text/css');
 
 						if ( ! isset($style_config['targets'][$target]))
 						{
@@ -186,12 +182,7 @@ class Layer_Theme extends \app\Layer
 
 						// mime type
 						$finfo = \finfo_open(FILEINFO_MIME_TYPE);
-						$this->dispatch
-							(
-								\app\Event::instance()
-									->subject(\ibidem\types\Event::content_type)
-									->contents(\finfo_file($finfo, $file))
-							);
+						\app\GlobalEvent::fire('http:content-type', \finfo_file($finfo, $file));
 						\finfo_close($finfo);
 
 						$this->contents(\file_get_contents($file));
@@ -239,12 +230,7 @@ class Layer_Theme extends \app\Layer
 					$target = $params->get('target');
 
 					// mime type
-					$this->dispatch
-						(
-							\app\Event::instance()
-								->subject(\ibidem\types\Event::content_type)
-								->contents('text/javascript')
-						);
+					\app\GlobalEvent::fire('http:content-type', 'text/javascript');
 
 					if ( ! isset($script_config['targets'][$target]))
 					{
@@ -317,12 +303,7 @@ class Layer_Theme extends \app\Layer
 			}
 			
 			// expires headers
-			$this->dispatch
-				(
-					\app\Event::instance()
-						->subject(\ibidem\types\Event::expires)
-						->contents(\strtotime('+30 days'))
-				);
+			\app\GlobalEvent::fire('http:expires', \strtotime('+30 days'));
 		}
 		catch (\Exception $exception)
 		{

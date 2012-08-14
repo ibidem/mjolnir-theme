@@ -54,8 +54,6 @@ class ThemeView extends \app\Instantiatable
 		$instance->theme = $config['theme.default'];
 		$instance->style = $config['style.default'];
 		
-		
-		
 		return $instance;
 	}
 	
@@ -223,13 +221,8 @@ class ThemeView extends \app\Instantiatable
 							'target' => $this->target
 						)
 					);
-			
-			$this->layer->dispatch
-				(
-					\app\Event::instance()
-						->subject(\ibidem\types\Event::css_style)
-						->contents($url)
-				);
+
+			\app\GlobalEvent::fire('webpage:style', $url);
 		}
 		
 		// send script
@@ -248,12 +241,15 @@ class ThemeView extends \app\Instantiatable
 							'target' => $this->target
 						)
 					);
-			$this->layer->dispatch
-				(
-					\app\Event::instance()
-						->subject(\ibidem\types\Event::js_script)
-						->contents($url)
-				);
+			
+			\app\GlobalEvent::fire('webpage:script', $url);
+			
+//			$this->layer->dispatch
+//				(
+//					\app\Event::instance()
+//						->subject(\ibidem\types\Event::js_script)
+//						->contents($url)
+//				);
 		}
 		
 		return $base_file->render();
