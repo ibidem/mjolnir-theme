@@ -55,6 +55,40 @@ return array
 				'mode' => 'script',
 			),
 	
+		'\ibidem\theme\Layer_Theme::script-map' => array
+			(
+				'route' => \app\Route_Pattern::instance()
+					->standard
+						(
+							'media/themes/<theme>/<style>/<version>/<target>.min.js.map', 
+							$theme_resource_regex
+						)
+					->canonical
+						(
+							'media/themes/<theme>/<style>/<version>/<target>.min.js.map', 
+							$theme_resource_regex
+						),
+				'enabled' => true,
+				'mode' => 'script-map',
+			),
+	
+		'\ibidem\theme\Layer_Theme::script-src' => array
+			(
+				'route' => \app\Route_Pattern::instance()
+					->standard
+						(
+							'media/themes/<theme>/<style>/<version>/src/<target>.js', 
+							$theme_resource_regex
+						)
+					->canonical
+						(
+							'media/themes/<theme>/<style>/<version>/src/<target>.js', 
+							$theme_resource_regex
+						),
+				'enabled' => true,
+				'mode' => 'script-src',
+			),
+	
 		'\ibidem\theme\Layer_Theme::style' => array
 			(
 				'route' => \app\Route_Pattern::instance()

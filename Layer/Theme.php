@@ -1,7 +1,5 @@
 <?php namespace ibidem\theme;
 
-require_once \app\CFS::dir('vendor/php-closure').'php-closure'.EXT;
-
 /**
  * @package    ibidem
  * @category   Themes
@@ -68,7 +66,7 @@ class Layer_Theme extends \app\Layer
 					);
 			}
 			
-			if ($mode !== 'script')
+			if (false === \in_array($mode, ['script', 'script-src'])) // ($mode !== 'script')
 			{
 				$style_dir = $theme_path.$theme_config['styles'].DIRECTORY_SEPARATOR
 						. $style.DIRECTORY_SEPARATOR;
@@ -107,6 +105,9 @@ class Layer_Theme extends \app\Layer
 						);
 				}
 			
+				// expires headers
+				\app\GlobalEvent::fire('http:expires', \strtotime('+30 days'));
+				
 				if ($mode === 'style')
 				{
 					try 
@@ -161,9 +162,9 @@ class Layer_Theme extends \app\Layer
 						throw $exception;
 					}
 				}
-				else if (\preg_match('#.js.map$#', $params->get('path', '')))
+				else if ($mode === 'script-map')
 				{
-					$path = $params->get('path');
+					$target = $params->get('target');
 				
 					$script_dir = $theme_path.$theme_config['scripts'].DIRECTORY_SEPARATOR;
 
@@ -195,13 +196,13 @@ class Layer_Theme extends \app\Layer
 					}
 					
 					// we don't allow parent references
-					if (\strpos($path, '..') !== false)
+					if (\strpos($target, '..') !== false)
 					{
 						throw new \app\Exception_NotApplicable();
 					}
 					
 					\app\GlobalEvent::fire('http:expires', strtotime('-1 day'));
-					$file = $absolute_script_dir.$script_config['script.root'].'../closure/'.$path;
+					$file = $absolute_script_dir.$script_config['script.root'].'../closure/'.$target.'.min.js.map';
 					$this->contents(\file_get_contents($file));
 				}
 				else # $mode === 'resource'
@@ -215,7 +216,6 @@ class Layer_Theme extends \app\Layer
 						{
 							throw new \app\Exception_NotApplicable();
 						}
-						
 						
 						$file = $absolute_style_dir.$style_config['style.root'].$path;
 
@@ -238,134 +238,112 @@ class Layer_Theme extends \app\Layer
 					}
 				}
 			}
-			else if ($mode === 'script')
+			else # script mode
 			{
-				try
+				$script_dir = $theme_path.$theme_config['scripts'].DIRECTORY_SEPARATOR;
+
+				// theme styles are static content dependent
+				$absolute_script_dir = $script_dir;
+
+				if ($absolute_script_dir)
 				{
-					$script_dir = $theme_path.$theme_config['scripts'].DIRECTORY_SEPARATOR;
-
-					// theme styles are static content dependent
-					$absolute_script_dir = $script_dir;
-
-					if ($absolute_script_dir)
-					{
-						$script_config_file = $absolute_script_dir.$settings['script.config'].EXT;
-					}
-					else # path not found
-					{
-						throw new \app\Exception_NotFound
-							(
-								'Missing script dir.'
-							);
-					}
-
-					if ($script_config_file)
-					{
-						$script_config = include $script_config_file;
-					}
-					else # no style configuration
-					{
-						throw new \app\Exception_NotFound
-							(
-								'Missing script configuration.'
-							);
-					}
-					
-					$target = $params->get('target');
-
-					// mime type
-					\app\GlobalEvent::fire('http:content-type', 'text/javascript');
-					
-					// check output mode
-					if (isset($script_config['closure-mode']) && $script_config['closure-mode'])
-					{
-						$target = \str_replace('\\', '/', $target);
-						
-						if (\preg_match('#src#', $target))
-						{
-							// this is mapped file from the closure
-							$output = \file_get_contents($absolute_script_dir.$target.'.js');
-						}
-						else # this is the actual closure file
-						{
-							\app\GlobalEvent::fire('http:attributes', ['X-SourceMap' => $target.'.min.js.map']);
-							$output = \file_get_contents($absolute_script_dir.'/closure/'.$target.'.min.js');
-						}
-					}
-					else # standard mode
-					{
-						if ( ! isset($script_config['targets'][$target]))
-						{
-							throw new \app\Exception_NotFound
-								("Missing target [$target] in scripts, for theme [$theme].");
-						}
-
-						$target_files = $script_config['common'];
-
-						// merge target files to common files; preserving order
-						foreach ($script_config['targets'][$target] as $target_file)
-						{
-							$target_files[] = $target_file;
-						}
-
-						// combine all files; if necesary
-						$output = '';
-						foreach ($target_files as $file)
-						{
-							// this header is included for easier development
-							$no_path_file = \preg_replace('#(.*/)#', '', $file);
-							$output .= PHP_EOL.'// '.\str_repeat('-', 77).PHP_EOL;
-							$output .= '// '.$no_path_file.'.js'.PHP_EOL.PHP_EOL;
-
-							$output 
-								.= \file_get_contents
-										(
-											$absolute_script_dir.$script_config['script.root'].$file.'.js'
-										)
-								. PHP_EOL.PHP_EOL;
-						}
-					}
-
-					// compute bootstrap
-					$bootstrap_config = \app\CFS::config('ibidem/js-bootstrap');
-					if ( ! empty($bootstrap_config))
-					{
-						$bootstrap = "// application data\nvar ibidem = {\n\t";
-						$bootstrap .= \app\Collection::implode
-							(
-								",\n\t", 
-								$bootstrap_config, 
-								function ($key, $func) 
-								{
-									return '"'.$key.'": '.($func());
-								}
-							);
-						$bootstrap .= "\n};\n\n";
-					}
-					
-					// $this->contents($bootstrap.$output);
-					$this->contents($output);
+					$script_config_file = $absolute_script_dir.$settings['script.config'].EXT;
 				}
-				catch (\Exception $exception)
+				else # path not found
 				{
-					$safe_string = \addslashes($exception->getMessage());
-					
-					$this->contents
+					throw new \app\Exception_NotFound
 						(
-							'/*'.PHP_EOL.PHP_EOL
-							. '   ERROR:'.PHP_EOL.PHP_EOL
-							. "   \t".$exception->getMessage().PHP_EOL.PHP_EOL
-							. '*/'.PHP_EOL
-							. PHP_EOL.PHP_EOL.PHP_EOL
-							. ";(function () { alert('{$safe_string}') }());".PHP_EOL
+							'Missing script dir.'
 						);
-							
-					throw $exception;
 				}
+
+				if ($script_config_file)
+				{
+					$script_config = include $script_config_file;
+				}
+				else # no style configuration
+				{
+					throw new \app\Exception_NotFound
+						(
+							'Missing script configuration.'
+						);
+				}
+
+				$target = $params->get('target');
+
+				// mime type
+				\app\GlobalEvent::fire('http:content-type', 'text/javascript');
+
+				// check output mode
+				if (isset($script_config['closure-mode']) && $script_config['closure-mode'])
+				{
+					$target = \str_replace('\\', '/', $target);
+
+					if ($mode === 'script-src')
+					{
+						// this is mapped file from the closure
+						$output = \file_get_contents($absolute_script_dir.'src/'.$target.'.js');
+					}
+					else # this is the actual closure file
+					{
+						\app\GlobalEvent::fire('http:attributes', ['X-SourceMap' => $target.'.min.js.map']);
+						$output = \file_get_contents($absolute_script_dir.'/closure/'.$target.'.min.js');
+					}
+				}
+				else # standard mode
+				{
+					if ( ! isset($script_config['targets'][$target]))
+					{
+						throw new \app\Exception_NotFound
+							("Missing target [$target] in scripts, for theme [$theme].");
+					}
+
+					$target_files = $script_config['common'];
+
+					// merge target files to common files; preserving order
+					foreach ($script_config['targets'][$target] as $target_file)
+					{
+						$target_files[] = $target_file;
+					}
+
+					// combine all files; if necesary
+					$output = '';
+					foreach ($target_files as $file)
+					{
+						// this header is included for easier development
+						$no_path_file = \preg_replace('#(.*/)#', '', $file);
+						$output .= PHP_EOL.'// '.\str_repeat('-', 77).PHP_EOL;
+						$output .= '// '.$no_path_file.'.js'.PHP_EOL.PHP_EOL;
+
+						$output 
+							.= \file_get_contents
+									(
+										$absolute_script_dir.$script_config['script.root'].$file.'.js'
+									)
+							. PHP_EOL.PHP_EOL;
+					}
+				}
+
+				// compute bootstrap
+				$bootstrap_config = \app\CFS::config('ibidem/js-bootstrap');
+				if ( ! empty($bootstrap_config))
+				{
+					$bootstrap = "// application data\nvar ibidem = {\n\t";
+					$bootstrap .= \app\Collection::implode
+						(
+							",\n\t", 
+							$bootstrap_config, 
+							function ($key, $func) 
+							{
+								return '"'.$key.'": '.($func());
+							}
+						);
+					$bootstrap .= "\n};\n\n";
+				}
+
+				// $this->contents($bootstrap.$output);
+				$this->contents($output);
 			}
-			
-			// expires headers
-			\app\GlobalEvent::fire('http:expires', \strtotime('+30 days'));
 		}
 		catch (\Exception $exception)
 		{
