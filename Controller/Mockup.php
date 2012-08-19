@@ -22,7 +22,7 @@ class Controller_Mockup extends \app\Controller_HTTP
 	 * 
 	 * Tip. Use the \ibidem\base\Make class to generate random mockup content.
 	 */
-	public function action_testing()
+	function action_testing()
 	{
 		$target = $this->params->get('target');
 		
@@ -81,7 +81,7 @@ class Controller_Mockup extends \app\Controller_HTTP
 	/**
 	 * Outputs GET and POST values. Acts as a crude form field tester.
 	 */
-	public function action_form()
+	function action_form()
 	{
 		echo 'POST<br>';
 		\var_dump($_POST);
@@ -95,9 +95,9 @@ class Controller_Mockup extends \app\Controller_HTTP
 	 * @param string action
 	 * @return string 
 	 */	
-	public function action($action)
+	function action($action)
 	{
-		return \app\Relay::route('\ibidem\theme\mockup-form')->url();
+		return \app\URL::route('\ibidem\theme\mockup-form')->url();
 	}
 
 } # class

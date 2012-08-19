@@ -79,7 +79,7 @@ class Task_Make_Style extends \app\Task
 	/**
 	 * Execute task.
 	 */
-	public function execute()
+	function execute()
 	{
 		$theme = $this->config['theme'];
 		$style = $this->config['style'];

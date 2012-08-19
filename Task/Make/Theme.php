@@ -66,7 +66,7 @@ class Task_Make_Theme extends \app\Task
 	/**
 	 * Execute task.
 	 */
-	public function execute()
+	function execute()
 	{
 		$theme = $this->config['theme'];
 		$namespace = \ltrim($this->config['namespace'], '\\');

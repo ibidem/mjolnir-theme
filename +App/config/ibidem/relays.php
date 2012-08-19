@@ -13,7 +13,7 @@ return array
 	(
 		'\ibidem\theme\mockup' => array
 			(
-				'route' => \app\Route_Pattern::instance()
+				'matcher' => \app\Route_Pattern::instance()
 					->standard
 						(
 							'mockup/<target>', 
@@ -30,7 +30,7 @@ return array
 	
 		'\ibidem\theme\mockup-form' => array
 			(
-				'route' => \app\Route_Path::instance()
+				'matcher' => \app\Route_Path::instance()
 					->path('form-mockup'),
 				'enabled' => false,
 			// MVC
@@ -40,7 +40,7 @@ return array
 	
 		'\ibidem\theme\Layer_Theme::script' => array
 			(
-				'route' => \app\Route_Pattern::instance()
+				'matcher' => \app\Route_Pattern::instance()
 					->standard
 						(
 							'media/themes/<theme>/<style>/<version>/<target>.js', 
@@ -57,7 +57,7 @@ return array
 	
 		'\ibidem\theme\Layer_Theme::script-map' => array
 			(
-				'route' => \app\Route_Pattern::instance()
+				'matcher' => \app\Route_Pattern::instance()
 					->standard
 						(
 							'media/themes/<theme>/<style>/<version>/<target>.min.js.map', 
@@ -74,7 +74,7 @@ return array
 	
 		'\ibidem\theme\Layer_Theme::script-src' => array
 			(
-				'route' => \app\Route_Pattern::instance()
+				'matcher' => \app\Route_Pattern::instance()
 					->standard
 						(
 							'media/themes/<theme>/<style>/<version>/src/<target>.js', 
@@ -91,7 +91,7 @@ return array
 	
 		'\ibidem\theme\Layer_Theme::style' => array
 			(
-				'route' => \app\Route_Pattern::instance()
+				'matcher' => \app\Route_Pattern::instance()
 					->standard
 						(
 							'media/themes/<theme>/<style>/<version>/<target>.css', 
@@ -108,7 +108,7 @@ return array
 	
 		'\ibidem\theme\Layer_Theme::resource' => array
 			(
-				'route' => \app\Route_Pattern::instance()
+				'matcher' => \app\Route_Pattern::instance()
 					->standard
 						(
 							'media/themes/<theme>/<style>/<version>/<path>', 

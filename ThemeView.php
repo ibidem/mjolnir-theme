@@ -47,7 +47,7 @@ class ThemeView extends \app\Instantiatable
 	/**
 	 * @return \ibidem\theme\ThemeView 
 	 */
-	public static function instance()
+	static function instance()
 	{
 		$instance = parent::instance();
 		$config = \app\CFS::config('ibidem/themes');
@@ -61,7 +61,7 @@ class ThemeView extends \app\Instantiatable
 	 * @param string theme name
 	 * @return \ibidem\theme\ThemeView
 	 */
-	public function theme($theme) 
+	function theme($theme) 
 	{
 		$this->theme = $theme;
 		return $this;
@@ -71,7 +71,7 @@ class ThemeView extends \app\Instantiatable
 	 * @param string style name
 	 * @return \ibidem\theme\ThemeView
 	 */
-	public function style($style) 
+	function style($style) 
 	{
 		$this->style = $style;
 		return $this;
@@ -83,7 +83,7 @@ class ThemeView extends \app\Instantiatable
 	 * @param string target name
 	 * @return \ibidem\theme\ThemeView
 	 */
-	public function target($target) 
+	function target($target) 
 	{
 		$this->target = $target;
 		return $this;
@@ -102,7 +102,7 @@ class ThemeView extends \app\Instantiatable
 	 * @param mixed context object
 	 * @return \ibidem\theme\ThemeView
 	 */
-	public function context($context)
+	function context($context)
 	{
 		$this->context = $context;
 		return $this;
@@ -112,7 +112,7 @@ class ThemeView extends \app\Instantiatable
 	 * @param array|null errors
 	 * @return \ibidem\theme\ThemeView $this
 	 */
-	public function errors(array & $errors = null)
+	function errors(array & $errors = null)
 	{
 		$this->errors = & $errors;
 		return $this;
@@ -124,7 +124,7 @@ class ThemeView extends \app\Instantiatable
 	 * @param mixed control object
 	 * @return \ibidem\theme\ThemeView 
 	 */
-	public function control($control)
+	function control($control)
 	{
 		$this->control = $control;
 		return $this;
@@ -133,7 +133,7 @@ class ThemeView extends \app\Instantiatable
 	/**
 	 * @return string 
 	 */
-	public function render()
+	function render()
 	{
 		$settings = \app\CFS::config('ibidem/themes');
 		
@@ -210,7 +210,7 @@ class ThemeView extends \app\Instantiatable
 		
 		if (isset($style_config['targets'][$this->target]))
 		{
-			$url = \app\Relay::route('\ibidem\theme\Layer_Theme::style')
+			$url = \app\URL::route('\ibidem\theme\Layer_Theme::style')
 				->url
 					(
 						array
@@ -230,7 +230,7 @@ class ThemeView extends \app\Instantiatable
 		
 		if (isset($script_config['targets'][$this->target]))
 		{
-			$url = \app\Relay::route('\ibidem\theme\Layer_Theme::script')
+			$url = \app\URL::route('\ibidem\theme\Layer_Theme::script')
 				->url
 					(
 						array
@@ -243,13 +243,6 @@ class ThemeView extends \app\Instantiatable
 					);
 			
 			\app\GlobalEvent::fire('webpage:script', $url);
-			
-//			$this->layer->dispatch
-//				(
-//					\app\Event::instance()
-//						->subject(\ibidem\types\Event::js_script)
-//						->contents($url)
-//				);
 		}
 		
 		return $base_file->render();
@@ -259,13 +252,16 @@ class ThemeView extends \app\Instantiatable
 	 * @param \ibidem\types\Layer layer
 	 * @return \ibidem\theme\ThemeView
 	 */
-	public function layer(\ibidem\types\Layer $layer)
+	function layer(\ibidem\types\Layer $layer)
 	{
 		$this->layer = $layer;
 		return $this;
 	}
 	
-	public function partial($path)
+	/**
+	 * @return \app\View
+	 */
+	function partial($path)
 	{
 		return \app\View::instance()
 			->file_path($this->base_path.$path.EXT)
@@ -276,7 +272,7 @@ class ThemeView extends \app\Instantiatable
 	/**
 	 * @deprecated use render always; so exceptions will work properly
 	 */
-	public final function __toString()
+	final function __toString()
 	{
 		// views may contain logic, by allowing __toString not only does 
 		// Exception handling become unnecesarily complicated because of how

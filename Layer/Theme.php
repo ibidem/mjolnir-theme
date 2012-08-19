@@ -23,11 +23,11 @@ class Layer_Theme extends \app\Layer
 	/**
 	 * Execute the layer.
 	 */
-	public function execute()
+	function execute()
 	{
 		try 
 		{
-			$params = $this->relay['route']->get_params();
+			$params = $this->relay['matcher']->get_params();
 			$mode = $this->relay['mode'];
 			$theme = $params->get('theme');
 			$style = $params->get('style');
@@ -355,7 +355,7 @@ class Layer_Theme extends \app\Layer
 	 * @param string theme
 	 * @return array
 	 */
-	public static function script_config($theme)
+	static function script_config($theme)
 	{	
 		$settings = \app\CFS::config('ibidem/themes');
 		$env_config = include DOCROOT.'environment'.EXT;
@@ -425,7 +425,7 @@ class Layer_Theme extends \app\Layer
 	 * @param string style
 	 * @return array
 	 */
-	public static function style_config($theme, $style)
+	static function style_config($theme, $style)
 	{
 		$settings = \app\CFS::config('ibidem/themes');
 
@@ -494,7 +494,7 @@ class Layer_Theme extends \app\Layer
 	 * @param array relay configuration
 	 * @return \ibidem\theme\Layer_Theme
 	 */
-	public function relay_config(array $relay)
+	function relay_config(array $relay)
 	{
 		$this->relay = $relay;
 		return $this;
