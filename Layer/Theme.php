@@ -66,6 +66,40 @@ class Layer_Theme extends \app\Layer
 					);
 			}
 			
+			if ($mode === 'jsbootstrap')
+			{
+				// expires headers
+				\app\GlobalEvent::fire('http:expires', \strtotime('+30 days'));
+				
+				// mime type
+				\app\GlobalEvent::fire('http:content-type', 'text/javascript');
+				
+				// compute bootstrap
+				$bootstrap_config = \app\CFS::config('ibidem/js-bootstrap');
+				$bootstrap = '';
+				
+				if ( ! empty($bootstrap_config))
+				{
+					
+					
+					$bootstrap = "// application data\nvar ibidem = {\n\t";
+					$bootstrap .= \app\Collection::implode
+						(
+							",\n\t", 
+							$bootstrap_config, 
+							function ($key, $func) 
+							{
+								return '"'.$key.'": '.($func());
+							}
+						);
+					$bootstrap .= "\n};\n\n";
+				}
+
+				// $this->contents($bootstrap.$output);
+				$this->contents($bootstrap);
+				
+				return;
+			}
 			if (false === \in_array($mode, ['script', 'script-src'])) // ($mode !== 'script')
 			{
 				$style_dir = $theme_path.$theme_config['styles'].DIRECTORY_SEPARATOR
@@ -322,23 +356,6 @@ class Layer_Theme extends \app\Layer
 									)
 							. PHP_EOL.PHP_EOL;
 					}
-				}
-
-				// compute bootstrap
-				$bootstrap_config = \app\CFS::config('ibidem/js-bootstrap');
-				if ( ! empty($bootstrap_config))
-				{
-					$bootstrap = "// application data\nvar ibidem = {\n\t";
-					$bootstrap .= \app\Collection::implode
-						(
-							",\n\t", 
-							$bootstrap_config, 
-							function ($key, $func) 
-							{
-								return '"'.$key.'": '.($func());
-							}
-						);
-					$bootstrap .= "\n};\n\n";
 				}
 
 				// $this->contents($bootstrap.$output);

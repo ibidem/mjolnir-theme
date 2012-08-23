@@ -230,19 +230,34 @@ class ThemeView extends \app\Instantiatable
 		
 		if (isset($script_config['targets'][$this->target]))
 		{
-			$url = \app\URL::route('\ibidem\theme\Layer_Theme::script')
-				->url
-					(
-						array
+			\app\GlobalEvent::fire
+				(
+					'webpage:script', 
+					\app\URL::href
 						(
-							'theme' => $this->theme,
-							'style' => $this->style,
-							'version' => $script_config['version'],
-							'target' => $this->target
+							'\ibidem\theme\Layer_Theme::jsbootstrap',
+							[
+								'theme' => $this->theme,
+								'style' => $this->style,
+								'version' => $script_config['version'],
+							]
 						)
-					);
+				);
 			
-			\app\GlobalEvent::fire('webpage:script', $url);
+			\app\GlobalEvent::fire
+				(
+					'webpage:script', 
+					\app\URL::href
+						(
+							'\ibidem\theme\Layer_Theme::script',
+							[
+								'theme' => $this->theme,
+								'style' => $this->style,
+								'version' => $script_config['version'],
+								'target' => $this->target
+							]
+						)
+				);
 		}
 		
 		return $base_file->render();

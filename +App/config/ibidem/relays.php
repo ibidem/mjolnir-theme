@@ -122,5 +122,22 @@ return array
 				'enabled' => true,
 				'mode' => 'resource',
 			),
+	
+		'\ibidem\theme\Layer_Theme::jsbootstrap' => array
+			(
+				'matcher' => \app\Route_Pattern::instance()
+					->standard
+						(
+							'media/themes/<theme>/<style>/<version>/jsbootstrap.js', 
+							$theme_resource_regex
+						)
+					->canonical
+						(
+							'media/themes/<theme>/<style>/<version>/jsbootstrap.js', 
+							$theme_resource_regex
+						),
+				'enabled' => true,
+				'mode' => 'jsbootstrap',
+			),
 
 	);
