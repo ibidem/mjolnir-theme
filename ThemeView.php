@@ -213,13 +213,12 @@ class ThemeView extends \app\Instantiatable
 			$url = \app\URL::route('\ibidem\theme\Layer_Theme::style')
 				->url
 					(
-						array
-						(
+						[
 							'theme' => $this->theme,
 							'style' => $this->style,
 							'version' => $style_config['version'],
 							'target' => $this->target
-						)
+						]
 					);
 
 			\app\GlobalEvent::fire('webpage:style', $url);
