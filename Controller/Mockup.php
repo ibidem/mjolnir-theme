@@ -27,24 +27,11 @@ class Controller_Mockup extends \app\Controller_Web
 	function action_testing()
 	{
 		$target = $this->params->get('target');
-		
-		$this->layer->dispatch
-			(
-				\app\Event::instance()
-					->subject(\ibidem\types\Event::title)
-					->contents('Mockup for '.$target)
-			);
-		
-		if ( ! \defined('DEVELOPMENT'))
-		{
-			\define('DEVELOPMENT', true);
-		}
-		
-		if (DEVELOPMENT)
-		{
-			$user_role = isset($_GET['view_as']) ? $_GET['view_as'] : \app\A12n::guest();
-			\app\A12n::instance()->set_role($user_role);
-		}
+
+		\app\GlobalEvent::fire('webpage:title', $target.' Mockup');
+	
+		$user_role = isset($_GET['view_as']) ? $_GET['view_as'] : \app\A12n::guest();
+		\app\A12n::instance()->set_role($user_role);
 		
 		// check if theme is set and if them_view isn't overwritten
 		if (isset($_GET['theme']) && $this->theme_view === null)
