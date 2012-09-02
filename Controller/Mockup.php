@@ -40,13 +40,15 @@ class Controller_Mockup extends \app\Controller_Web
 				->theme($_GET['theme']);
 		}
 		
+		$mockup_class = '\app\Context_'.\ucfirst(\preg_replace('#\..*$#', '', $target));
+		
 		if ($this->theme_view === null)
 		{
 			$this->body
 			(
 				\app\ThemeView::instance()
 					->target($target)
-					->context(\app\Mockup::instance())
+					->context($mockup_class::instance())
 					->control($this)
 					->layer($this->layer)
 					->render()
@@ -58,7 +60,7 @@ class Controller_Mockup extends \app\Controller_Web
 			(
 				$this->theme_view
 					->target($target)
-					->context(\app\Mockup::instance())
+					->context($mockup_class::instance())
 					->control($this)
 					->layer($this->layer)
 					->render()

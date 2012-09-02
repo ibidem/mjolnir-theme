@@ -19,7 +19,7 @@ return array
 							'mockup/<target>', 
 							array
 							(
-								'target' => '[a-zA-Z-/]+',
+								'target' => '[a-zA-Z0-9\-\._/]+',
 							)
 						),
 				'enabled' => false,
