@@ -87,6 +87,9 @@ class ThemeView extends \app\Instantiatable
 		if (isset($config['exceptions']) && isset($config['exceptions'][$exception]))
 		{
 			$this->errortarget = $exception;
+			$context_class = '\app\Context_Exception_'.$exception;
+			$this->context = $context_class::instance();
+			
 			return $this->render();
 		}
 		else # no handling
@@ -233,6 +236,8 @@ class ThemeView extends \app\Instantiatable
 			}
 
 			$files = $config['exceptions'][$this->errortarget];
+			
+			$this->target = $this->errortarget;
 		}
 		else # both errortarget and target are null
 		{
