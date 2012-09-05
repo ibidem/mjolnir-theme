@@ -15,4 +15,5 @@ $mockup_stack = function ($relay, $target)
 	};
 
 \app\Relay::process('\ibidem\theme\mockup', $mockup_stack);
+\app\Relay::process('\ibidem\theme\mockup-errors', $mockup_stack);
 \app\Relay::process('\ibidem\theme\mockup-form', $mockup_stack);

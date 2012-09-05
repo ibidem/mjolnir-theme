@@ -8,6 +8,7 @@
  * @license    https://github.com/ibidem/ibidem/blob/master/LICENSE.md
  */
 class ThemeView extends \app\Instantiatable
+	implements \ibidem\types\ErrorView
 {	
 	/**
 	 * @var string
@@ -25,9 +26,19 @@ class ThemeView extends \app\Instantiatable
 	protected $target;
 	
 	/**
+	 * @var string
+	 */
+	protected $errortarget;
+	
+	/**
 	 * @var string 
 	 */
 	protected $control;
+	
+	/**
+	 * @var string 
+	 */
+	protected $context;
 	
 	/**
 	 * @var \ibidem\types\Layer
@@ -35,7 +46,7 @@ class ThemeView extends \app\Instantiatable
 	protected $layer;
 	
 	/**
-	 * @var array|null
+	 * @var array or null
 	 */
 	protected $errors;
 	
@@ -45,7 +56,7 @@ class ThemeView extends \app\Instantiatable
 	protected $base_path;
 	
 	/**
-	 * @return \ibidem\theme\ThemeView 
+	 * @return \app\ThemeView 
 	 */
 	static function instance()
 	{
@@ -54,12 +65,39 @@ class ThemeView extends \app\Instantiatable
 		$instance->theme = $config['theme.default'];
 		$instance->style = $config['style.default'];
 		
+		// register theme as error view
+		\app\GlobalEvent::fire('webpage:errorview', $instance);
+		
 		return $instance;
 	}
 	
 	/**
+	 * The error page will be returned or null if the exception can't be 
+	 * handled by the view; to allow for multi-view system to handle complex
+	 * exceptions.
+	 * 
+	 * @return string or null
+	 */
+	function errorpage(\Exception $e)
+	{
+		$config = $this->load_configuration();
+		
+		$exception = \preg_replace('#.*\Exception_#', '', \get_class($e));
+		
+		if (isset($config['exceptions']) && isset($config['exceptions'][$exception]))
+		{
+			$this->errortarget = $exception;
+			return $this->render();
+		}
+		else # no handling
+		{
+			return null;
+		}
+	}
+	
+	/**
 	 * @param string theme name
-	 * @return \ibidem\theme\ThemeView
+	 * @return \app\ThemeView
 	 */
 	function theme($theme) 
 	{
@@ -69,7 +107,7 @@ class ThemeView extends \app\Instantiatable
 	
 	/**
 	 * @param string style name
-	 * @return \ibidem\theme\ThemeView
+	 * @return \app\ThemeView
 	 */
 	function style($style) 
 	{
@@ -81,11 +119,25 @@ class ThemeView extends \app\Instantiatable
 	 * Target should usually be equivalent to the default route name.
 	 * 
 	 * @param string target name
-	 * @return \ibidem\theme\ThemeView
+	 * @return \app\ThemeView
 	 */
 	function target($target) 
 	{
 		$this->target = $target;
+		$this->errortarget = null;
+		
+		return $this;
+	}
+	
+	/**
+	 * @param type $error
+	 * @return \app\ThemeView
+	 */
+	function errortarget($error)
+	{
+		$this->target = null;
+		$this->errortarget = $error;
+		
 		return $this;
 	}
 	
@@ -100,7 +152,7 @@ class ThemeView extends \app\Instantiatable
 	 * coupled to the object, and vise versa.
 	 * 
 	 * @param mixed context object
-	 * @return \ibidem\theme\ThemeView
+	 * @return \app\ThemeView
 	 */
 	function context($context)
 	{
@@ -109,8 +161,8 @@ class ThemeView extends \app\Instantiatable
 	}
 	
 	/**
-	 * @param array|null errors
-	 * @return \ibidem\theme\ThemeView $this
+	 * @param array or null errors
+	 * @return \app\ThemeView $this
 	 */
 	function errors(array & $errors = null)
 	{
@@ -122,7 +174,7 @@ class ThemeView extends \app\Instantiatable
 	 * Typically this would be the controller.
 	 * 
 	 * @param mixed control object
-	 * @return \ibidem\theme\ThemeView 
+	 * @return \app\ThemeView 
 	 */
 	function control($control)
 	{
@@ -131,9 +183,9 @@ class ThemeView extends \app\Instantiatable
 	}
 	
 	/**
-	 * @return string 
+	 * @return array
 	 */
-	function render()
+	function load_configuration()
 	{
 		$settings = \app\CFS::config('ibidem/themes');
 		
@@ -154,14 +206,38 @@ class ThemeView extends \app\Instantiatable
 		}
 		
 		// load theme configuration
-		$config = include $this->base_path.$settings['themes.config'].EXT;
-
-		if ( ! isset($config['targets'][$this->target]))
-		{
-			throw new \app\Exception_NotFound('['.$this->target.'] is not a valid target.');
-		}
+		return include $this->base_path.$settings['themes.config'].EXT;
+	}
+	
+	/**
+	 * @return string 
+	 */
+	function render()
+	{
+		$config = $this->load_configuration();
 		
-		$files = $config['targets'][$this->target];
+		if ($this->target !== null)
+		{
+			if ( ! isset($config['targets'][$this->target]))
+			{
+				throw new \app\Exception_NotFound('['.$this->target.'] is not a valid target.');
+			}
+
+			$files = $config['targets'][$this->target];
+		}
+		else if ($this->errortarget !== null)
+		{
+			if ( ! isset($config['exceptions'][$this->errortarget]))
+			{
+				throw new \app\Exception_NotFound('['.$this->errortarget.'] is not a valid error for the theme.');
+			}
+
+			$files = $config['exceptions'][$this->errortarget];
+		}
+		else # both errortarget and target are null
+		{
+			throw new \app\Exception_NotApplicable('Target or Error Target is required. None provided.');
+		}
 		
 		if (empty($files))
 		{
@@ -264,7 +340,7 @@ class ThemeView extends \app\Instantiatable
 	
 	/**
 	 * @param \ibidem\types\Layer layer
-	 * @return \ibidem\theme\ThemeView
+	 * @return \app\ThemeView
 	 */
 	function layer(\ibidem\types\Layer $layer)
 	{

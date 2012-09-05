@@ -28,6 +28,23 @@ return array
 				'action' => 'action_testing',
 			),
 	
+		'\ibidem\theme\mockup-errors' => array
+			(
+				'matcher' => \app\Route_Pattern::instance()
+					->standard
+						(
+							'mockup-errors/<target>', 
+							array
+							(
+								'target' => '[a-zA-Z0-9\-\._/]+',
+							)
+						),
+				'enabled' => false,
+			// MVC
+				'controller' => '\app\Controller_Mockup',
+				'action' => 'action_errortesting',
+			),
+	
 		'\ibidem\theme\mockup-form' => array
 			(
 				'matcher' => \app\Route_Path::instance()
