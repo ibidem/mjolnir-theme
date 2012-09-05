@@ -96,9 +96,9 @@ class ThemeView extends \app\Instantiatable
 			$exception = 'Unknown';
 		}
 		
-		if (isset($config['exceptions']) && isset($config['exceptions'][$exception]))
+		if (isset($config['targets']['exception/'.$exception]))
 		{
-			$this->errortarget = $exception;
+			$this->errortarget = 'exception/'.$exception;
 			$context_class = '\app\Context_Exception_'.$exception;
 			$this->context = $context_class::instance();
 			
@@ -251,13 +251,13 @@ class ThemeView extends \app\Instantiatable
 			$files = $config['targets'][$this->target];
 		}
 		else if ($this->errortarget !== null)
-		{			
-			if ( ! isset($config['exceptions'][$this->errortarget]))
+		{
+			if ( ! isset($config['targets'][$this->errortarget]))
 			{
 				throw new \app\Exception_NotFound('['.$this->errortarget.'] is not a valid error for the theme.');
 			}
 
-			$files = $config['exceptions'][$this->errortarget];
+			$files = $config['targets'][$this->errortarget];
 			
 			$this->target = $this->errortarget;
 		}
