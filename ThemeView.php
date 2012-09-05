@@ -41,6 +41,11 @@ class ThemeView extends \app\Instantiatable
 	protected $context;
 	
 	/**
+	 * @var \Exception
+	 */
+	protected $exception;
+	
+	/**
 	 * @var \ibidem\types\Layer
 	 */
 	protected $layer;
@@ -82,7 +87,14 @@ class ThemeView extends \app\Instantiatable
 	{
 		$config = $this->load_configuration();
 		
-		$exception = \preg_replace('#.*\Exception_#', '', \get_class($e));
+		if (\is_a($e, '\app\Exception'))
+		{
+			$exception = \preg_replace('#.*\Exception_#', '', \get_class($e));
+		}
+		else # other
+		{
+			$exception = 'Unknown';
+		}
 		
 		if (isset($config['exceptions']) && isset($config['exceptions'][$exception]))
 		{
@@ -90,12 +102,22 @@ class ThemeView extends \app\Instantiatable
 			$context_class = '\app\Context_Exception_'.$exception;
 			$this->context = $context_class::instance();
 			
-			return $this->render();
+			return $this->exception($e)->render();
 		}
 		else # no handling
 		{
-			return null;
+			return 'Missing error handling for ['.$exception.']';
 		}
+	}
+	
+	/**
+	 * @return \app\ThemeView
+	 */
+	function exception(\Exception $exception)
+	{
+		$this->exception = $exception;
+		
+		return $this;
 	}
 	
 	/**
@@ -229,7 +251,7 @@ class ThemeView extends \app\Instantiatable
 			$files = $config['targets'][$this->target];
 		}
 		else if ($this->errortarget !== null)
-		{
+		{			
 			if ( ! isset($config['exceptions'][$this->errortarget]))
 			{
 				throw new \app\Exception_NotFound('['.$this->errortarget.'] is not a valid error for the theme.');
@@ -264,6 +286,7 @@ class ThemeView extends \app\Instantiatable
 			->variable('context', $this->context)
 			->variable('control', $this->control)
 			->variable('errors', $this->errors)
+			->variable('exception', $this->exception)
 			->variable('theme', $this);
 		
 		$files = \array_reverse($files);
