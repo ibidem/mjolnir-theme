@@ -99,10 +99,27 @@ class ThemeView extends \app\Instantiatable
 		if (isset($config['targets']['exception/'.$exception]))
 		{
 			$this->errortarget = 'exception/'.$exception;
+			$this->target = null;
 			$context_class = '\app\Context_Exception_'.$exception;
 			$this->context = $context_class::instance();
 			
-			return $this->exception($e)->render();
+			try
+			{
+				return $this->exception($e)->render();
+			}
+			catch(\Exception $e)
+			{
+				if (\app\CFS::config('ibidem/base')['development'])
+				{
+					echo 'Critical failure: '.$e->getMessage();
+				}
+				else # non development
+				{
+					echo 'An unknown has occured in the theme system.';
+				}
+				
+				exit(1);
+			}
 		}
 		else # no handling
 		{
