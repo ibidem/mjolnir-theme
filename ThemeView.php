@@ -89,16 +89,20 @@ class ThemeView extends \app\Instantiatable
 		
 		if (\is_a($e, '\app\Exception'))
 		{
-			$exception = \preg_replace('#.*\Exception_#', '', \get_class($e));
+			$exception = \preg_replace('#.*\Exception(_)?#', '', \get_class($e));
+			if (empty($exception))
+			{
+				$exception = 'Unknown';
+			}
 		}
 		else # other
 		{
 			$exception = 'Unknown';
 		}
 		
-		if (isset($config['targets']['exception/'.$exception]))
+		if (isset($config['targets']['exception-'.$exception]))
 		{
-			$this->errortarget = 'exception/'.$exception;
+			$this->errortarget = 'exception-'.$exception;
 			$this->target = null;
 			$context_class = '\app\Context_Exception_'.$exception;
 			$this->context = $context_class::instance();
