@@ -57,6 +57,9 @@ class Layer_Theme extends \app\Layer
 			if ($theme_config_file)
 			{
 				$theme_config = include $theme_config_file;
+				$global_config = \app\CFS::config('ibidem/themes');
+				$theme_config['scripts'] = isset($theme_config['scripts']) ? $theme_config['scripts'] : $global_config['script.dir.default'];
+				$theme_config['styles'] = isset($theme_config['styles']) ? $theme_config['styles'] : $global_config['style.dir.default'];
 			}
 			else # no theme configuration
 			{
@@ -396,6 +399,11 @@ class Layer_Theme extends \app\Layer
 		if ($theme_config_file)
 		{
 			$theme_config = include $theme_config_file;
+			
+			if ( ! isset($theme_config['scripts']))
+			{
+				$theme_config['scripts'] = \app\CFS::config('ibidem/themes')['script.dir.default'];
+			}
 		}
 		else # no theme configuration
 		{
@@ -467,6 +475,11 @@ class Layer_Theme extends \app\Layer
 		if ($theme_config_file)
 		{
 			$theme_config = include $theme_config_file;
+			
+			if ( ! isset($theme_config['styles']))
+			{
+				$theme_config['styles'] = \app\CFS::config('ibidem/themes')['style.dir.default'];
+			}
 		}
 		else # no theme configuration
 		{
