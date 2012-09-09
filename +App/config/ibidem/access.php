@@ -5,7 +5,7 @@
 				'+mockup' => array
 					(
 						\app\Protocol::instance()
-							->relays(['\ibidem\theme\mockup', '\ibidem\theme\mockup-form', '\ibidem\theme\mockup-errors']),
+							->relays(['\mjolnir\theme\mockup', '\mjolnir\theme\mockup-form', '\mjolnir\theme\mockup-errors']),
 					),
 			),
 	);

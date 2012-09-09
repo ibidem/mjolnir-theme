@@ -1,7 +1,7 @@
-<?php namespace ibidem\theme;
+<?php namespace mjolnir\theme;
 
 /**
- * @package    ibidem
+ * @package    mjolnir
  * @category   Theme
  * @author     Ibidem Team
  * @copyright  (c) 2012 Ibidem Team

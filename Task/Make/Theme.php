@@ -1,7 +1,7 @@
-<?php namespace ibidem\theme;
+<?php namespace mjolnir\theme;
 
 /**
- * @package    ibidem
+ * @package    mjolnir
  * @category   Theme
  * @author     Ibidem Team
  * @copyright  (c) 2012 Ibidem Team
@@ -91,7 +91,7 @@ class Task_Make_Theme extends \app\Task
 		// module exists
 		$module_path = $namespaces[$namespace].$ds;
 		$theme_path = $module_path
-			. \ibidem\cfs\CFSCompatible::APPDIR.$ds
+			. \mjolnir\cfs\CFSCompatible::APPDIR.$ds
 			. $settings['themes.dir'].$ds
 			. $theme.$ds;
 		

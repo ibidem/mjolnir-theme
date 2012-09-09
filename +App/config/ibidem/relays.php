@@ -1,4 +1,4 @@
-<?php namespace ibidem\theme;
+<?php namespace mjolnir\theme;
 	
 $theme_resource_regex = array
 	(
@@ -11,7 +11,7 @@ $theme_resource_regex = array
 
 return array      
 	(
-		'\ibidem\theme\mockup' => array
+		'\mjolnir\theme\mockup' => array
 			(
 				'matcher' => \app\Route_Pattern::instance()
 					->standard
@@ -28,7 +28,7 @@ return array
 				'action' => 'action_testing',
 			),
 	
-		'\ibidem\theme\mockup-errors' => array
+		'\mjolnir\theme\mockup-errors' => array
 			(
 				'matcher' => \app\Route_Pattern::instance()
 					->standard
@@ -45,7 +45,7 @@ return array
 				'action' => 'action_errortesting',
 			),
 	
-		'\ibidem\theme\mockup-form' => array
+		'\mjolnir\theme\mockup-form' => array
 			(
 				'matcher' => \app\Route_Path::instance()
 					->path('form-mockup'),
@@ -55,7 +55,7 @@ return array
 				'action' => 'action_form',
 			),
 	
-		'\ibidem\theme\Layer_Theme::script' => array
+		'\mjolnir\theme\Layer_Theme::script' => array
 			(
 				'matcher' => \app\Route_Pattern::instance()
 					->standard
@@ -72,7 +72,7 @@ return array
 				'mode' => 'script',
 			),
 	
-		'\ibidem\theme\Layer_Theme::script-map' => array
+		'\mjolnir\theme\Layer_Theme::script-map' => array
 			(
 				'matcher' => \app\Route_Pattern::instance()
 					->standard
@@ -89,7 +89,7 @@ return array
 				'mode' => 'script-map',
 			),
 	
-		'\ibidem\theme\Layer_Theme::script-src' => array
+		'\mjolnir\theme\Layer_Theme::script-src' => array
 			(
 				'matcher' => \app\Route_Pattern::instance()
 					->standard
@@ -106,7 +106,7 @@ return array
 				'mode' => 'script-src',
 			),
 	
-		'\ibidem\theme\Layer_Theme::style' => array
+		'\mjolnir\theme\Layer_Theme::style' => array
 			(
 				'matcher' => \app\Route_Pattern::instance()
 					->standard
@@ -123,7 +123,7 @@ return array
 				'mode' => 'style',
 			),
 	
-		'\ibidem\theme\Layer_Theme::resource' => array
+		'\mjolnir\theme\Layer_Theme::resource' => array
 			(
 				'matcher' => \app\Route_Pattern::instance()
 					->standard
@@ -140,7 +140,7 @@ return array
 				'mode' => 'resource',
 			),
 	
-		'\ibidem\theme\Layer_Theme::jsbootstrap' => array
+		'\mjolnir\theme\Layer_Theme::jsbootstrap' => array
 			(
 				'matcher' => \app\Route_Pattern::instance()
 					->standard

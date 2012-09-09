@@ -1,7 +1,7 @@
-<?php namespace ibidem\theme;
+<?php namespace mjolnir\theme;
 
 /**
- * @package    ibidem
+ * @package    mjolnir
  * @category   Theme
  * @author     Ibidem
  * @copyright  (c) 2012, Ibidem Team
@@ -33,7 +33,7 @@ class Controller_Mockup extends \app\Controller_Web
 	 * you need $control functions just extend this class in a mockup module in
 	 * your project.
 	 * 
-	 * Tip. Use the \ibidem\base\Make class to generate random mockup content.
+	 * Tip. Use the \mjolnir\base\Make class to generate random mockup content.
 	 */
 	function action_testing()
 	{
@@ -139,7 +139,7 @@ class Controller_Mockup extends \app\Controller_Web
 	 */	
 	function action($action)
 	{
-		return \app\URL::route('\ibidem\theme\mockup-form')->url();
+		return \app\URL::route('\mjolnir\theme\mockup-form')->url();
 	}
 
 } # class

@@ -1,14 +1,14 @@
-<?php namespace ibidem\theme;
+<?php namespace mjolnir\theme;
 
 /**
- * @package    ibidem
+ * @package    mjolnir
  * @category   Themes
  * @author     Ibidem Team
  * @copyright  (c) 2012 Ibidem Team
  * @license    https://github.com/ibidem/ibidem/blob/master/LICENSE.md
  */
 class Layer_Theme extends \app\Layer
-	implements \ibidem\types\RelayCompatible
+	implements \mjolnir\types\RelayCompatible
 {	
 	/**
 	 * @var string
@@ -531,7 +531,7 @@ class Layer_Theme extends \app\Layer
 	
 	/**
 	 * @param array relay configuration
-	 * @return \ibidem\theme\Layer_Theme
+	 * @return \mjolnir\theme\Layer_Theme
 	 */
 	function relay_config(array $relay)
 	{

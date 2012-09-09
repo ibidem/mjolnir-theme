@@ -1,14 +1,14 @@
-<?php namespace ibidem\theme;
+<?php namespace mjolnir\theme;
 
 /**
- * @package    ibidem
+ * @package    mjolnir
  * @category   Themes
  * @author     Ibidem Team
  * @copyright  (c) 2012 Ibidem Team
  * @license    https://github.com/ibidem/ibidem/blob/master/LICENSE.md
  */
 class ThemeView extends \app\Instantiatable
-	implements \ibidem\types\ErrorView
+	implements \mjolnir\types\ErrorView
 {	
 	/**
 	 * @var string
@@ -46,7 +46,7 @@ class ThemeView extends \app\Instantiatable
 	protected $exception;
 	
 	/**
-	 * @var \ibidem\types\Layer
+	 * @var \mjolnir\types\Layer
 	 */
 	protected $layer;
 	
@@ -342,7 +342,7 @@ class ThemeView extends \app\Instantiatable
 		
 		if (isset($style_config['targets'][$this->target]))
 		{
-			$url = \app\URL::route('\ibidem\theme\Layer_Theme::style')
+			$url = \app\URL::route('\mjolnir\theme\Layer_Theme::style')
 				->url
 					(
 						[
@@ -366,7 +366,7 @@ class ThemeView extends \app\Instantiatable
 					'webpage:script', 
 					\app\URL::href
 						(
-							'\ibidem\theme\Layer_Theme::jsbootstrap',
+							'\mjolnir\theme\Layer_Theme::jsbootstrap',
 							[
 								'theme' => $this->theme,
 								'style' => $this->style,
@@ -380,7 +380,7 @@ class ThemeView extends \app\Instantiatable
 					'webpage:script', 
 					\app\URL::href
 						(
-							'\ibidem\theme\Layer_Theme::script',
+							'\mjolnir\theme\Layer_Theme::script',
 							[
 								'theme' => $this->theme,
 								'style' => $this->style,
@@ -395,10 +395,10 @@ class ThemeView extends \app\Instantiatable
 	}
 	
 	/**
-	 * @param \ibidem\types\Layer layer
+	 * @param \mjolnir\types\Layer layer
 	 * @return \app\ThemeView
 	 */
-	function layer(\ibidem\types\Layer $layer)
+	function layer(\mjolnir\types\Layer $layer)
 	{
 		$this->layer = $layer;
 		return $this;
