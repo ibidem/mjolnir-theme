@@ -1,8 +1,8 @@
 <?php return array
 	(
-		'ibidem\theme' => array
+		'mjolnir\theme' => array
 			(
-				'major' => '1',
+				'major' => '0',
 				'minor' => '0',
 			)
 	);
