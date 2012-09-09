@@ -7,7 +7,7 @@
  * @copyright  (c) 2012, Ibidem Team
  * @license    https://github.com/ibidem/ibidem/blob/master/LICENSE.md
  */
-class Context_Style extends \app\Instantiatable
+class Context_Ref extends \app\Instantiatable
 {
 	// placeholder context
 

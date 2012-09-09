@@ -6,7 +6,7 @@ $theme_resource_regex = array
 		'style' => '[a-zA-Z0-9\-\._]+',
 		'version' => '[a-f0-9-\.]*',
 		'path' => '.+', # path is validated internally
-		'target' => '[a-zA-Z0-9\-\._/]+',
+		'target' => '[+a-zA-Z0-9\-\._/]+',
 	);
 
 return array      

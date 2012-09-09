@@ -324,7 +324,16 @@ class Layer_Theme extends \app\Layer
 					else # this is the actual closure file
 					{
 						\app\GlobalEvent::fire('http:attributes', ['X-SourceMap' => $target.'.min.js.map']);
-						$output = \file_get_contents($absolute_script_dir.'/closure/'.$target.'.min.js');
+						
+						$file_to_load = $absolute_script_dir.'/closure/'.$target.'.min.js';
+						if (\file_exists($file_to_load))
+						{
+							$output = \file_get_contents($file_to_load);
+						}
+						else # file does not exist
+						{
+							$output = 'console.log("[ERROR] Missing closure file for ['.$target.']. Potentially failed to compile.");';
+						}
 					}
 				}
 				else # standard mode

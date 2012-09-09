@@ -127,7 +127,14 @@ class ThemeView extends \app\Instantiatable
 		}
 		else # no handling
 		{
-			return 'Missing error handling for ['.$exception.']';
+			if (\app\CFS::config('ibidem/base')['development'])
+			{
+				return 'Missing error handling for ['.$exception.'] for theme ['.$this->theme.']';
+			}
+			else 
+			{
+				return 'Theme files have been corrupted. Terminating.';
+			}
 		}
 	}
 	
@@ -405,7 +412,8 @@ class ThemeView extends \app\Instantiatable
 		return \app\View::instance()
 			->file_path($this->base_path.$path.EXT)
 			->variable('control', $this->control)
-			->variable('context', $this->context);
+			->variable('context', $this->context)
+			->variable('theme', $this);
 	}
 	
 	/**
