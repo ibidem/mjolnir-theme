@@ -4,7 +4,7 @@ use \mjolnir\types\Enum_Requirement as Requirement;
 
 return array
 	(
-		'ibidem\theme' => array
+		'mjolnir\theme' => array
 			(
 				 'extension=php_fileinfo' => function ()
 					{

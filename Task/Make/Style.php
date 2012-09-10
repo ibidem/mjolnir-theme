@@ -60,7 +60,7 @@ class Task_Make_Style extends \app\Task
 		return
 			  '# Require any additional compass plugins here.'.PHP_EOL
 			. PHP_EOL
-			. '# required ibidem configuration'.PHP_EOL
+			. '# required mjolnir configuration'.PHP_EOL
 			. 'http_path = ""'.PHP_EOL
 			. 'css_dir = "root"'.PHP_EOL
 			. 'images_dir = "root/images"'.PHP_EOL
