@@ -47,7 +47,7 @@ class Controller_Mockup extends \app\Controller_Web
 				->theme($_GET['theme']);
 		}
 		
-		$mockup_ns = \app\CFS::config('ibidem/base')['mockup-ns'];
+		$mockup_ns = \app\CFS::config('mjolnir/base')['mockup-ns'];
 		$mockup_class = '\\'.$mockup_ns.'\Context_'.\ucfirst(\preg_replace('#\..*$#', '', $target));
 		
 		if ($this->theme_view === null)

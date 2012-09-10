@@ -88,7 +88,7 @@ class Task_Make_Style extends \app\Task
 		$ds = DIRECTORY_SEPARATOR;
 		
 		// load settings
-		$settings = \app\CFS::config('ibidem/themes');
+		$settings = \app\CFS::config('mjolnir/themes');
 		
 		// find theme
 		$theme_path = \app\CFS::dir($settings['themes.dir'].$ds.$theme);

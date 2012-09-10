@@ -86,7 +86,7 @@ class Task_Make_Theme extends \app\Task
 		$ds = DIRECTORY_SEPARATOR;
 		
 		// load configuration
-		$settings = \app\CFS::config('ibidem/themes');
+		$settings = \app\CFS::config('mjolnir/themes');
 		
 		// module exists
 		$module_path = $namespaces[$namespace].$ds;

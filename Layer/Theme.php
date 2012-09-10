@@ -34,7 +34,7 @@ class Layer_Theme extends \app\Layer
 			
 			# we don't process version; version is only for the useragent
 			
-			$settings = \app\CFS::config('ibidem/themes');
+			$settings = \app\CFS::config('mjolnir/themes');
 			$env_config = include DOCROOT.'environment'.EXT;
 			$env_is_set = isset($env_config['themes']) && isset($env_config['themes'][$theme]);
 			
@@ -57,7 +57,7 @@ class Layer_Theme extends \app\Layer
 			if ($theme_config_file)
 			{
 				$theme_config = include $theme_config_file;
-				$global_config = \app\CFS::config('ibidem/themes');
+				$global_config = \app\CFS::config('mjolnir/themes');
 				$theme_config['scripts'] = isset($theme_config['scripts']) ? $theme_config['scripts'] : $global_config['script.dir.default'];
 				$theme_config['styles'] = isset($theme_config['styles']) ? $theme_config['styles'] : $global_config['style.dir.default'];
 			}
@@ -78,7 +78,7 @@ class Layer_Theme extends \app\Layer
 				\app\GlobalEvent::fire('http:content-type', 'text/javascript');
 				
 				// compute bootstrap
-				$bootstrap_config = \app\CFS::config('ibidem/js-bootstrap');
+				$bootstrap_config = \app\CFS::config('mjolnir/js-bootstrap');
 				$bootstrap = '';
 				
 				if ( ! empty($bootstrap_config))
@@ -386,7 +386,7 @@ class Layer_Theme extends \app\Layer
 	 */
 	static function script_config($theme)
 	{	
-		$settings = \app\CFS::config('ibidem/themes');
+		$settings = \app\CFS::config('mjolnir/themes');
 		$env_config = include DOCROOT.'environment'.EXT;
 		$env_is_set = isset($env_config['themes']) && isset($env_config['themes'][$theme]);
 
@@ -411,7 +411,7 @@ class Layer_Theme extends \app\Layer
 			
 			if ( ! isset($theme_config['scripts']))
 			{
-				$theme_config['scripts'] = \app\CFS::config('ibidem/themes')['script.dir.default'];
+				$theme_config['scripts'] = \app\CFS::config('mjolnir/themes')['script.dir.default'];
 			}
 		}
 		else # no theme configuration
@@ -461,7 +461,7 @@ class Layer_Theme extends \app\Layer
 	 */
 	static function style_config($theme, $style)
 	{
-		$settings = \app\CFS::config('ibidem/themes');
+		$settings = \app\CFS::config('mjolnir/themes');
 
 		$env_config = include DOCROOT.'environment'.EXT;
 		$env_is_set = isset($env_config['themes']) && isset($env_config['themes'][$theme]);
@@ -487,7 +487,7 @@ class Layer_Theme extends \app\Layer
 			
 			if ( ! isset($theme_config['styles']))
 			{
-				$theme_config['styles'] = \app\CFS::config('ibidem/themes')['style.dir.default'];
+				$theme_config['styles'] = \app\CFS::config('mjolnir/themes')['style.dir.default'];
 			}
 		}
 		else # no theme configuration

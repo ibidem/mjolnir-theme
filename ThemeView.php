@@ -66,7 +66,7 @@ class ThemeView extends \app\Instantiatable
 	static function instance()
 	{
 		$instance = parent::instance();
-		$config = \app\CFS::config('ibidem/themes');
+		$config = \app\CFS::config('mjolnir/themes');
 		$instance->theme = $config['theme.default'];
 		$instance->style = $config['style.default'];
 		
@@ -113,7 +113,7 @@ class ThemeView extends \app\Instantiatable
 			}
 			catch(\Exception $e)
 			{
-				if (\app\CFS::config('ibidem/base')['development'])
+				if (\app\CFS::config('mjolnir/base')['development'])
 				{
 					echo 'Critical failure: '.$e->getMessage();
 				}
@@ -127,7 +127,7 @@ class ThemeView extends \app\Instantiatable
 		}
 		else # no handling
 		{
-			if (\app\CFS::config('ibidem/base')['development'])
+			if (\app\CFS::config('mjolnir/base')['development'])
 			{
 				return 'Missing error handling for ['.$exception.'] for theme ['.$this->theme.']';
 			}
@@ -240,7 +240,7 @@ class ThemeView extends \app\Instantiatable
 	 */
 	function load_configuration()
 	{
-		$settings = \app\CFS::config('ibidem/themes');
+		$settings = \app\CFS::config('mjolnir/themes');
 		
 		$env_config = include DOCROOT.'environment'.EXT;
 		$env_is_set = isset($env_config['themes']) && isset($env_config['themes'][$this->theme]);
