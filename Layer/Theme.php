@@ -9,35 +9,53 @@
  */
 class Layer_Theme extends \app\Layer
 	implements \mjolnir\types\RelayCompatible
-{	
+{
 	/**
 	 * @var string
 	 */
 	protected static $layer_name = __CLASS__;
-	
+
 	/**
 	 * @var array
 	 */
 	protected $relay;
 
 	/**
+	 * Save output to file, to void future processing.
+	 */
+	function save_theme_file( & $output)
+	{
+		if (\app\CFS::config('mjolnir/base')['static-theme'])
+		{
+			$uri = \app\Layer_HTTP::detect_uri();
+
+			$path = PUBDIR.\ltrim($uri, '/');
+
+			\preg_match('#(?<dir>^.*)/(?<file>[^/]+)$#', $path, $file_info);
+
+			\file_exists($file_info['dir']) or \mkdir($file_info['dir'], 0777, true);
+			\file_put_contents($path, $output);
+		}
+	}
+
+	/**
 	 * Execute the layer.
 	 */
 	function execute()
 	{
-		try 
+		try
 		{
 			$params = $this->relay['matcher']->get_params();
 			$mode = $this->relay['mode'];
 			$theme = $params->get('theme');
 			$style = $params->get('style');
-			
+
 			# we don't process version; version is only for the useragent
-			
+
 			$settings = \app\CFS::config('mjolnir/themes');
 			$env_config = include DOCROOT.'environment'.EXT;
 			$env_is_set = isset($env_config['themes']) && isset($env_config['themes'][$theme]);
-			
+
 			if ($env_is_set)
 			{
 				$theme_path = $env_config['themes'][$theme].DIRECTORY_SEPARATOR;
@@ -68,29 +86,29 @@ class Layer_Theme extends \app\Layer
 						'Missing theme configuration.'
 					);
 			}
-			
+
 			if ($mode === 'jsbootstrap')
 			{
 				// expires headers
 				\app\GlobalEvent::fire('http:expires', \strtotime('+30 days'));
-				
+
 				// mime type
 				\app\GlobalEvent::fire('http:content-type', 'text/javascript');
-				
+
 				// compute bootstrap
 				$bootstrap_config = \app\CFS::config('mjolnir/js-bootstrap');
 				$bootstrap = '';
-				
+
 				if ( ! empty($bootstrap_config))
 				{
-					
-					
+
+
 					$bootstrap = "// application data\nvar ibidem = {\n\t";
 					$bootstrap .= \app\Collection::implode
 						(
-							",\n\t", 
-							$bootstrap_config, 
-							function ($key, $func) 
+							",\n\t",
+							$bootstrap_config,
+							function ($key, $func)
 							{
 								return '"'.$key.'": '.($func());
 							}
@@ -100,7 +118,7 @@ class Layer_Theme extends \app\Layer
 
 				// $this->contents($bootstrap.$output);
 				$this->contents($bootstrap);
-				
+
 				return;
 			}
 			if (false === \in_array($mode, ['script', 'script-src'])) // ($mode !== 'script')
@@ -129,7 +147,7 @@ class Layer_Theme extends \app\Layer
 							'Missing style.'
 						);
 				}
-				
+
 				if ($style_config_file)
 				{
 					$style_config = include $style_config_file;
@@ -141,13 +159,13 @@ class Layer_Theme extends \app\Layer
 							'Missing style configuration.'
 						);
 				}
-			
+
 				// expires headers
 				\app\GlobalEvent::fire('http:expires', \strtotime('+30 days'));
-				
+
 				if ($mode === 'style')
 				{
-					try 
+					try
 					{
 						$target = $params->get('target');
 
@@ -158,9 +176,9 @@ class Layer_Theme extends \app\Layer
 							throw new \app\Exception_NotFound
 								("Missing target [$target] in style [$style] of theme [$theme].");
 						}
-						
+
 						$target_files = $style_config['common'];
-					
+
 						// merge target files to common files; preserving order
 						foreach ($style_config['targets'][$target] as $target_file)
 						{
@@ -176,6 +194,8 @@ class Layer_Theme extends \app\Layer
 									$absolute_style_dir.$style_config['style.root'].$file.'.css'
 								);
 						}
+
+						$this->save_theme_file($output);
 
 						$this->contents($output);
 					}
@@ -202,7 +222,7 @@ class Layer_Theme extends \app\Layer
 				else if ($mode === 'script-map')
 				{
 					$target = $params->get('target');
-				
+
 					$script_dir = $theme_path.$theme_config['scripts'].DIRECTORY_SEPARATOR;
 
 					// theme styles are static content dependent
@@ -219,7 +239,7 @@ class Layer_Theme extends \app\Layer
 								'Missing script dir.'
 							);
 					}
-					
+
 					if ($script_config_file)
 					{
 						$script_config = include $script_config_file;
@@ -231,20 +251,25 @@ class Layer_Theme extends \app\Layer
 								'Missing script configuration.'
 							);
 					}
-					
+
 					// we don't allow parent references
 					if (\strpos($target, '..') !== false)
 					{
 						throw new \app\Exception_NotApplicable();
 					}
-					
+
 					\app\GlobalEvent::fire('http:expires', strtotime('-1 day'));
 					$file = $absolute_script_dir.$script_config['script.root'].'../closure/'.$target.'.min.js.map';
-					$this->contents(\file_get_contents($file));
+
+					$output = \file_get_contents($file);
+
+					$this->save_theme_file($output);
+
+					$this->contents($output);
 				}
 				else # $mode === 'resource'
 				{
-					try 
+					try
 					{
 						$path = $params->get('path');
 
@@ -253,7 +278,7 @@ class Layer_Theme extends \app\Layer
 						{
 							throw new \app\Exception_NotApplicable();
 						}
-						
+
 						$file = $absolute_style_dir.$style_config['style.root'].$path;
 
 						if (\file_exists($file))
@@ -266,8 +291,12 @@ class Layer_Theme extends \app\Layer
 						\app\GlobalEvent::fire('http:content-type', \finfo_file($finfo, $file));
 						\finfo_close($finfo);
 
-						$this->contents(\file_get_contents($file));
-					} 
+						$output = \file_get_contents($file);
+
+						$this->save_theme_file($output);
+
+						$this->contents($output);
+					}
 					catch (\Exception $exception)
 					{
 						$this->contents($exception->getMessage());
@@ -324,7 +353,7 @@ class Layer_Theme extends \app\Layer
 					else # this is the actual closure file
 					{
 						\app\GlobalEvent::fire('http:attributes', ['X-SourceMap' => $target.'.min.js.map']);
-						
+
 						$file_to_load = $absolute_script_dir.'/closure/'.$target.'.min.js';
 						if (\file_exists($file_to_load))
 						{
@@ -361,7 +390,7 @@ class Layer_Theme extends \app\Layer
 						$output .= PHP_EOL.'// '.\str_repeat('-', 77).PHP_EOL;
 						$output .= '// '.$no_path_file.'.js'.PHP_EOL.PHP_EOL;
 
-						$output 
+						$output
 							.= \file_get_contents
 									(
 										$absolute_script_dir.$script_config['script.root'].$file.'.js'
@@ -369,6 +398,8 @@ class Layer_Theme extends \app\Layer
 							. PHP_EOL.PHP_EOL;
 					}
 				}
+
+				$this->save_theme_file($output);
 
 				// $this->contents($bootstrap.$output);
 				$this->contents($output);
@@ -379,13 +410,13 @@ class Layer_Theme extends \app\Layer
 			$this->exception($exception, true);
 		}
 	}
-	
+
 	/**
 	 * @param string theme
 	 * @return array
 	 */
 	static function script_config($theme)
-	{	
+	{
 		$settings = \app\CFS::config('mjolnir/themes');
 		$env_config = include DOCROOT.'environment'.EXT;
 		$env_is_set = isset($env_config['themes']) && isset($env_config['themes'][$theme]);
@@ -402,13 +433,13 @@ class Layer_Theme extends \app\Layer
 						. $theme.DIRECTORY_SEPARATOR
 				);
 		}
-		
+
 		$theme_config_file = $theme_path.$settings['themes.config'].EXT;
 
 		if ($theme_config_file)
 		{
 			$theme_config = include $theme_config_file;
-			
+
 			if ( ! isset($theme_config['scripts']))
 			{
 				$theme_config['scripts'] = \app\CFS::config('mjolnir/themes')['script.dir.default'];
@@ -421,7 +452,7 @@ class Layer_Theme extends \app\Layer
 					'Missing theme configuration.'
 				);
 		}
-		
+
 		$script_dir = $theme_path.$theme_config['scripts'].DIRECTORY_SEPARATOR;
 
 		// theme styles are static content dependent
@@ -450,10 +481,10 @@ class Layer_Theme extends \app\Layer
 					'Missing script configuration.'
 				);
 		}
-		
+
 		return $script_config;
 	}
-	
+
 	/**
 	 * @param string theme
 	 * @param string style
@@ -478,13 +509,13 @@ class Layer_Theme extends \app\Layer
 						. $theme.DIRECTORY_SEPARATOR
 				);
 		}
-		
+
 		$theme_config_file = $theme_path.$settings['themes.config'].EXT;
 
 		if ($theme_config_file)
 		{
 			$theme_config = include $theme_config_file;
-			
+
 			if ( ! isset($theme_config['styles']))
 			{
 				$theme_config['styles'] = \app\CFS::config('mjolnir/themes')['style.dir.default'];
@@ -528,7 +559,7 @@ class Layer_Theme extends \app\Layer
 				);
 		}
 	}
-	
+
 	/**
 	 * @param array relay configuration
 	 * @return \mjolnir\theme\Layer_Theme
@@ -538,5 +569,5 @@ class Layer_Theme extends \app\Layer
 		$this->relay = $relay;
 		return $this;
 	}
-	
+
 } # class
