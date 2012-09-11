@@ -14,6 +14,6 @@ class Controller_Mockup extends \mjolnir\theme\Controller_Mockup { /** @return \
 class Layer_Theme extends \mjolnir\theme\Layer_Theme { /** @return \mjolnir\theme\Layer_Theme */ static function instance() { return parent::instance(); } }
 class Task_Make_Style extends \mjolnir\theme\Task_Make_Style { /** @return \mjolnir\theme\Task_Make_Style */ static function instance($encoded_task = null) { return parent::instance($encoded_task); } }
 class Task_Make_Theme extends \mjolnir\theme\Task_Make_Theme { /** @return \mjolnir\theme\Task_Make_Theme */ static function instance($encoded_task = null) { return parent::instance($encoded_task); } }
-class ThemeFooterInclude extends \mjolnir\theme\ThemeFooterInclude { /** @return \mjolnir\theme\ThemeFooterInclude */ static function instance() { return parent::instance(); } }
+class ThemeFooterInclude extends \mjolnir\theme\ThemeFooterInclude { /** @return \mjolnir\theme\ThemeFooterInclude */ static function instance($file = null) { return parent::instance($file); } }
 class ThemeHeadInclude extends \mjolnir\theme\ThemeHeadInclude { /** @return \mjolnir\theme\ThemeHeadInclude */ static function instance($file = null) { return parent::instance($file); } }
 class ThemeView extends \mjolnir\theme\ThemeView { /** @return \mjolnir\theme\ThemeView */ static function instance() { return parent::instance(); } }
