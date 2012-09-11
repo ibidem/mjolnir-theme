@@ -417,6 +417,47 @@ class ThemeView extends \app\Instantiatable
 	}
 
 	/**
+	 * Shorthand for including a piece of code into the head of the page.
+	 *
+	 * @return \app\ThemeHeadInclude
+	 */
+	function headinclude($path)
+	{
+		return \app\ThemeHeadInclude::instance()
+			->file_path($this->base_path.$path.EXT)
+			->variable('control', $this->control)
+			->variable('context', $this->context)
+			->variable('theme', $this);
+	}
+
+	/**
+	 * Shorthand for including a piece of code into the head of the page.
+	 *
+	 * @return \app\ThemeFooterInclude
+	 */
+	function footerinclude($path)
+	{
+		return \app\ThemeFooterInclude::instance()
+			->file_path($this->base_path.$path.EXT)
+			->variable('control', $this->control)
+			->variable('context', $this->context)
+			->variable('theme', $this);
+	}
+
+	/**
+	 * Adds script to theme, from the theme itself. Note this won't get compiled
+	 * or anything, it's simply conditionally added. Recomended only if used
+	 * with external scripts.
+	 *
+	 * Since external scripts are assumed (90% of the time) if you are including
+	 * a internal script you must gurantee the validity of the URL yourself.
+	 */
+	function script($script)
+	{
+		\app\GlobalEvent::fire('webpage:script', $script);
+	}
+
+	/**
 	 * @deprecated use render always; so exceptions will work properly
 	 */
 	final function __toString()
@@ -428,8 +469,7 @@ class ThemeView extends \app\Instantiatable
 		// ie. whenever it decides to convert to a string. It's not worth it.
 		\app\Layer::get_top()->exception
 			(
-				new \app\Exception_NotApplicable
-					('Casting to string not allowed for Theme Views.'),
+				new \app\Exception('Casting to string not allowed for Theme Views.'),
 				true # no throw
 			);
 	}
