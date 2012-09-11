@@ -257,7 +257,7 @@ class ThemeView extends \app\Instantiatable
 						. $this->theme.DIRECTORY_SEPARATOR
 				);
 		}
-
+		
 		// load theme configuration
 		return include $this->base_path.$settings['themes.config'].EXT;
 	}
