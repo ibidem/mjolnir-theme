@@ -381,21 +381,32 @@ class Layer_Theme extends \app\Layer
 						$target_files[] = $target_file;
 					}
 
-					// combine all files; if necesary
-					$output = '';
-					foreach ($target_files as $file)
+					try
 					{
-						// this header is included for easier development
-						$no_path_file = \preg_replace('#(.*/)#', '', $file);
-						$output .= PHP_EOL.'// '.\str_repeat('-', 77).PHP_EOL;
-						$output .= '// '.$no_path_file.'.js'.PHP_EOL.PHP_EOL;
+						// combine all files; if necesary
+						$output = '';
+						foreach ($target_files as $file)
+						{
+							// this header is included for easier development
+							$no_path_file = \preg_replace('#(.*/)#', '', $file);
+							$output .= PHP_EOL.'// '.\str_repeat('-', 77).PHP_EOL;
+							$output .= '// '.$no_path_file.'.js'.PHP_EOL.PHP_EOL;
 
-						$output
-							.= \file_get_contents
-									(
-										$absolute_script_dir.$script_config['script.root'].$file.'.js'
-									)
-							. PHP_EOL.PHP_EOL;
+							$output
+								.= \file_get_contents
+										(
+											$absolute_script_dir.$script_config['script.root'].$file.'.js'
+										)
+								. PHP_EOL.PHP_EOL;
+						}
+					}
+					catch (\Exception $e)
+					{
+						if (\app\CFS::config('mjolnir/base')['development'])
+						{
+							echo $e->message();
+							die;
+						}
 					}
 				}
 
@@ -407,7 +418,7 @@ class Layer_Theme extends \app\Layer
 		}
 		catch (\Exception $exception)
 		{
-			$this->exception($exception, true);
+			$this->exception($exception);
 		}
 	}
 
