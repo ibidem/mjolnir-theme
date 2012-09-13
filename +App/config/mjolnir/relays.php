@@ -106,6 +106,23 @@ return array
 				'mode' => 'script-src',
 			),
 	
+		'\mjolnir\theme\Layer_Theme::style-src' => array
+			(
+				'matcher' => \app\Route_Pattern::instance()
+					->standard
+						(
+							'media/themes/<theme>/<style>/<version>/src/<target>.css', 
+							$theme_resource_regex
+						)
+					->canonical
+						(
+							'media/themes/<theme>/<style>/<version>/src/<target>.css', 
+							$theme_resource_regex
+						),
+				'enabled' => true,
+				'mode' => 'style-src',
+			),
+	
 		'\mjolnir\theme\Layer_Theme::style' => array
 			(
 				'matcher' => \app\Route_Pattern::instance()
@@ -145,12 +162,12 @@ return array
 				'matcher' => \app\Route_Pattern::instance()
 					->standard
 						(
-							'media/themes/<theme>/<style>/<version>/jsbootstrap.js', 
+							'media/themes/<theme>/<style>/<version>/js-bootstrap.js', 
 							$theme_resource_regex
 						)
 					->canonical
 						(
-							'media/themes/<theme>/<style>/<version>/jsbootstrap.js', 
+							'media/themes/<theme>/<style>/<version>/js-bootstrap.js', 
 							$theme_resource_regex
 						),
 				'enabled' => true,

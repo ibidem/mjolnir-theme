@@ -219,6 +219,52 @@ class Layer_Theme extends \app\Layer
 						throw $exception;
 					}
 				}
+				else if ($mode === 'style-src')
+				{
+					try
+					{
+						$target = \str_replace('\\', '/', $params->get('target'));
+						
+						// we don't allow parent references
+						if (\strpos($target, '..') !== false)
+						{
+							throw new \app\Exception('Parent reference is forbidden.');
+						}
+						
+						$file = $absolute_style_dir.$style_config['style.root'].'../src/'.$target.'.css';
+						
+						if (\file_exists($file))
+						{
+							$output = \file_get_contents($file);
+							$this->save_theme_file($output);
+						}
+						else # 
+						{
+							$output = '';
+						}
+						
+						$this->contents($output);
+					}
+					catch (\Exception $exception)
+					{
+						$safe_string = \addslashes($exception->getMessage());
+
+						$this->contents
+							(
+								'/*'.PHP_EOL.PHP_EOL
+								. '   ERROR:'.PHP_EOL.PHP_EOL
+								. "   \t".$exception->getMessage().PHP_EOL.PHP_EOL
+								. '*/'.PHP_EOL
+								. PHP_EOL.PHP_EOL.PHP_EOL
+								. "body {content: '{$safe_string}';".PHP_EOL
+								. 'position: absolute; top: 0; left: 0; width: 500px; height: 100px; padding: 10px;'.PHP_EOL
+								. 'z-index: 1000; color: #222; background: #eee; font-size: medium; font-family: monospace; }'
+								. PHP_EOL
+							);
+
+						throw $exception;
+					}
+				}
 				else if ($mode === 'script-map')
 				{
 					$target = $params->get('target');
@@ -255,7 +301,7 @@ class Layer_Theme extends \app\Layer
 					// we don't allow parent references
 					if (\strpos($target, '..') !== false)
 					{
-						throw new \app\Exception_NotApplicable();
+						throw new \app\Exception('Parent reference is forbidden.');
 					}
 
 					\app\GlobalEvent::fire('http:expires', strtotime('-1 day'));

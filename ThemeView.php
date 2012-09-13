@@ -443,6 +443,38 @@ class ThemeView extends \app\Instantiatable
 			->variable('context', $this->context)
 			->variable('theme', $this);
 	}
+	
+	/**
+	 * @return string URL relative to src folder in scripts
+	 */
+	function cast_style($src)
+	{
+		$params = array
+			(
+				'theme'   => $this->theme,
+				'style'   => $this->style,
+				'version' => '1.0',
+				'target'  => $src
+			);
+		
+		return \app\URL::href('\mjolnir\theme\Layer_Theme::style-src', $params);
+	}
+	
+	/**
+	 * @return string URL relative to src folder in scripts
+	 */
+	function cast_script($src)
+	{
+		$params = array
+			(
+				'theme'  => $this->theme,
+				'style'  => $this->style,
+				'version' => '1.0',
+				'target' => $src
+			);
+		
+		return \app\URL::href('\mjolnir\theme\Layer_Theme::script-src', $params);
+	}
 
 	/**
 	 * Adds script to theme, from the theme itself. Note this won't get compiled
