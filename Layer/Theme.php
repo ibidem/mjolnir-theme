@@ -387,7 +387,7 @@ class Layer_Theme extends \app\Layer
 				\app\GlobalEvent::fire('http:content-type', 'text/javascript');
 
 				// check output mode
-				if (isset($script_config['closure-mode']) && $script_config['closure-mode'])
+				if (isset($script_config['closure-mode']) && $script_config['closure-mode'] && ! \app\CFS::config('mjolnir/base')['disable']['closure-mode'])
 				{
 					$target = \str_replace('\\', '/', $target);
 
