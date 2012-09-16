@@ -12,6 +12,7 @@ class Context_Exception_Unknown extends \mjolnir\theme\Context_Exception_Unknown
 class Context_Ref extends \mjolnir\theme\Context_Ref { /** @return \mjolnir\theme\Context_Ref */ static function instance() { return parent::instance(); } }
 class Controller_Mockup extends \mjolnir\theme\Controller_Mockup { /** @return \mjolnir\theme\Controller_Mockup */ static function instance() { return parent::instance(); } }
 class Layer_Theme extends \mjolnir\theme\Layer_Theme { /** @return \mjolnir\theme\Layer_Theme */ static function instance() { return parent::instance(); } }
+class Make extends \mjolnir\theme\Make { /** @return \mjolnir\theme\Make */ static function instance($type = 'paragraph', array $args = null) { return parent::instance($type, $args); } }
 class Task_Make_Style extends \mjolnir\theme\Task_Make_Style { /** @return \mjolnir\theme\Task_Make_Style */ static function instance($encoded_task = null) { return parent::instance($encoded_task); } }
 class Task_Make_Theme extends \mjolnir\theme\Task_Make_Theme { /** @return \mjolnir\theme\Task_Make_Theme */ static function instance($encoded_task = null) { return parent::instance($encoded_task); } }
 class ThemeFooterInclude extends \mjolnir\theme\ThemeFooterInclude { /** @return \mjolnir\theme\ThemeFooterInclude */ static function instance($file = null) { return parent::instance($file); } }
