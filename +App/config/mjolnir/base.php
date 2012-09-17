@@ -1,6 +1,6 @@
 <?php return array
 	(
-		'mockup-ns' => 'app',
+		'mockup-ns' => 'mockup',
 		'static-theme' => false,
 
 		'disable' => array
