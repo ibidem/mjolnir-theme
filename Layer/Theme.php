@@ -464,7 +464,7 @@ class Layer_Theme extends \app\Layer
 					{
 						if (\app\CFS::config('mjolnir/base')['development'])
 						{
-							echo $e->message();
+							echo $e->getMessage();
 							die;
 						}
 					}
