@@ -110,7 +110,21 @@ class Layer_Theme extends \app\Layer
 							$bootstrap_config,
 							function ($key, $func)
 							{
-								return '"'.$key.'": '.($func());
+								try 
+								{
+									return '"'.$key.'": '.($func());
+								}
+								catch (\Exception $e)
+								{
+									if (\app\CFS::config('mjolnir/base')['development'])
+									{
+										die('console.log("Critical failure on key ['.$key.']. '.$e->getMessage().'");');
+									}
+									else # public
+									{
+										die('console.log("Critical failure on key ['.$key.']");');
+									}
+								}
 							}
 						);
 					$bootstrap .= "\n};\n\n";
@@ -463,7 +477,7 @@ class Layer_Theme extends \app\Layer
 			}
 		}
 		catch (\Exception $exception)
-		{
+		{			
 			$this->exception($exception);
 		}
 	}
