@@ -194,9 +194,9 @@ class Layer_Theme extends \app\Layer
 						$target_files = $style_config['common'];
 
 						// merge target files to common files; preserving order
-						foreach ($style_config['targets'][$target] as $target_file)
+						foreach ($style_config['targets'][$target] as $script)
 						{
-							$target_files[] = $target_file;
+							$target_files[] = $script;
 						}
 
 						// combine all files; if necesary
@@ -438,16 +438,22 @@ class Layer_Theme extends \app\Layer
 					{
 						if ( ! \preg_match('#(^[a-z]+:\/\/|^\/\/).*$#', $script))
 						{
-							$target_files[] = $script;
+							if ( ! \in_array($script, $target_files))
+							{
+								$target_files[] = $script;
+							}
 						}
 					}
 					
 					// merge target files to common files; preserving order
-					foreach ($script_config['targets'][$target] as $target_file)
+					foreach ($script_config['targets'][$target] as $script)
 					{
 						if ( ! \preg_match('#(^[a-z]+:\/\/|^\/\/).*$#', $script))
 						{
-							$target_files[] = $script;
+							if ( ! \in_array($script, $target_files))
+							{
+								$target_files[] = $script;
+							}
 						}
 					}
 
