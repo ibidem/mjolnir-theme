@@ -361,6 +361,14 @@ class ThemeView extends \app\Instantiatable
 
 		if (isset($script_config['targets'][$this->target]))
 		{
+			if (isset($script_config['preload']))
+			{
+				foreach ($script_config['preload'] as $script)
+				{
+					\app\GlobalEvent::fire('webpage:script', $script);
+				}
+			}
+			
 			\app\GlobalEvent::fire
 				(
 					'webpage:script',
@@ -389,6 +397,34 @@ class ThemeView extends \app\Instantiatable
 							]
 						)
 				);
+			
+			// retrieve direct load scripts
+			$direct_load = [];
+			if (isset($script_config['common']))
+			{
+				foreach ($script_config['common'] as $script)
+				{
+					// is it an url?
+					if (\preg_match('#(^[a-z]+:\/\/|^\/\/).*$#', $script))
+					{
+						$direct_load[] = $script;
+					}
+				}
+			}
+			
+			foreach ($script_config['targets'][$this->target] as $script)
+			{
+				// is it an url?
+				if (\preg_match('#(^[a-z]+:\/\/|^\/\/).*$#', $script))
+				{
+					$direct_load[] = $script;
+				}
+			}
+			
+			foreach ($direct_load as $script)
+			{
+				\app\GlobalEvent::fire('webpage:script', $script);
+			}
 		}
 
 		return $base_file->render();

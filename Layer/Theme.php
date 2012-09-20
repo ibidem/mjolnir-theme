@@ -433,12 +433,22 @@ class Layer_Theme extends \app\Layer
 							("Missing target [$target] in scripts, for theme [$theme].");
 					}
 
-					$target_files = $script_config['common'];
-
+					$target_files = [];
+					foreach ($script_config['common'] as $script)
+					{
+						if ( ! \preg_match('#(^[a-z]+:\/\/|^\/\/).*$#', $script))
+						{
+							$target_files[] = $script;
+						}
+					}
+					
 					// merge target files to common files; preserving order
 					foreach ($script_config['targets'][$target] as $target_file)
 					{
-						$target_files[] = $target_file;
+						if ( ! \preg_match('#(^[a-z]+:\/\/|^\/\/).*$#', $script))
+						{
+							$target_files[] = $script;
+						}
 					}
 
 					try
@@ -472,7 +482,6 @@ class Layer_Theme extends \app\Layer
 
 				$this->save_theme_file($output);
 
-				// $this->contents($bootstrap.$output);
 				$this->contents($output);
 			}
 		}
