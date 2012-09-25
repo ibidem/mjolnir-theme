@@ -2,9 +2,9 @@
 	
 $theme_resource_regex = array
 	(
-		'theme' => '[a-zA-Z0-9\-\._/]+',
-		'style' => '[a-zA-Z0-9\-\._]+',
-		'version' => '[a-f0-9-\.]*',
+		'theme' => '[a-zA-Z\-\._/]+',
+		'style' => '[a-zA-Z\-\._]+',
+		'version' => '[0-9][a-z0-9-\.]*',
 		'path' => '.+', # path is validated internally
 		'target' => '[+a-zA-Z0-9\-\._/]+',
 	);
@@ -70,6 +70,40 @@ return array
 						),
 				'enabled' => true,
 				'mode' => 'script',
+			),
+	
+		'\mjolnir\theme\Layer_Theme::complete-script' => array
+			(
+				'matcher' => \app\Route_Pattern::instance()
+					->standard
+						(
+							'media/themes/<theme>/<style>/<version>-complete/master.min.js', 
+							$theme_resource_regex
+						)
+					->canonical
+						(
+							'media/themes/<theme>/<style>/<version>-complete/master.min.js', 
+							$theme_resource_regex
+						),
+				'enabled' => true,
+				'mode' => 'complete-script',
+			),
+	
+		'\mjolnir\theme\Layer_Theme::complete-script-map' => array
+			(
+				'matcher' => \app\Route_Pattern::instance()
+					->standard
+						(
+							'media/themes/<theme>/<style>/<version>-complete/master.min.js.map', 
+							$theme_resource_regex
+						)
+					->canonical
+						(
+							'media/themes/<theme>/<style>/<version>-complete/master.min.js.map', 
+							$theme_resource_regex
+						),
+				'enabled' => true,
+				'mode' => 'script-map',
 			),
 	
 		'\mjolnir\theme\Layer_Theme::script-map' => array
@@ -140,6 +174,23 @@ return array
 				'mode' => 'style',
 			),
 	
+		'\mjolnir\theme\Layer_Theme::complete-style' => array
+			(
+				'matcher' => \app\Route_Pattern::instance()
+					->standard
+						(
+							'media/themes/<theme>/<style>/<version>-complete/master.css', 
+							$theme_resource_regex
+						)
+					->canonical
+						(
+							'media/themes/<theme>/<style>/<version>-complete/master.css', 
+							$theme_resource_regex
+						),
+				'enabled' => true,
+				'mode' => 'style',
+			),
+	
 		'\mjolnir\theme\Layer_Theme::resource' => array
 			(
 				'matcher' => \app\Route_Pattern::instance()
@@ -157,7 +208,7 @@ return array
 				'mode' => 'resource',
 			),
 	
-		'\mjolnir\theme\Layer_Theme::jsbootstrap' => array
+		'\mjolnir\theme\Layer_Theme::js-bootstrap' => array
 			(
 				'matcher' => \app\Route_Pattern::instance()
 					->standard

@@ -49,8 +49,10 @@ class Layer_Theme extends \app\Layer
 			$mode = $this->relay['mode'];
 			$theme = $params->get('theme');
 			$style = $params->get('style');
+			$script = $params->get('style');
 
-			# we don't process version; version is only for the useragent
+			# we don't process the version; the version is only for the 
+			# useragent to allow for easy cache busting
 
 			$settings = \app\CFS::config('mjolnir/themes');
 			$env_config = include DOCROOT.'environment'.EXT;
@@ -101,7 +103,7 @@ class Layer_Theme extends \app\Layer
 
 				if ( ! empty($bootstrap_config))
 				{
-					$bootstrap = "// application data\nvar ibidem = {\n\t";
+					$bootstrap = "// application data\nvar mjolnir = {\n\t";
 					$bootstrap .= \app\Collection::implode
 						(
 							",\n\t",
@@ -133,10 +135,10 @@ class Layer_Theme extends \app\Layer
 
 				return;
 			}
-			if (false === \in_array($mode, ['script', 'script-src'])) // ($mode !== 'script')
+			else if (false === \in_array($mode, ['script', 'script-src', 'complete-script'])) // ($mode !== 'script')
 			{
 				$style_dir = $theme_path.$theme_config['styles'].DIRECTORY_SEPARATOR
-						. $style.DIRECTORY_SEPARATOR;
+						. $script.DIRECTORY_SEPARATOR;
 
 				if ($env_is_set)
 				{
@@ -175,26 +177,79 @@ class Layer_Theme extends \app\Layer
 				// expires headers
 				\app\GlobalEvent::fire('http:expires', \strtotime('+30 days'));
 
+				if ($mode === 'complete-style')
+				{
+					try
+					{
+						\app\GlobalEvent::fire('http:content-type', 'text/css');
+						
+						if ( ! isset($style_config['complete-style']))
+						{
+							throw new \app\Exception_NotFound
+								("Missing definition for [complete-style] in the style [$script] of theme [$theme].");
+						}
+						
+						// combine all files; if necesary
+						$output = '';
+						foreach ($style_config['complete-style'] as $file)
+						{
+							$output .= \file_get_contents
+								(
+									$absolute_style_dir.$style_config['style.root'].$file.'.css'
+								);
+						}
+
+						$this->save_theme_file($output);
+
+						$this->contents($output);
+					}
+					catch (\Exception $exception)
+					{
+						$safe_string = \addslashes($exception->getMessage());
+
+						$this->contents
+							(
+								'/*'.PHP_EOL.PHP_EOL
+								. '   ERROR:'.PHP_EOL.PHP_EOL
+								. "   \t".$exception->getMessage().PHP_EOL.PHP_EOL
+								. '*/'.PHP_EOL
+								. PHP_EOL.PHP_EOL.PHP_EOL
+								. "body {content: '{$safe_string}';".PHP_EOL
+								. 'position: absolute; top: 0; left: 0; width: 500px; height: 100px; padding: 10px;'.PHP_EOL
+								. 'z-index: 1000; color: #222; background: #eee; font-size: medium; font-family: monospace; }'
+								. PHP_EOL
+							);
+
+						throw $exception;
+					}
+				}
 				if ($mode === 'style')
 				{
 					try
 					{
-						$target = $params->get('target');
+						$target = $params->get('target', null);
 
 						\app\GlobalEvent::fire('http:content-type', 'text/css');
 
-						if ( ! isset($style_config['targets'][$target]))
+						if ($target !== null)
 						{
-							throw new \app\Exception_NotFound
-								("Missing target [$target] in style [$style] of theme [$theme].");
+							if ( ! isset($style_config['targets'][$target]))
+							{
+								throw new \app\Exception_NotFound
+									("Missing target [$target] in the style [$script] of theme [$theme].");
+							}
+
+							$target_files = $style_config['common'];
+
+							// merge target files to common files; preserving order
+							foreach ($style_config['targets'][$target] as $script)
+							{
+								$target_files[] = $script;
+							}
 						}
-
-						$target_files = $style_config['common'];
-
-						// merge target files to common files; preserving order
-						foreach ($style_config['targets'][$target] as $script)
+						else # complete mode
 						{
-							$target_files[] = $script;
+							$target_files = $style_config['complete-style'];
 						}
 
 						// combine all files; if necesary
@@ -279,7 +334,7 @@ class Layer_Theme extends \app\Layer
 				}
 				else if ($mode === 'script-map')
 				{
-					$target = $params->get('target');
+					$target = $params->get('target', 'complete-script');
 
 					$script_dir = $theme_path.$theme_config['scripts'].DIRECTORY_SEPARATOR;
 
@@ -317,6 +372,7 @@ class Layer_Theme extends \app\Layer
 					}
 
 					\app\GlobalEvent::fire('http:expires', strtotime('-1 day'));
+					
 					$file = $absolute_script_dir.$script_config['script.root'].'../closure/'.$target.'.min.js.map';
 
 					$output = \file_get_contents($file);
@@ -385,7 +441,7 @@ class Layer_Theme extends \app\Layer
 				{
 					$script_config = include $script_config_file;
 				}
-				else # no style configuration
+				else # no script configuration
 				{
 					throw new \app\Exception_NotFound
 						(
@@ -408,8 +464,36 @@ class Layer_Theme extends \app\Layer
 						// this is mapped file from the closure
 						$output = \file_get_contents($absolute_script_dir.'src/'.$target.'.js');
 					}
-					else # this is the actual closure file
+					else if ($mode === 'complete-script')
 					{
+						\app\GlobalEvent::fire
+							(
+								'http:attributes', 
+								[
+									'X-SourceMap' => \app\URL::href
+										(
+											'\mjolnir\theme\Layer_Theme::complete-script-map', 
+											[
+												'version' => $script_config['version'], 
+												'theme' => $theme, 
+												'style' => $style
+											]
+										)
+								]
+							);
+
+						$file_to_load = $absolute_script_dir.'/closure/complete-script.min.js';
+						if (\file_exists($file_to_load))
+						{
+							$output = \file_get_contents($file_to_load);
+						}
+						else # file does not exist
+						{
+							$output = 'Missing complete script.';
+						}
+					}
+					else # targetted closure file
+					{						
 						\app\GlobalEvent::fire('http:attributes', ['X-SourceMap' => $target.'.min.js.map']);
 
 						$file_to_load = $absolute_script_dir.'/closure/'.$target.'.min.js';
@@ -419,67 +503,118 @@ class Layer_Theme extends \app\Layer
 						}
 						else # file does not exist
 						{
-							$output = 'console.log("[ERROR] Missing closure file for ['.$target.']. Potentially failed to compile.");';
+							$output = 'Missing closure file for ['.$target.']. Potentially failed to compile.';
 						}
 					}
 				}
 				else # standard mode
 				{
-					if ( ! isset($script_config['targets'][$target]))
+					if ($mode === 'complete-script')
 					{
-						throw new \app\Exception_NotFound
-							("Missing target [$target] in scripts, for theme [$theme].");
-					}
-
-					$target_files = [];
-					foreach ($script_config['common'] as $script)
-					{
-						if ( ! \preg_match('#(^[a-z]+:\/\/|^\/\/).*$#', $script))
+						if ( ! isset($script_config['complete-script']))
 						{
-							if ( ! \in_array($script, $target_files))
+							throw new \app\Exception
+								("Missing [complete-script] definition in scripts, for theme [$theme].");
+						}
+						
+						$target_files = [];
+						foreach ($script_config['complete-script'] as $script)
+						{
+							if ( ! \preg_match('#(^[a-z]+:\/\/|^\/\/).*$#', $script))
 							{
-								$target_files[] = $script;
+								if ( ! \in_array($script, $target_files))
+								{
+									$target_files[] = $script;
+								}
+							}
+						}
+						
+						try
+						{
+							// combine all files; if necesary
+							$output = '';
+							foreach ($target_files as $file)
+							{
+								// this header is included for easier development
+								$no_path_file = \preg_replace('#(.*/)#', '', $file);
+								$output .= PHP_EOL.'// '.\str_repeat('-', 77).PHP_EOL;
+								$output .= '// '.$no_path_file.'.js'.PHP_EOL.PHP_EOL;
+
+								$output
+									.= \file_get_contents
+											(
+												$absolute_script_dir.$script_config['script.root'].$file.'.js'
+											)
+									. PHP_EOL.PHP_EOL;
+							}
+						}
+						catch (\Exception $e)
+						{
+							if (\app\CFS::config('mjolnir/base')['development'])
+							{
+								echo $e->getMessage();
+								die;
 							}
 						}
 					}
-					
-					// merge target files to common files; preserving order
-					foreach ($script_config['targets'][$target] as $script)
+					else # targetted mode
 					{
-						if ( ! \preg_match('#(^[a-z]+:\/\/|^\/\/).*$#', $script))
+						if ( ! isset($script_config['targets'][$target]))
 						{
-							if ( ! \in_array($script, $target_files))
+							throw new \app\Exception_NotFound
+								("Missing target [$target] in scripts, for theme [$theme].");
+						}
+
+						$target_files = [];
+						foreach ($script_config['common'] as $script)
+						{
+							if ( ! \preg_match('#(^[a-z]+:\/\/|^\/\/).*$#', $script))
 							{
-								$target_files[] = $script;
+								if ( ! \in_array($script, $target_files))
+								{
+									$target_files[] = $script;
+								}
 							}
 						}
-					}
 
-					try
-					{
-						// combine all files; if necesary
-						$output = '';
-						foreach ($target_files as $file)
+						// merge target files to common files; preserving order
+						foreach ($script_config['targets'][$target] as $script)
 						{
-							// this header is included for easier development
-							$no_path_file = \preg_replace('#(.*/)#', '', $file);
-							$output .= PHP_EOL.'// '.\str_repeat('-', 77).PHP_EOL;
-							$output .= '// '.$no_path_file.'.js'.PHP_EOL.PHP_EOL;
-
-							$output
-								.= \file_get_contents
-										(
-											$absolute_script_dir.$script_config['script.root'].$file.'.js'
-										)
-								. PHP_EOL.PHP_EOL;
+							if ( ! \preg_match('#(^[a-z]+:\/\/|^\/\/).*$#', $script))
+							{
+								if ( ! \in_array($script, $target_files))
+								{
+									$target_files[] = $script;
+								}
+							}
 						}
-					}
-					catch (\Exception $e)
-					{
-						if (\app\CFS::config('mjolnir/base')['development'])
+
+						try
 						{
-							echo $e->getMessage();
-							die;
+							// combine all files; if necesary
+							$output = '';
+							foreach ($target_files as $file)
+							{
+								// this header is included for easier development
+								$no_path_file = \preg_replace('#(.*/)#', '', $file);
+								$output .= PHP_EOL.'// '.\str_repeat('-', 77).PHP_EOL;
+								$output .= '// '.$no_path_file.'.js'.PHP_EOL.PHP_EOL;
+
+								$output
+									.= \file_get_contents
+											(
+												$absolute_script_dir.$script_config['script.root'].$file.'.js'
+											)
+									. PHP_EOL.PHP_EOL;
+							}
+						}
+						catch (\Exception $e)
+						{
+							if (\app\CFS::config('mjolnir/base')['development'])
+							{
+								echo $e->getMessage();
+								die;
+							}
 						}
 					}
 				}

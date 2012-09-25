@@ -339,8 +339,22 @@ class ThemeView extends \app\Instantiatable
 
 		// send styles
 		$style_config = \app\Layer_Theme::style_config($this->theme, $this->style);
+		
+		if (isset($style_config['complete-mode']) && $style_config['complete-mode'])
+		{
+			$url = \app\URL::route('\mjolnir\theme\Layer_Theme::complete-style')
+				->url
+					(
+						[
+							'theme' => $this->theme,
+							'style' => $this->style,
+							'version' => $style_config['version'],
+						]
+					);
 
-		if (isset($style_config['targets'][$this->target]))
+			\app\GlobalEvent::fire('webpage:style', $url);
+		}
+		else if (isset($style_config['targets'][$this->target]))
 		{
 			$url = \app\URL::route('\mjolnir\theme\Layer_Theme::style')
 				->url
@@ -359,7 +373,7 @@ class ThemeView extends \app\Instantiatable
 		// send script
 		$script_config = \app\Layer_Theme::script_config($this->theme);
 
-		if (isset($script_config['targets'][$this->target]))
+		if (isset($script_config['complete-mode']) && $script_config['complete-mode'])
 		{
 			if (isset($script_config['preload']))
 			{
@@ -374,7 +388,59 @@ class ThemeView extends \app\Instantiatable
 					'webpage:script',
 					\app\URL::href
 						(
-							'\mjolnir\theme\Layer_Theme::jsbootstrap',
+							'\mjolnir\theme\Layer_Theme::js-bootstrap',
+							[
+								'theme' => $this->theme,
+								'style' => $this->style,
+								'version' => $script_config['version'],
+							]
+						)
+				);
+			
+			$url = \app\URL::route('\mjolnir\theme\Layer_Theme::complete-script')
+				->url
+					(
+						[
+							'theme' => $this->theme,
+							'style' => $this->style,
+							'version' => $script_config['version'],
+						]
+					);
+
+			\app\GlobalEvent::fire('webpage:script', $url);
+			
+			// retrieve direct load scripts
+			$direct_load = [];
+			foreach ($script_config['complete-script'] as $script)
+			{
+				// is it an url?
+				if (\preg_match('#(^[a-z]+:\/\/|^\/\/).*$#', $script))
+				{
+					$direct_load[] = $script;
+				}
+			}
+			
+			foreach ($direct_load as $script)
+			{
+				\app\GlobalEvent::fire('webpage:script', $script);
+			}
+		}
+		else if (isset($script_config['targets'][$this->target]))
+		{
+			if (isset($script_config['preload']))
+			{
+				foreach ($script_config['preload'] as $script)
+				{
+					\app\GlobalEvent::fire('webpage:script', $script);
+				}
+			}
+			
+			\app\GlobalEvent::fire
+				(
+					'webpage:script',
+					\app\URL::href
+						(
+							'\mjolnir\theme\Layer_Theme::js-bootstrap',
 							[
 								'theme' => $this->theme,
 								'style' => $this->style,
