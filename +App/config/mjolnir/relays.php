@@ -171,7 +171,7 @@ return array
 							$theme_resource_regex
 						),
 				'enabled' => true,
-				'mode' => 'jsbootstrap',
+				'mode' => 'js-bootstrap',
 			),
 
 	);

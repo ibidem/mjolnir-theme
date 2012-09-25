@@ -87,7 +87,7 @@ class Layer_Theme extends \app\Layer
 					);
 			}
 
-			if ($mode === 'jsbootstrap')
+			if ($mode === 'js-bootstrap')
 			{
 				// expires headers
 				\app\GlobalEvent::fire('http:expires', \strtotime('+30 days'));
@@ -101,8 +101,6 @@ class Layer_Theme extends \app\Layer
 
 				if ( ! empty($bootstrap_config))
 				{
-
-
 					$bootstrap = "// application data\nvar ibidem = {\n\t";
 					$bootstrap .= \app\Collection::implode
 						(
