@@ -115,7 +115,15 @@ class ThemeView extends \app\Instantiatable
 			{
 				if (\app\CFS::config('mjolnir/base')['development'])
 				{
-					echo 'Critical failure: '.$e->getMessage();
+					echo 'Critical Theme failure: '.$e->getMessage();
+					echo 'Critical Theme failures are caused by error pages with errors.';
+					echo '99% of the time this is because you\'ve included a template with the error as the template for the error pages.';
+					if (\app\Layer::find('http'))
+					{
+						echo '<pre>';
+					}
+					echo "\n";
+					echo \str_replace(DOCROOT, '', $e->getTraceAsString());
 				}
 				else # non development
 				{
