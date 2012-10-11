@@ -523,6 +523,7 @@ class ThemeView extends \app\Instantiatable
 			->file_path($this->base_path.$path.EXT)
 			->variable('control', $this->control)
 			->variable('context', $this->context)
+			->variable('errors', $this->errors)
 			->variable('theme', $this);
 	}
 
@@ -537,6 +538,7 @@ class ThemeView extends \app\Instantiatable
 			->file_path($this->base_path.$path.EXT)
 			->variable('control', $this->control)
 			->variable('context', $this->context)
+			->variable('errors', $this->errors)
 			->variable('theme', $this);
 	}
 
@@ -551,6 +553,7 @@ class ThemeView extends \app\Instantiatable
 			->file_path($this->base_path.$path.EXT)
 			->variable('control', $this->control)
 			->variable('context', $this->context)
+			->variable('errors', $this->errors)
 			->variable('theme', $this);
 	}
 	
