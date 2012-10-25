@@ -10,7 +10,7 @@
 class Task_Make_Theme extends \app\Task
 {
 	/**
-	 * @param array settings 
+	 * @param array settings
 	 * @return string
 	 */
 	private function theme_config($settings)
@@ -35,7 +35,7 @@ class Task_Make_Theme extends \app\Task
 			. PHP_EOL
 			;
 	}
-	
+
 	/**
 	 * @return string
 	 */
@@ -62,7 +62,7 @@ class Task_Make_Theme extends \app\Task
 			. PHP_EOL
 			;
 	}
-	
+
 	/**
 	 * Execute task.
 	 */
@@ -71,8 +71,8 @@ class Task_Make_Theme extends \app\Task
 		$theme = $this->config['theme'];
 		$namespace = \ltrim($this->config['namespace'], '\\');
 		$forced = $this->config['forced'];
-		
-		$modules = \app\CFS::get_modules();
+
+		$modules = \app\CFS::system_modules();
 		$namespaces = \array_flip($modules);
 
 		// module path exists?
@@ -82,53 +82,53 @@ class Task_Make_Theme extends \app\Task
 				->error('Module ['.$namespace.'] doesn\'t exist; you can use make:module to create it')->eol();
 			return;
 		}
-		
+
 		$ds = DIRECTORY_SEPARATOR;
-		
+
 		// load configuration
 		$settings = \app\CFS::config('mjolnir/themes');
-		
+
 		// module exists
 		$module_path = $namespaces[$namespace].$ds;
 		$theme_path = $module_path
 			. \mjolnir\cfs\CFSCompatible::APPDIR.$ds
 			. $settings['themes.dir'].$ds
 			. $theme.$ds;
-		
+
 		if (\file_exists($theme_path) && ! $forced)
 		{
 			$this->writer
 				->error('Theme ['.$theme.'] already exist; use --forced to overwrite.')->eol();
 			return;
 		}
-		
+
 		// themes/$theme
 		\file_exists($theme_path) or \mkdir($theme_path, 0777, true);
 		// themes/$theme/!config
 		\file_put_contents
 			(
-				$theme_path.$settings['themes.config'].EXT, 
+				$theme_path.$settings['themes.config'].EXT,
 				self::theme_config($settings)
 			);
-		
+
 		// themes/$theme/Styles
 		$path = $theme_path.$settings['style.dir.default'];
 		\file_exists($path) or \mkdir($path, 0777, true);
-		
+
 		## Scripts
-		
+
 		// themes/$theme/Scripts
 		$path = $theme_path.$settings['script.dir.default'];
 		\file_exists($path) or \mkdir($path, 0777, true);
-		
+
 		// themes/$theme/Scripts/!config
 		\file_put_contents
 			(
-				$theme_path.$settings['script.dir.default'].$ds.$settings['script.config'].EXT, 
+				$theme_path.$settings['script.dir.default'].$ds.$settings['script.config'].EXT,
 				self::script_config()
 			);
-		
+
 		$this->writer->status('Success', 'Theme created.')->eol();
 	}
-	
+
 } # class

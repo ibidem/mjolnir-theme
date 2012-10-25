@@ -51,7 +51,7 @@ class Layer_Theme extends \app\Layer
 			$style = $params->get('style');
 			$script = $params->get('style');
 
-			# we don't process the version; the version is only for the 
+			# we don't process the version; the version is only for the
 			# useragent to allow for easy cache busting
 
 			$settings = \app\CFS::config('mjolnir/themes');
@@ -110,7 +110,7 @@ class Layer_Theme extends \app\Layer
 							$bootstrap_config,
 							function ($key, $func)
 							{
-								try 
+								try
 								{
 									return '"'.$key.'": '.($func());
 								}
@@ -182,13 +182,13 @@ class Layer_Theme extends \app\Layer
 					try
 					{
 						\app\GlobalEvent::fire('http:content-type', 'text/css');
-						
+
 						if ( ! isset($style_config['complete-style']))
 						{
 							throw new \app\Exception_NotFound
 								("Missing definition for [complete-style] in the style [$script] of theme [$theme].");
 						}
-						
+
 						// combine all files; if necesary
 						$output = '';
 						foreach ($style_config['complete-style'] as $file)
@@ -291,25 +291,25 @@ class Layer_Theme extends \app\Layer
 					try
 					{
 						$target = \str_replace('\\', '/', $params->get('target'));
-						
+
 						// we don't allow parent references
 						if (\strpos($target, '..') !== false)
 						{
 							throw new \app\Exception('Parent reference is forbidden.');
 						}
-						
+
 						$file = $absolute_style_dir.$style_config['style.root'].'../src/'.$target.'.css';
-						
+
 						if (\file_exists($file))
 						{
 							$output = \file_get_contents($file);
 							$this->save_theme_file($output);
 						}
-						else # 
+						else #
 						{
 							$output = '';
 						}
-						
+
 						$this->contents($output);
 					}
 					catch (\Exception $exception)
@@ -372,7 +372,7 @@ class Layer_Theme extends \app\Layer
 					}
 
 					\app\GlobalEvent::fire('http:expires', strtotime('-1 day'));
-					
+
 					$file = $absolute_script_dir.$script_config['script.root'].'../closure/'.$target.'.min.js.map';
 
 					$output = \file_get_contents($file);
@@ -468,14 +468,14 @@ class Layer_Theme extends \app\Layer
 					{
 						\app\GlobalEvent::fire
 							(
-								'http:attributes', 
+								'http:attributes',
 								[
 									'X-SourceMap' => \app\URL::href
 										(
-											'\mjolnir\theme\Layer_Theme::complete-script-map', 
+											'\mjolnir\theme\Layer_Theme::complete-script-map',
 											[
-												'version' => $script_config['version'], 
-												'theme' => $theme, 
+												'version' => $script_config['version'],
+												'theme' => $theme,
 												'style' => $style
 											]
 										)
@@ -493,7 +493,7 @@ class Layer_Theme extends \app\Layer
 						}
 					}
 					else # targetted closure file
-					{						
+					{
 						\app\GlobalEvent::fire('http:attributes', ['X-SourceMap' => $target.'.min.js.map']);
 
 						$file_to_load = $absolute_script_dir.'/closure/'.$target.'.min.js';
@@ -516,7 +516,7 @@ class Layer_Theme extends \app\Layer
 							throw new \app\Exception
 								("Missing [complete-script] definition in scripts, for theme [$theme].");
 						}
-						
+
 						$target_files = [];
 						foreach ($script_config['complete-script'] as $script)
 						{
@@ -528,7 +528,7 @@ class Layer_Theme extends \app\Layer
 								}
 							}
 						}
-						
+
 						try
 						{
 							// combine all files; if necesary
@@ -625,7 +625,7 @@ class Layer_Theme extends \app\Layer
 			}
 		}
 		catch (\Exception $exception)
-		{			
+		{
 			$this->exception($exception);
 		}
 	}
