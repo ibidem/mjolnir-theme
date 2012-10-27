@@ -265,7 +265,7 @@ class ThemeView extends \app\Instantiatable
 						. $this->theme.DIRECTORY_SEPARATOR
 				);
 		}
-		
+
 		// load theme configuration
 		return include $this->base_path.$settings['themes.config'].EXT;
 	}
@@ -299,7 +299,7 @@ class ThemeView extends \app\Instantiatable
 		}
 		else # both errortarget and target are null
 		{
-			throw new \app\Exception_NotApplicable('Target or Error Target is required. None provided.');
+			throw new \app\Exception('Target or Error Target is required. None provided.');
 		}
 
 		if (empty($files))
@@ -347,7 +347,7 @@ class ThemeView extends \app\Instantiatable
 
 		// send styles
 		$style_config = \app\Layer_Theme::style_config($this->theme, $this->style);
-		
+
 		if (isset($style_config['complete-mode']) && $style_config['complete-mode'])
 		{
 			$url = \app\URL::route('\mjolnir\theme\Layer_Theme::complete-style')
@@ -390,7 +390,7 @@ class ThemeView extends \app\Instantiatable
 					\app\GlobalEvent::fire('webpage:script', $script);
 				}
 			}
-			
+
 			\app\GlobalEvent::fire
 				(
 					'webpage:script',
@@ -404,7 +404,7 @@ class ThemeView extends \app\Instantiatable
 							]
 						)
 				);
-			
+
 			$url = \app\URL::route('\mjolnir\theme\Layer_Theme::complete-script')
 				->url
 					(
@@ -416,7 +416,7 @@ class ThemeView extends \app\Instantiatable
 					);
 
 			\app\GlobalEvent::fire('webpage:script', $url);
-			
+
 			// retrieve direct load scripts
 			$direct_load = [];
 			foreach ($script_config['complete-script'] as $script)
@@ -427,7 +427,7 @@ class ThemeView extends \app\Instantiatable
 					$direct_load[] = $script;
 				}
 			}
-			
+
 			foreach ($direct_load as $script)
 			{
 				\app\GlobalEvent::fire('webpage:script', $script);
@@ -442,7 +442,7 @@ class ThemeView extends \app\Instantiatable
 					\app\GlobalEvent::fire('webpage:script', $script);
 				}
 			}
-			
+
 			\app\GlobalEvent::fire
 				(
 					'webpage:script',
@@ -471,7 +471,7 @@ class ThemeView extends \app\Instantiatable
 							]
 						)
 				);
-			
+
 			// retrieve direct load scripts
 			$direct_load = [];
 			if (isset($script_config['common']))
@@ -485,7 +485,7 @@ class ThemeView extends \app\Instantiatable
 					}
 				}
 			}
-			
+
 			foreach ($script_config['targets'][$this->target] as $script)
 			{
 				// is it an url?
@@ -494,7 +494,7 @@ class ThemeView extends \app\Instantiatable
 					$direct_load[] = $script;
 				}
 			}
-			
+
 			foreach ($direct_load as $script)
 			{
 				\app\GlobalEvent::fire('webpage:script', $script);
@@ -556,7 +556,7 @@ class ThemeView extends \app\Instantiatable
 			->variable('errors', $this->errors)
 			->variable('theme', $this);
 	}
-	
+
 	/**
 	 * @return string URL relative to src folder in scripts
 	 */
@@ -569,10 +569,10 @@ class ThemeView extends \app\Instantiatable
 				'version' => '1.0',
 				'target'  => $src
 			);
-		
+
 		return \app\URL::href('\mjolnir\theme\Layer_Theme::style-src', $params);
 	}
-	
+
 	/**
 	 * @return string URL relative to src folder in scripts
 	 */
@@ -585,7 +585,7 @@ class ThemeView extends \app\Instantiatable
 				'version' => '1.0',
 				'target' => $src
 			);
-		
+
 		return \app\URL::href('\mjolnir\theme\Layer_Theme::script-src', $params);
 	}
 

@@ -390,7 +390,7 @@ class Layer_Theme extends \app\Layer
 						// we don't allow parent references
 						if (\strpos($path, '..') !== false)
 						{
-							throw new \app\Exception_NotApplicable();
+							throw new \app\Exception_NotAllowed('Parent path not allowed.');
 						}
 
 						$file = $absolute_style_dir.$style_config['style.root'].$path;
