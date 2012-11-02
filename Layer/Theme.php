@@ -118,6 +118,7 @@ class Layer_Theme extends \app\Layer
 								{
 									if (\app\CFS::config('mjolnir/base')['development'])
 									{
+										\mjolnir\log('Javascript', 'Critical failure on key ['.$key.']. '.$e->getMessage(), 'javascript/');
 										die('console.log("Critical failure on key ['.$key.']. '.$e->getMessage().'");');
 									}
 									else # public
