@@ -290,7 +290,7 @@ class ThemeView extends \app\Instantiatable
 		{
 			if ( ! isset($config['targets'][$this->errortarget]))
 			{
-				throw new \app\Exception_NotFound('['.$this->errortarget.'] is not a valid error for the theme.');
+				throw new \app\Exception('['.$this->errortarget.'] is not a valid error for the theme.');
 			}
 
 			$files = $config['targets'][$this->errortarget];
