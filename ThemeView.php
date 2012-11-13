@@ -84,7 +84,7 @@ class ThemeView extends \app\Instantiatable
 	 * @return string or null
 	 */
 	function errorpage(\Exception $e)
-	{
+	{		
 		$config = $this->load_configuration();
 
 		if (\is_a($e, '\app\Exception'))
@@ -150,7 +150,7 @@ class ThemeView extends \app\Instantiatable
 	 * @return \app\ThemeView
 	 */
 	function exception(\Exception $exception)
-	{
+	{		
 		$this->exception = $exception;
 
 		return $this;

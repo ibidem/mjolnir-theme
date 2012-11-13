@@ -15,6 +15,6 @@ class Layer_Theme extends \mjolnir\theme\Layer_Theme { /** @return \mjolnir\them
 class Make extends \mjolnir\theme\Make { /** @return \mjolnir\theme\Make */ static function instance($type = 'paragraph', array $args = null) { return parent::instance($type, $args); } }
 class Task_Make_Style extends \mjolnir\theme\Task_Make_Style { /** @return \mjolnir\theme\Task_Make_Style */ static function instance($encoded_task = null) { return parent::instance($encoded_task); } }
 class Task_Make_Theme extends \mjolnir\theme\Task_Make_Theme { /** @return \mjolnir\theme\Task_Make_Theme */ static function instance($encoded_task = null) { return parent::instance($encoded_task); } }
-class ThemeFooterInclude extends \mjolnir\theme\ThemeFooterInclude { /** @return \mjolnir\theme\ThemeFooterInclude */ static function instance($file = null) { return parent::instance($file); } }
-class ThemeHeadInclude extends \mjolnir\theme\ThemeHeadInclude { /** @return \mjolnir\theme\ThemeHeadInclude */ static function instance($file = null) { return parent::instance($file); } }
+class ThemeFooterInclude extends \mjolnir\theme\ThemeFooterInclude { /** @return \mjolnir\theme\ThemeFooterInclude */ static function instance($file = null, $ext = '.php') { return parent::instance($file, $ext); } }
+class ThemeHeadInclude extends \mjolnir\theme\ThemeHeadInclude { /** @return \mjolnir\theme\ThemeHeadInclude */ static function instance($file = null, $ext = '.php') { return parent::instance($file, $ext); } }
 class ThemeView extends \mjolnir\theme\ThemeView { /** @return \mjolnir\theme\ThemeView */ static function instance() { return parent::instance(); } }
