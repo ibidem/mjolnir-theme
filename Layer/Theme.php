@@ -83,9 +83,9 @@ class Layer_Theme extends \app\Layer
 			}
 			else # no theme configuration
 			{
-				throw new \app\Exception_NotFound
+				throw new \app\Exception
 					(
-						'Missing theme configuration.'
+						'Missing theme configuration for ['.$theme.'].'
 					);
 			}
 
@@ -157,9 +157,9 @@ class Layer_Theme extends \app\Layer
 				}
 				else # path not found
 				{
-					throw new \app\Exception_NotFound
+					throw new \app\Exception
 						(
-							'Missing style.'
+							'Missing style dir for theme ['.$theme.'].'
 						);
 				}
 
@@ -169,9 +169,9 @@ class Layer_Theme extends \app\Layer
 				}
 				else # no style configuration
 				{
-					throw new \app\Exception_NotFound
+					throw new \app\Exception
 						(
-							'Missing style configuration.'
+							'Missing style configuration for theme ['.$theme.'].'
 						);
 				}
 
@@ -186,7 +186,7 @@ class Layer_Theme extends \app\Layer
 
 						if ( ! isset($style_config['complete-style']))
 						{
-							throw new \app\Exception_NotFound
+							throw new \app\Exception
 								("Missing definition for [complete-style] in the style [$script] of theme [$theme].");
 						}
 
@@ -236,7 +236,7 @@ class Layer_Theme extends \app\Layer
 						{
 							if ( ! isset($style_config['targets'][$target]))
 							{
-								throw new \app\Exception_NotFound
+								throw new \app\Exception
 									("Missing target [$target] in the style [$script] of theme [$theme].");
 							}
 
@@ -348,7 +348,7 @@ class Layer_Theme extends \app\Layer
 					}
 					else # path not found
 					{
-						throw new \app\Exception_NotFound
+						throw new \app\Exception
 							(
 								'Missing script dir.'
 							);
@@ -360,7 +360,7 @@ class Layer_Theme extends \app\Layer
 					}
 					else # no style configuration
 					{
-						throw new \app\Exception_NotFound
+						throw new \app\Exception
 							(
 								'Missing script configuration.'
 							);
@@ -432,7 +432,7 @@ class Layer_Theme extends \app\Layer
 				}
 				else # path not found
 				{
-					throw new \app\Exception_NotFound
+					throw new \app\Exception
 						(
 							'Missing script dir.'
 						);
@@ -444,7 +444,7 @@ class Layer_Theme extends \app\Layer
 				}
 				else # no script configuration
 				{
-					throw new \app\Exception_NotFound
+					throw new \app\Exception
 						(
 							'Missing script configuration.'
 						);
@@ -562,7 +562,7 @@ class Layer_Theme extends \app\Layer
 					{
 						if ( ! isset($script_config['targets'][$target]))
 						{
-							throw new \app\Exception_NotFound
+							throw new \app\Exception
 								("Missing target [$target] in scripts, for theme [$theme].");
 						}
 
@@ -667,7 +667,7 @@ class Layer_Theme extends \app\Layer
 		}
 		else # no theme configuration
 		{
-			throw new \app\Exception_NotFound
+			throw new \app\Exception
 				(
 					'Missing theme configuration.'
 				);
@@ -684,7 +684,7 @@ class Layer_Theme extends \app\Layer
 		}
 		else # path not found
 		{
-			throw new \app\Exception_NotFound
+			throw new \app\Exception
 				(
 					'Missing script.'
 				);
@@ -696,7 +696,7 @@ class Layer_Theme extends \app\Layer
 		}
 		else # no style configuration
 		{
-			throw new \app\Exception_NotFound
+			throw new \app\Exception
 				(
 					'Missing script configuration.'
 				);
@@ -743,7 +743,7 @@ class Layer_Theme extends \app\Layer
 		}
 		else # no theme configuration
 		{
-			throw new \app\Exception_NotFound
+			throw new \app\Exception
 				(
 					'Missing theme configuration.'
 				);
@@ -761,7 +761,7 @@ class Layer_Theme extends \app\Layer
 		}
 		else # path not found
 		{
-			throw new \app\Exception_NotFound
+			throw new \app\Exception
 				(
 					'Missing style.'
 				);
@@ -773,7 +773,7 @@ class Layer_Theme extends \app\Layer
 		}
 		else # no style configuration
 		{
-			throw new \app\Exception_NotFound
+			throw new \app\Exception
 				(
 					'Missing style configuration.'
 				);

@@ -281,7 +281,7 @@ class ThemeView extends \app\Instantiatable
 		{
 			if ( ! isset($config['targets'][$this->target]))
 			{
-				throw new \app\Exception_NotFound('['.$this->target.'] is not a valid target.');
+				throw new \app\Exception('['.$this->target.'] is not a valid target.');
 			}
 
 			$files = $config['targets'][$this->target];
@@ -304,7 +304,7 @@ class ThemeView extends \app\Instantiatable
 
 		if (empty($files))
 		{
-			throw new \app\Exception_NotFound
+			throw new \app\Exception
 				("Missing view files for [$this->target]");
 		}
 
@@ -313,7 +313,7 @@ class ThemeView extends \app\Instantiatable
 
 		if ( ! $view_file)
 		{
-			throw new \app\Exception_NotFound
+			throw new \app\Exception
 				("Missing [$file].");
 		}
 
@@ -332,7 +332,7 @@ class ThemeView extends \app\Instantiatable
 
 			if ( ! $view_file)
 			{
-				throw new \app\Exception_NotFound
+				throw new \app\Exception
 					("Missing [{$this->base_path}$file].");
 			}
 
