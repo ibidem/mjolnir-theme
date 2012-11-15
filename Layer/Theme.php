@@ -467,19 +467,26 @@ class Layer_Theme extends \app\Layer
 					}
 					else if ($mode === 'complete-script')
 					{
+						
 						\app\GlobalEvent::fire
 							(
 								'http:attributes',
 								[
-									'X-SourceMap' => \app\URL::href
-										(
-											'\mjolnir\theme\Layer_Theme::complete-script-map',
-											[
-												'version' => $script_config['version'],
-												'theme' => $theme,
-												'style' => $style
-											]
-										)
+									'X-SourceMap' => 
+										\preg_replace // non-relative urls won't work
+											(
+												'#.*/#', 
+												'', 
+												\app\URL::href
+													(
+														'\mjolnir\theme\Layer_Theme::complete-script-map',
+														[
+															'version' => $script_config['version'],
+															'theme' => $theme,
+															'style' => $style
+														]
+													)
+											)
 								]
 							);
 
@@ -494,7 +501,7 @@ class Layer_Theme extends \app\Layer
 						}
 					}
 					else # targetted closure file
-					{
+					{						
 						\app\GlobalEvent::fire('http:attributes', ['X-SourceMap' => $target.'.min.js.map']);
 
 						$file_to_load = $absolute_script_dir.'/closure/'.$target.'.min.js';
