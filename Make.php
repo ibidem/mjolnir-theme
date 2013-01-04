@@ -490,7 +490,15 @@ class Make extends \app\Instantiatable
 		catch (\Exception $e)
 		{
 			// [!!] __toString can not throw exception in PHP!
-			return '[ERROR: '.$e->getMessage().']';
+			\mjolnir\log_exception($e);
+			if (\app\CFS::config('mjolnir/base')['development'])
+			{
+				return '[ERROR: '.$e->getMessage().']';
+			}
+			else # public
+			{
+				return '';
+			}
 		}
 	}
 
