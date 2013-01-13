@@ -1,19 +1,7 @@
 <?php namespace app;
 
-$mockup_stack = function ($relay, $target)
-	{
-		\app\Layer::stack
-			(
-				\app\Layer_Access::instance()
-					->relay_config($relay)
-					->target($target),
-				\app\Layer_HTTP::instance(),
-				\app\Layer_HTML::instance(),
-				\app\Layer_MVC::instance()
-					->relay_config($relay)
-			);
-	};
+$mockup = \app\CFS::config('mjolnir/layer-stacks')['html'];
 
-\app\Relay::process('\mjolnir\theme\mockup', $mockup_stack);
-\app\Relay::process('\mjolnir\theme\mockup-errors', $mockup_stack);
-\app\Relay::process('\mjolnir\theme\mockup-form', $mockup_stack);
+\app\Relay::process('\mjolnir\theme\mockup', $mockup);
+\app\Relay::process('\mjolnir\theme\mockup-errors', $mockup);
+\app\Relay::process('\mjolnir\theme\mockup-form', $mockup);

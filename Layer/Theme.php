@@ -104,7 +104,7 @@ class Layer_Theme extends \app\Layer
 				if ( ! empty($bootstrap_config))
 				{
 					$bootstrap = "// application data\nvar mjolnir = {\n\t";
-					$bootstrap .= \app\Collection::implode
+					$bootstrap .= \app\Arr::implode
 						(
 							",\n\t",
 							$bootstrap_config,
@@ -467,16 +467,16 @@ class Layer_Theme extends \app\Layer
 					}
 					else if ($mode === 'complete-script')
 					{
-						
+
 						\app\GlobalEvent::fire
 							(
 								'http:attributes',
 								[
-									'X-SourceMap' => 
+									'X-SourceMap' =>
 										\preg_replace // non-relative urls won't work
 											(
-												'#.*/#', 
-												'', 
+												'#.*/#',
+												'',
 												\app\URL::href
 													(
 														'\mjolnir\theme\Layer_Theme::complete-script-map',
@@ -501,7 +501,7 @@ class Layer_Theme extends \app\Layer
 						}
 					}
 					else # targetted closure file
-					{						
+					{
 						\app\GlobalEvent::fire('http:attributes', ['X-SourceMap' => $target.'.min.js.map']);
 
 						$file_to_load = $absolute_script_dir.'/closure/'.$target.'.min.js';

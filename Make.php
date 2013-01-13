@@ -1,8 +1,8 @@
 <?php namespace mjolnir\theme;
 
 /**
- * Make is a library that handles mockup. The Mockup class is reserved by the
- * actual Mockup module for the project.
+ * Make is a class that handles mockup. The Mockup class is reserved by the
+ * actual Mockup module of the project.
  *
  * @package    mjolnir
  * @category   Mockup
