@@ -7,8 +7,10 @@
  * @copyright  (c) 2012 Ibidem Team
  * @license    https://github.com/ibidem/ibidem/blob/master/LICENSE.md
  */
-class Task_Make_Theme extends \app\Task
+class Task_Make_Theme extends \app\Instantiatable implements \mjolnir\types\Task
 {
+	use \app\Trait_Task;
+
 	/**
 	 * @param array settings
 	 * @return string
@@ -64,13 +66,15 @@ class Task_Make_Theme extends \app\Task
 	}
 
 	/**
-	 * Execute task.
+	 * ...
 	 */
-	function execute()
+	function run()
 	{
-		$theme = $this->config['theme'];
-		$namespace = \ltrim($this->config['namespace'], '\\');
-		$forced = $this->config['forced'];
+		\app\Task::consolewriter($this->writer);
+
+		$theme = $this->get('theme', false);
+		$namespace = \ltrim($this->get('namespace', ''), '\\');
+		$forced = $this->get('forced', false);
 
 		$modules = \app\CFS::system_modules();
 		$namespaces = \array_flip($modules);
@@ -79,7 +83,7 @@ class Task_Make_Theme extends \app\Task
 		if ( ! isset($namespaces[$namespace]) || ! \file_exists($namespaces[$namespace]))
 		{
 			$this->writer
-				->error('Module ['.$namespace.'] doesn\'t exist; you can use make:module to create it')->eol();
+				->printf('error', 'Module ['.$namespace.'] doesn\'t exist; you can use make:module to create it')->eol();
 			return;
 		}
 
@@ -98,7 +102,7 @@ class Task_Make_Theme extends \app\Task
 		if (\file_exists($theme_path) && ! $forced)
 		{
 			$this->writer
-				->error('Theme ['.$theme.'] already exist; use --forced to overwrite.')->eol();
+				->printf('error', 'Theme ['.$theme.'] already exist; use --forced to overwrite.')->eol();
 			return;
 		}
 
@@ -128,7 +132,7 @@ class Task_Make_Theme extends \app\Task
 				self::script_config()
 			);
 
-		$this->writer->status('Success', 'Theme created.')->eol();
+		$this->writer->printf('status', 'Success', 'Theme created.')->eol();
 	}
 
 } # class

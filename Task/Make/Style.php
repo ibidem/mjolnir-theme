@@ -7,8 +7,10 @@
  * @copyright  (c) 2012 Ibidem Team
  * @license    https://github.com/ibidem/ibidem/blob/master/LICENSE.md
  */
-class Task_Make_Style extends \app\Task
+class Task_Make_Style extends \app\Instantiatable implements \mjolnir\types\Task
 {
+	use \app\Trait_Task;
+
 	/**
 	 * @return string
 	 */
@@ -36,8 +38,8 @@ class Task_Make_Style extends \app\Task
 			. "\t);".PHP_EOL
 			. PHP_EOL
 			;
-	}	
-	
+	}
+
 	/**
 	 * @return string
 	 */
@@ -51,7 +53,7 @@ class Task_Make_Style extends \app\Task
 			. PHP_EOL
 			;
 	}
-	
+
 	/**
 	 * @return string
 	 */
@@ -75,77 +77,79 @@ class Task_Make_Style extends \app\Task
 			. PHP_EOL
 			;
 	}
-	
+
 	/**
 	 * Execute task.
 	 */
-	function execute()
+	function run()
 	{
-		$theme = $this->config['theme'];
-		$style = $this->config['style'];
-		$forced = $this->config['forced'];
-		
+		\app\Task::consolewriter($this->writer);
+
+		$theme = $this->get('theme', false);
+		$style = $this->get('style', false);
+		$forced = $this->get('forced', false);
+
 		$ds = DIRECTORY_SEPARATOR;
-		
+
 		// load settings
 		$settings = \app\CFS::config('mjolnir/themes');
-		
+
 		// find theme
 		$theme_path = \app\CFS::dir($settings['themes.dir'].$ds.$theme);
-		
+
 		if ($theme_path === null)
 		{
 			$this->writer
-				->error('Theme ['.$theme.'] does not exist; use make:theme to create it.')->eol();
+				->printf('error', 'Theme ['.$theme.'] does not exist; use make:theme to create it.')->eol();
 			return;
 		}
-		
+
 		// load theme configuration
 		$theme_config = include $theme_path.$settings['themes.config'].EXT;
-		
+
 		$style_path = $theme_path.$theme_config['styles'].$ds.$style.$ds;
-		
+
 		if (\file_exists($style_path) && ! $forced)
 		{
 			$this->writer
-				->error('Style ['.$style.'] already exist; use --forced to overwrite.')->eol();
+				->printf('error', 'Style ['.$style.'] already exist; use --forced to overwrite.')->eol();
 			return;
 		}
-		
+
 		// styles/$style
 		\file_exists($style_path) or \mkdir($style_path, 0777, true);
-		
+
 		// styles/$style/src
 		$path = $style_path.$ds.'src';
 		\file_exists($path) or \mkdir($path, 0777, true);
-		
+
 		// styles/$style/Style.root
 		$path = $style_path.$ds.'root';
 		\file_exists($path) or \mkdir($path, 0777, true);
-		
+
 		// styles/$style/!config
 		\file_put_contents
 			(
-				$style_path.$settings['style.config'].EXT, 
+				$style_path.$settings['style.config'].EXT,
 				self::style_config()
 			);
-		
+
 		// styles/$style/!start.cmd
 		\file_put_contents
 			(
-				$style_path.'+start.rb', 
+				$style_path.'+start.rb',
 				self::compass_start()
 			);
-		
+
 		// styles/$style/!compass.rb
 		\file_put_contents
 			(
-				$style_path.'+compass.rb', 
+				$style_path.'+compass.rb',
 				self::compass_rb()
 			);
-		
-		$this->writer->status('Success', 'Style created.')->eol();
+
+		$this->writer->printf('status', 'Success', 'Style created.')->eol();
 	}
-	
-	
+
+
 } # class
