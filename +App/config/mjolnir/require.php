@@ -1,7 +1,5 @@
 <?php namespace mjolnir\theme;
 
-use \mjolnir\types\Enum_Requirement as Requirement;
-
 return array
 	(
 		'mjolnir\theme' => array
@@ -10,10 +8,10 @@ return array
 					{
 						if (\extension_loaded('fileinfo'))
 						{
-							return Requirement::available;
+							return 'available';
 						}
-						
-						return Requirement::error;
+
+						return 'error';
 					}
 			),
 	);
