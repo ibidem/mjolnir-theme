@@ -11,14 +11,14 @@
 						'theme' => array
 							(
 								'description' => 'Name of theme.',
-								'type' => '\mjolnir\base\Flags::text',
+								'type' => 'text',
 								'short' => 't',
 								'default' => null,
 							),
 						'namespace' => array
 							(
 								'description' => 'Namespace for theme to go in.',
-								'type' => '\mjolnir\base\Flags::text',
+								'type' => 'text',
 								'short' => 'n',
 								'default' => null,
 							),
@@ -39,14 +39,14 @@
 						'theme' => array
 							(
 								'description' => 'Name of theme.',
-								'type' => '\mjolnir\base\Flags::text',
+								'type' => 'text',
 								'short' => 't',
 								'default' => null,
 							),
 						'style' => array
 							(
 								'description' => 'Style name.',
-								'type' => '\mjolnir\base\Flags::text',
+								'type' => 'text',
 								'short' => 's',
 								'default' => null,
 							),
