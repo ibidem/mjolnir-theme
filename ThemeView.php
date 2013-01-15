@@ -7,8 +7,7 @@
  * @copyright  (c) 2012 Ibidem Team
  * @license    https://github.com/ibidem/ibidem/blob/master/LICENSE.md
  */
-class ThemeView extends \app\Instantiatable
-	implements \mjolnir\types\ErrorView
+class ThemeView extends \app\Instantiatable	implements \mjolnir\types\ErrorView
 {
 	/**
 	 * @var string
@@ -84,7 +83,7 @@ class ThemeView extends \app\Instantiatable
 	 * @return string or null
 	 */
 	function errorpage(\Exception $e)
-	{		
+	{
 		$config = $this->load_configuration();
 
 		if (\is_a($e, '\app\Exception'))
@@ -150,7 +149,7 @@ class ThemeView extends \app\Instantiatable
 	 * @return \app\ThemeView
 	 */
 	function exception(\Exception $exception)
-	{		
+	{
 		$this->exception = $exception;
 
 		return $this;
@@ -600,23 +599,6 @@ class ThemeView extends \app\Instantiatable
 	function script($script)
 	{
 		\app\GlobalEvent::fire('webpage:script', $script);
-	}
-
-	/**
-	 * @deprecated use render always; so exceptions will work properly
-	 */
-	final function __toString()
-	{
-		// views may contain logic, by allowing __toString not only does
-		// Exception handling become unnecesarily complicated because of how
-		// this special method can't throw exceptions, it also ruins the entire
-		// stack by throwing the exception in a completely undefined manner,
-		// ie. whenever it decides to convert to a string. It's not worth it.
-		\app\Layer::get_top()->exception
-			(
-				new \app\Exception('Casting to string not allowed for Theme Views.'),
-				true # no throw
-			);
 	}
 
 } # class

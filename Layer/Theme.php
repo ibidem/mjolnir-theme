@@ -7,8 +7,7 @@
  * @copyright  (c) 2012 Ibidem Team
  * @license    https://github.com/ibidem/ibidem/blob/master/LICENSE.md
  */
-class Layer_Theme extends \app\Layer
-	implements \mjolnir\types\RelayCompatible
+class Layer_Theme extends \app\Layer implements \mjolnir\types\RelayCompatible
 {
 	/**
 	 * @var string
