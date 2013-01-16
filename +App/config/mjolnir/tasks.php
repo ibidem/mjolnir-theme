@@ -28,6 +28,7 @@
 							),
 					),
 			),
+
 		'make:style' => array
 			(
 				'description' => array

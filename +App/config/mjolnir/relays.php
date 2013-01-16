@@ -1,186 +1,206 @@
 <?php namespace mjolnir\theme;
 
-$theme_resource_regex = array
-	(
-		'theme' => '[a-zA-Z\-\._/]+',
-		'style' => '[a-zA-Z\-\._]+',
-		'version' => '[0-9][a-z0-9-\.]*',
-		'path' => '.+', # path is validated internally
-		'target' => '[+a-zA-Z0-9\-\._/]+',
-	);
+	$theme =   [ 'theme' => '[a-zA-Z\-\._/]+' ];
+	$style =   [ 'style' => '[a-zA-Z\-\._]+' ];
+	$path =    [ 'path' => '.+' ]; # path is always validated internally
+	$target =  [ 'target' => '[+a-zA-Z0-9\-\._/]+' ];
+	$version = [ 'version' => '[0-9][a-z0-9-\.]*' ];
 
 return array
 	(
-		'\mjolnir\theme\mockup' => array
+
+	// ---- Theme Drivers -----------------------------------------------------
+
+	# javascripts
+
+		'mjolnir:theme/themedriver/javascript.route' => array
 			(
 				'matcher' => \app\URLRoute::instance()
 					->urlpattern
 						(
-							'mockup/<target>',
-							[
-								'target' => '[a-zA-Z0-9\-\._/]+',
-							]
+							'media/themes/<theme>/javascripts/<version>/<target>.js',
+							$theme + $version + $target
 						),
-				'enabled' => false,
-			// MVC
-				'controller' => '\app\Controller_Mockup',
-				'action' => 'action_testing',
+
+			// Theme Driver
+				'theme.driver' => 'javascript',
 			),
 
-		'\mjolnir\theme\mockup-errors' => array
+		'mjolnir:theme/themedriver/javascript-map.route' => array
 			(
 				'matcher' => \app\URLRoute::instance()
 					->urlpattern
 						(
-							'mockup-errors/<target>',
-							[
-								'target' => '[a-zA-Z0-9\-\._/]+',
-							]
+							'media/themes/<theme>/javascripts/<version>/<target>.min.js.map',
+							$theme + $version + $target
 						),
-				'enabled' => false,
-			// MVC
-				'controller' => '\app\Controller_Mockup',
-				'action' => 'action_errortesting',
+
+			// Theme Driver
+				'theme.driver' => 'javascript-map',
 			),
 
-		'\mjolnir\theme\mockup-form' => array
-			(
-				'matcher' => \app\URLRoute::instance()
-					->urlpattern('form-mockup'),
-				'enabled' => false,
-			// MVC
-				'controller' => '\app\Controller_Mockup',
-				'action' => 'action_form',
-			),
-
-		'\mjolnir\theme\Layer_Theme::script' => array
+		'mjolnir:theme/themedriver/javascript-complete.route' => array
 			(
 				'matcher' => \app\URLRoute::instance()
 					->urlpattern
 						(
-							'media/themes/<theme>/<style>/<version>/<target>.js',
-							$theme_resource_regex
+							'media/themes/<theme>/javascripts/<version>-complete/master.js',
+							$theme + $version
 						),
-				'enabled' => true,
-			// Theme
-				'mode' => 'script',
+
+			// Theme Driver
+				'theme.driver' => 'javascript-complete',
 			),
 
-		'\mjolnir\theme\Layer_Theme::complete-script' => array
+		'mjolnir:theme/themedriver/javascript-complete-map.route' => array
 			(
 				'matcher' => \app\URLRoute::instance()
 					->urlpattern
 						(
-							'media/themes/<theme>/<style>/<version>-complete/master.min.js',
-							$theme_resource_regex
+							'media/themes/<theme>/javascripts/<version>-complete/master.js.map',
+							$theme + $version
 						),
-				'enabled' => true,
-			// Theme
-				'mode' => 'complete-script',
+
+			// Theme Driver
+				'theme.driver' => 'javascript-complete-map',
 			),
 
-		'\mjolnir\theme\Layer_Theme::complete-script-map' => array
+
+
+		'mjolnir:theme/themedriver/javascript-source.route' => array
 			(
 				'matcher' => \app\URLRoute::instance()
 					->urlpattern
 						(
-							'media/themes/<theme>/<style>/<version>-complete/master.min.js.map',
-							$theme_resource_regex
+							'media/themes/<theme>/javascripts/<version>/src/<target>.js',
+							$theme + $version + $target
 						),
-				'enabled' => true,
-			// Theme
-				'mode' => 'script-map',
+
+			// Theme Driver
+				'theme.driver' => 'javascript-source',
 			),
 
-		'\mjolnir\theme\Layer_Theme::script-map' => array
+	# dart
+
+		'mjolnir:theme/themedriver/dart.route' => array
 			(
 				'matcher' => \app\URLRoute::instance()
 					->urlpattern
 						(
-							'media/themes/<theme>/<style>/<version>/<target>.min.js.map',
-							$theme_resource_regex
+							'media/themes/<theme>/darts/<version>/<path>',
+							$theme + $version + $path
 						),
-				'enabled' => true,
-			// Theme
-				'mode' => 'script-map',
+
+			// Theme Driver
+				'theme.driver' => 'dart',
 			),
 
-		'\mjolnir\theme\Layer_Theme::script-src' => array
+		'mjolnir:theme/themedriver/dart-map.route' => array
 			(
 				'matcher' => \app\URLRoute::instance()
 					->urlpattern
 						(
-							'media/themes/<theme>/<style>/<version>/src/<target>.js',
-							$theme_resource_regex
+							'media/themes/<theme>/darts/<version>/<target>.dart.map',
+							$theme + $version + $target
 						),
-				'enabled' => true,
-			// Theme
-				'mode' => 'script-src',
+
+			// Theme Driver
+				'theme.driver' => 'dart-map',
 			),
 
-		'\mjolnir\theme\Layer_Theme::style-src' => array
+		'mjolnir:theme/themedriver/dart-javascript.route' => array
 			(
 				'matcher' => \app\URLRoute::instance()
 					->urlpattern
 						(
-							'media/themes/<theme>/<style>/<version>/src/<target>.css',
-							$theme_resource_regex
+							'media/themes/<theme>/darts/<version>/<target>.dart.js',
+							$theme + $version + $target
 						),
-				'enabled' => true,
-			// Theme
-				'mode' => 'style-src',
+
+			// Theme Driver
+				'theme.driver' => 'dart-javascript',
 			),
 
-		'\mjolnir\theme\Layer_Theme::style' => array
+		'mjolnir:theme/themedriver/dart-javascript-map.route' => array
 			(
 				'matcher' => \app\URLRoute::instance()
 					->urlpattern
 						(
-							'media/themes/<theme>/<style>/<version>/<target>.css',
-							$theme_resource_regex
+							'media/themes/<theme>/darts/<version>/<target>.dart.js.map',
+							$theme + $version + $target
 						),
-				'enabled' => true,
-			// Theme
-				'mode' => 'style',
+
+			// Theme Driver
+				'theme.driver' => 'dart-javascript-map',
 			),
 
-		'\mjolnir\theme\Layer_Theme::complete-style' => array
+	# css
+
+		'mjolnir:theme/themedriver/style-css-source.route' => array
 			(
 				'matcher' => \app\URLRoute::instance()
 					->urlpattern
 						(
-							'media/themes/<theme>/<style>/<version>-complete/master.css',
-							$theme_resource_regex
+							'media/themes/<theme>/<style>.css/<version>/src/<target>.css',
+							$theme + $style + $version + $target
 						),
-				'enabled' => true,
-			// Theme
-				'mode' => 'style',
+
+			// Theme Driver
+				'theme.driver' => 'style-css-source',
 			),
 
-		'\mjolnir\theme\Layer_Theme::resource' => array
+		'mjolnir:theme/themedriver/style-css.route' => array
+			(
+				'matcher' => \app\URLRoute::instance()
+					->urlpattern
+						(
+							'media/themes/<theme>/<style>.css/<version>/<target>.css',
+							$theme + $style + $version + $target
+						),
+
+			// Theme Driver
+				'theme.driver' => 'style-css',
+			),
+
+		'mjolnir:theme/themedriver/style-css-complete.route' => array
+			(
+				'matcher' => \app\URLRoute::instance()
+					->urlpattern
+						(
+							'media/themes/<theme>/<style>.css/<version>-complete/master.css',
+							$theme + $style + $version
+						),
+
+			// Theme Driver
+				'theme.driver' => 'style-css-complete',
+			),
+	
+		'mjolnir:theme/themedriver/style-resource.route' => array
 			(
 				'matcher' => \app\URLRoute::instance()
 					->urlpattern
 						(
 							'media/themes/<theme>/<style>/<version>/<path>',
-							$theme_resource_regex
+							$theme + $style + $version + $path
 						),
-				'enabled' => true,
-			// Theme
-				'mode' => 'resource',
-			),
 
-		'\mjolnir\theme\Layer_Theme::js-bootstrap' => array
+			// Theme Driver
+				'theme.driver' => 'style-resource',
+			),
+	
+	# misc
+	
+		'mjolnir:theme/themedriver/json-bootstrap.route' => array
 			(
 				'matcher' => \app\URLRoute::instance()
 					->urlpattern
 						(
-							'media/themes/<theme>/<style>/<version>/js-bootstrap.js',
-							$theme_resource_regex
+							'media/themes/<theme>/bootstrap.json',
+							$theme
 						),
-				'enabled' => true,
-			// Theme
-				'mode' => 'js-bootstrap',
+
+			// Theme Driver
+				'theme.driver' => 'json-bootstrap',
 			),
 
 	);
