@@ -1,28 +1,39 @@
 <?php return array
 	(
-	#  true = enabled
-	# false = disabled
+		'priority' => array
+			(
+				'source'     => 100,
+				'default'    => 200,
+				'source-map' => 300,
+				'resource'   => 400,
+			),
 	
-		'json-bootstrap' => true,
+		'drivers' => array
+			(
+				# no type is understood as "default"
 			
-		'dart' => true,
-		'dart-javascript' => true,
-		'dart-resource' => true,
-		'dart-map' => true,
-		'dart-javascript-map' => true,
-		
-		'style-resource' => true,
-	
-		'style-scss' => true,
-		'style-scss-complete' => true,
-		'style-scss-source' => true,
-		'style-scss-map' => true,
-		'style-scss-complete-map' => true,
-		
-		'javascript' => true,
-		'javascript-complete' => true,
-		'javascript-source' => true,
-		'javascript-map' => true,
-		'javascript-complete-map' => true,
-	
+				'json-bootstrap'             => [ 'enabled' => true ],
+
+				'dart'                       => [ 'enabled' => true ],
+				'dart-map'                   => [ 'enabled' => true, 'type' => 'source-map' ],
+				'dart-javascript'            => [ 'enabled' => true ],
+				'dart-javascript-map'        => [ 'enabled' => true, 'type' => 'source-map' ],
+				'dart-resource'              => [ 'enabled' => true, 'type' => 'resource' ],
+   
+				'style'                      => [ 'enabled' => true ],
+				'style-map'                  => [ 'enabled' => true, 'type' => 'source-map' ],
+				'style-complete'             => [ 'enabled' => true ],
+				'style-complete-map'         => [ 'enabled' => true, 'type' => 'source-map' ],
+				'style-source'               => [ 'enabled' => true, 'type' => 'source' ],
+				'style-resource'             => [ 'enabled' => true, 'type' => 'resource' ],
+
+				'javascript'                 => [ 'enabled' => true ],
+				'javascript-map'             => [ 'enabled' => true, 'type' => 'source-map' ],
+				'javascript-source'          => [ 'enabled' => true, 'type' => 'source' ],
+				'javascript-complete'        => [ 'enabled' => true ],
+				'javascript-complete-source' => [ 'enabled' => true, 'type' => 'source' ],
+				'javascript-complete-map'    => [ 'enabled' => true, 'type' => 'source-map' ],
+				
+			),
+
 	);

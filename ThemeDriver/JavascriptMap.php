@@ -11,6 +11,20 @@ class ThemeDriver_JavascriptMap extends \app\Instantiatable implements \mjolnir\
 {
 	use \app\Trait_ThemeDriver;
 	
-	// @todo
+	/**
+	 * ...
+	 */
+	function render()
+	{
+		$javascriptconfig = $this->collectionfile('scripts');
+		$this->channel()->set('scriptsconfig', $javascriptconfig);
+
+		$javascriptpath = $this->channel()->get('scriptspath');
+		$rootpath = $javascriptpath.$javascriptconfig['root'];
+
+		$target = $this->channel()->get('relaynode')->get('target');		
+
+		return \app\Filesystem::gets($rootpath.$target.'.min.js.map');
+	}
 
 } # class

@@ -7,7 +7,7 @@
  * @copyright  (c) 2012, Ibidem Team
  * @license    https://github.com/ibidem/ibidem/blob/master/LICENSE.md
  */
-class ThemeDriver_ScssResource extends \app\Instantiatable implements \mjolnir\types\ThemeDriver
+class ThemeDriver_StyleResource extends \app\Instantiatable implements \mjolnir\types\ThemeDriver
 {
 	use \app\Trait_ThemeDriver;
 	

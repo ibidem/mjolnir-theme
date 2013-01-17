@@ -7,10 +7,8 @@
  * @copyright  (c) 2012, Ibidem Team
  * @license    https://github.com/ibidem/ibidem/blob/master/LICENSE.md
  */
-class ThemeDriver_StyleCssComplete extends \app\Instantiatable implements \mjolnir\types\ThemeDriver
+class ThemeDriver_JavascriptCompleteSource extends \app\ThemeDriver_JavascriptSource
 {
-	use \app\Trait_ThemeDriver;
+	// practically exact class
 	
-	// @todo
-
 } # class

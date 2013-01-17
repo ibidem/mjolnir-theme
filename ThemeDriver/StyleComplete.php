@@ -7,7 +7,7 @@
  * @copyright  (c) 2012, Ibidem Team
  * @license    https://github.com/ibidem/ibidem/blob/master/LICENSE.md
  */
-class ThemeDriver_Scss extends \app\Instantiatable implements \mjolnir\types\ThemeDriver
+class ThemeDriver_StyleComplete extends \app\Instantiatable implements \mjolnir\types\ThemeDriver
 {
 	use \app\Trait_ThemeDriver;
 	
@@ -22,14 +22,11 @@ class ThemeDriver_Scss extends \app\Instantiatable implements \mjolnir\types\The
 		$stylepath = $this->channel()->get('stylepath');
 		$rootpath = $stylepath.$styleconfig['root'];
 
-		$path = $this->channel()->get('relaynode')->get('path');
-		$this->security_pathcheck($path);
-
-		$resourcepath = $rootpath.$path.'.css';		
-
+		$target = $this->channel()->get('relaynode')->get('target');
+		
 		$this->channel()->add('http:header', ['content-type', 'text/css']);
-
-		return \app\Filesystem::gets($resourcepath);
+		
+		return $this->combine($rootpath, $styleconfig['complete-mapping'], '.css');
 	}
 
 } # class

@@ -11,6 +11,26 @@ class ThemeDriver_JavascriptSource extends \app\Instantiatable implements \mjoln
 {
 	use \app\Trait_ThemeDriver;
 	
-	// @todo
+	/**
+	 * ...
+	 */
+	function render()
+	{
+		$javascriptconfig = $this->collectionfile('scripts');
+		$this->channel()->set('scriptsconfig', $javascriptconfig);
+
+		$javascriptpath = $this->channel()->get('scriptspath');
+		$srcpath = $javascriptpath.$javascriptconfig['sources'];
+
+		$path = $this->channel()->get('relaynode')->get('path');
+		$this->security_pathcheck($path);
+
+		$srcfile = $srcpath.$path.'.js';
+		$mimetype = \app\Filesystem::mimetype($srcfile);
+
+		$this->channel()->add('http:header', ['content-type', $mimetype]);
+
+		return \app\Filesystem::gets($srcfile);
+	}
 
 } # class

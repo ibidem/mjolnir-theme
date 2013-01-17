@@ -3,8 +3,8 @@
 	$theme =   [ 'theme' => '[a-zA-Z\-\._/]+' ];
 	$style =   [ 'style' => '[a-zA-Z\-\._]+' ];
 	$path =    [ 'path' => '.+' ]; # path is always validated internally
-	$target =  [ 'target' => '[+a-zA-Z0-9\-\._/]+' ];
-	$version = [ 'version' => '[0-9][a-z0-9-\.]*' ];
+	$target =  [ 'target' => '[+a-zA-Z0-9\-\._]+' ];
+	$version = [ 'version' => '[0-9\.]+' ];
 
 return array
 	(
@@ -85,7 +85,7 @@ return array
 				'matcher' => \app\URLRoute::instance()
 					->urlpattern
 						(
-							'media/themes/<theme>/javascripts/<version>/<target>.js',
+							'media/themes/<theme>/scripts/<version>/<target>.min.js',
 							$theme + $version + $target
 						),
 
@@ -98,12 +98,25 @@ return array
 				'matcher' => \app\URLRoute::instance()
 					->urlpattern
 						(
-							'media/themes/<theme>/javascripts/<version>/<target>.min.js.map',
+							'media/themes/<theme>/scripts/<version>/<target>.min.js.map',
 							$theme + $version + $target
 						),
 
 			// Theme Driver
 				'theme.driver' => 'javascript-map',
+			),
+	
+		'mjolnir:theme/themedriver/javascript-source.route' => array
+			(
+				'matcher' => \app\URLRoute::instance()
+					->urlpattern
+						(
+							'media/themes/<theme>/scripts/<version>/src/<path>.js',
+							$theme + $version + $path
+						),
+
+			// Theme Driver
+				'theme.driver' => 'javascript-source',
 			),
 
 		'mjolnir:theme/themedriver/javascript-complete.route' => array
@@ -111,7 +124,7 @@ return array
 				'matcher' => \app\URLRoute::instance()
 					->urlpattern
 						(
-							'media/themes/<theme>/javascripts/<version>-complete/master.js',
+							'media/themes/<theme>/scripts/<version>-complete/master.min.js',
 							$theme + $version
 						),
 
@@ -124,7 +137,7 @@ return array
 				'matcher' => \app\URLRoute::instance()
 					->urlpattern
 						(
-							'media/themes/<theme>/javascripts/<version>-complete/master.js.map',
+							'media/themes/<theme>/scripts/<version>-complete/master.min.js.map',
 							$theme + $version
 						),
 
@@ -132,55 +145,55 @@ return array
 				'theme.driver' => 'javascript-complete-map',
 			),
 
-
-
-		'mjolnir:theme/themedriver/javascript-source.route' => array
+		
+	
+		'mjolnir:theme/themedriver/javascript-complete-source.route' => array
 			(
 				'matcher' => \app\URLRoute::instance()
 					->urlpattern
 						(
-							'media/themes/<theme>/javascripts/<version>/src/<target>.js',
-							$theme + $version + $target
+							'media/themes/<theme>/scripts/<version>-complete/src/<path>.js',
+							$theme + $version + $path
 						),
 
 			// Theme Driver
-				'theme.driver' => 'javascript-source',
+				'theme.driver' => 'javascript-complete-source',
 			),
 
 	# css
 
-		'mjolnir:theme/themedriver/scss.route' => array
+		'mjolnir:theme/themedriver/style.route' => array
 			(
 				'matcher' => \app\URLRoute::instance()
 					->urlpattern
 						(
-							'media/themes/<theme>/scss/<style>/<version>/<target>.css',
+							'media/themes/<theme>/styles/<style>/<version>/<target>.css',
 							$theme + $style + $version + $target
 						),
 
 			// Theme Driver
-				'theme.driver' => 'scss',
+				'theme.driver' => 'style',
 			),
 
-		'mjolnir:theme/themedriver/scss-complete.route' => array
+		'mjolnir:theme/themedriver/style-complete.route' => array
 			(
 				'matcher' => \app\URLRoute::instance()
 					->urlpattern
 						(
-							'media/themes/<theme>/scss/<style>/<version>-complete/master.css',
+							'media/themes/<theme>/styles/<style>/<version>-complete/master.css',
 							$theme + $style + $version
 						),
 
 			// Theme Driver
-				'theme.driver' => 'scss-complete',
+				'theme.driver' => 'style-complete',
 			),
 	
-		'mjolnir:theme/themedriver/scss-resource.route' => array
+		'mjolnir:theme/themedriver/style-resource.route' => array
 			(
 				'matcher' => \app\URLRoute::instance()
 					->urlpattern
 						(
-							'media/themes/<theme>/scss/<style>/<version>/<path>',
+							'media/themes/<theme>/styles/<style>/<version>/<path>',
 							$theme + $style + $version + $path
 						),
 
@@ -188,17 +201,17 @@ return array
 				'theme.driver' => 'style-resource',
 			),
 	
-		'mjolnir:theme/themedriver/scss-source.route' => array
+		'mjolnir:theme/themedriver/style-source.route' => array
 			(
 				'matcher' => \app\URLRoute::instance()
 					->urlpattern
 						(
-							'media/themes/<theme>/scss/<style>/<version>/src/<target>.css',
+							'media/themes/<theme>/styles/<style>/<version>/src/<target>.css',
 							$theme + $style + $version + $target
 						),
 
 			// Theme Driver
-				'theme.driver' => 'scss-source',
+				'theme.driver' => 'style-source',
 			),
 	
 	# misc
