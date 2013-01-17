@@ -11,6 +11,27 @@ class ThemeDriver_DartJavascriptMap extends \app\Instantiatable implements \mjol
 {
 	use \app\Trait_ThemeDriver;
 	
-	// @todo
+	/**
+	 * ...
+	 */
+	function render()
+	{
+		$this->channel()->add('themedriver:type', 'dynamic');
+		
+		$dartsconfig = $this->collectionfile('darts');
+		$this->channel()->set('dartsconfig', $dartsconfig);
 
+		$dartspath = $this->channel()->get('dartspath');
+		$rootpath = $dartspath.$dartsconfig['root'];
+
+		$path = $this->channel()->get('relaynode')->get('path');
+		$this->security_pathcheck($path);
+
+		$resourcepath = $rootpath.$path.'.dart.js.map';
+		
+		$this->channel()->add('http:header', ['expires', strtotime('-1 day')]);
+
+		return \app\Filesystem::gets($resourcepath);
+	}
+	
 } # class

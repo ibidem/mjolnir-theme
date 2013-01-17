@@ -25,10 +25,11 @@ class ThemeDriver_Dart extends \app\Instantiatable implements \mjolnir\types\The
 		$path = $this->channel()->get('relaynode')->get('path');
 		$this->security_pathcheck($path);
 
-		$resourcepath = $rootpath.$path;
-		$mimetype = \app\Filesystem::mimetype($resourcepath);
+		$resourcepath = $rootpath.$path.'.dart';
 
-		$this->channel()->add('http:header', ['content-type', $mimetype]);
+		// Filesystem::mimetype won't correctly recognize dart mimetype at the
+		// time this code was written (early 2013)
+		$this->channel()->add('http:header', ['content-type', 'application/dart']);
 
 		return \app\Filesystem::gets($resourcepath);
 	}

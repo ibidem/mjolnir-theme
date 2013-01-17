@@ -16,6 +16,7 @@ class ThemeDriver_JsonBootstrap extends \app\Instantiatable implements \mjolnir\
 	 */
 	function render()
 	{
+		$this->channel()->add('themedriver:type', 'dynamic');
 		$this->channel()->add('http:header', ['content-type', 'application/json']);
 		
 		// build configuration

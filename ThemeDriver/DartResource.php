@@ -7,7 +7,7 @@
  * @copyright  (c) 2012, Ibidem Team
  * @license    https://github.com/ibidem/ibidem/blob/master/LICENSE.md
  */
-class ThemeDriver_DartJavascript extends \app\Instantiatable implements \mjolnir\types\ThemeDriver
+class ThemeDriver_DartResource extends \app\Instantiatable implements \mjolnir\types\ThemeDriver
 {
 	use \app\Trait_ThemeDriver;
 	
@@ -25,9 +25,10 @@ class ThemeDriver_DartJavascript extends \app\Instantiatable implements \mjolnir
 		$path = $this->channel()->get('relaynode')->get('path');
 		$this->security_pathcheck($path);
 
-		$resourcepath = $rootpath.$path.'.dart.js';
-		
-		$this->channel()->add('http:header', ['content-type', 'application/javascript']);
+		$resourcepath = $rootpath.$path;
+		$mimetype = \app\Filesystem::mimetype($resourcepath);
+
+		$this->channel()->add('http:header', ['content-type', $mimetype]);
 
 		return \app\Filesystem::gets($resourcepath);
 	}

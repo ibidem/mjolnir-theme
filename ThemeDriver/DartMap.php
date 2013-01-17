@@ -11,6 +11,27 @@ class ThemeDriver_DartMap extends \app\Instantiatable implements \mjolnir\types\
 {
 	use \app\Trait_ThemeDriver;
 	
-	// @todo
+	/**
+	 * ...
+	 */
+	function render()
+	{
+		$this->channel()->add('themedriver:type', 'dynamic');
+		
+		$dartsconfig = $this->collectionfile('darts');
+		$this->channel()->set('dartsconfig', $dartsconfig);
 
+		$dartspath = $this->channel()->get('dartspath');
+		$rootpath = $dartspath.$dartsconfig['root'];
+
+		$path = $this->channel()->get('relaynode')->get('path');
+		$this->security_pathcheck($path);
+
+		$resourcepath = $rootpath.$path.'.dart.map';
+		
+		$this->channel()->add('http:header', ['expires', strtotime('-1 day')]);
+
+		return \app\Filesystem::gets($resourcepath);
+	}
+	
 } # class
