@@ -7,10 +7,10 @@
  * @copyright  (c) 2012, Ibidem Team
  * @license    https://github.com/ibidem/ibidem/blob/master/LICENSE.md
  */
-class ThemeLoader_StyleCss extends \app\Instantiatable implements \mjolnir\types\ThemeLoader
+class ThemeLoader_Style extends \app\Instantiatable implements \mjolnir\types\ThemeLoader
 {
 	use \app\Trait_ThemeLoader;
-	
+
 	// @todo
 
 } # class

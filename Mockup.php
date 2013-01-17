@@ -10,8 +10,10 @@
  * @copyright  (c) 2012 Ibidem Team
  * @license    https://github.com/ibidem/ibidem/blob/master/LICENSE.md
  */
-class Make extends \app\Instantiatable
+class Mockup extends \app\Instantiatable implements \mjolnir\types\Renderable
 {
+	use \app\Trait_Renderable;
+
 	/**
 	 * @var string
 	 */
@@ -28,8 +30,7 @@ class Make extends \app\Instantiatable
 	protected static $counters = array();
 
 	/**
-	 * @param string type
-	 * @return \app\Make
+	 * @return \app\Mockup
 	 */
 	static function instance($type = 'paragraph', array $args = null)
 	{
@@ -50,7 +51,7 @@ class Make extends \app\Instantiatable
 	}
 
 	/**
-	 * @return \app\Make
+	 * @return \app\Mockup
 	 */
 	static function name()
 	{
@@ -58,9 +59,7 @@ class Make extends \app\Instantiatable
 	}
 
 	/**
-	 * @param type $width
-	 * @param type $height
-	 * @return type
+	 * @return string
 	 */
 	static function img($width, $height)
 	{
@@ -68,9 +67,6 @@ class Make extends \app\Instantiatable
 	}
 
 	/**
-	 * @param int width
-	 * @param int height
-	 * @param bool grayscale
 	 * @return string kitten!
 	 */
 	static function placekitten($width, $height, $grayscale = false)
@@ -83,9 +79,6 @@ class Make extends \app\Instantiatable
 	}
 
 	/**
-	 * @param int width
-	 * @param int height
-	 * @param bool grayscale
 	 * @return string zombie~grrr~brainsss
 	 */
 	static function placezombie($width, $height, $grayscale = false)
@@ -105,10 +98,7 @@ class Make extends \app\Instantiatable
 	 *
 	 * Set category to random to get random categories.
 	 *
-	 * @param type $width
-	 * @param type $height
-	 * @param type $category
-	 * @param type $grayscale
+	 * @return \app\Mockup
 	 */
 	static function lorempixel($width, $height, $category = null, $grayscale = null)
 	{
@@ -133,7 +123,7 @@ class Make extends \app\Instantiatable
 	}
 
 	/**
-	 * @return \app\Make
+	 * @return \app\Mockup
 	 */
 	static function given_name()
 	{
@@ -141,7 +131,7 @@ class Make extends \app\Instantiatable
 	}
 
 	/**
-	 * @return \app\Make
+	 * @return \app\Mockup
 	 */
 	static function family_name()
 	{
@@ -149,7 +139,7 @@ class Make extends \app\Instantiatable
 	}
 
 	/**
-	 * @return \app\Make
+	 * @return \app\Mockup
 	 */
 	static function telephone()
 	{
@@ -157,7 +147,7 @@ class Make extends \app\Instantiatable
 	}
 
 	/**
-	 * @return \app\Make
+	 * @return \app\Mockup
 	 */
 	static function email()
 	{
@@ -165,7 +155,7 @@ class Make extends \app\Instantiatable
 	}
 
 	/**
-	 * @return \app\Make
+	 * @return \app\Mockup
 	 */
 	static function ssn()
 	{
@@ -173,20 +163,23 @@ class Make extends \app\Instantiatable
 	}
 
 	/**
-	 * @return \app\Make
+	 * @return \app\Mockup
 	 */
 	static function address()
 	{
 		return static::instance('address');
 	}
 
+	/**
+	 * @return \app\Mockup
+	 */
 	static function city()
 	{
 		return static::instance('city');
 	}
 
 	/**
-	 * @return \app\Make
+	 * @return \app\Mockup
 	 */
 	static function paragraph()
 	{
@@ -194,7 +187,7 @@ class Make extends \app\Instantiatable
 	}
 
 	/**
-	 * @return \app\Make
+	 * @return \app\Mockup
 	 */
 	static function action()
 	{
@@ -205,32 +198,35 @@ class Make extends \app\Instantiatable
 	}
 
 	/**
-	 * @return \app\Make
+	 * @return \app\Mockup
 	 */
 	static function url($mockup = null)
 	{
 		return static::instance('url', ['mockup' => $mockup]);
 	}
 
+	/**
+	 * @return string
+	 */
 	static function fullurl()
 	{
 		$url = (\rand(1, 4) === 1 ? '' : 'www.');
-		$url .= \app\Make::word();
+		$url .= \app\Mockup::word();
 		if (\rand(1,2) === 1)
 		{
-			$url .= (\rand(1, 2) == 1 ? '-' : '').\app\Make::word();
+			$url .= (\rand(1, 2) == 1 ? '-' : '').\app\Mockup::word();
 
 			if (\rand(1,4) === 1)
 			{
-				$url .= (\rand(1, 2) == 1 ? '-' : '').\app\Make::word();
+				$url .= (\rand(1, 2) == 1 ? '-' : '').\app\Mockup::word();
 			}
 		}
 
-		return $url.'.'.\app\Make::rand(['com', 'co.uk', 'co', 'de', 'fr', 'jp', 'kr', 'ro', 'ru', 'eu', 'org']).'/';
+		return $url.'.'.\app\Mockup::rand(['com', 'co.uk', 'co', 'de', 'fr', 'jp', 'kr', 'ro', 'ru', 'eu', 'org']).'/';
 	}
 
 	/**
-	 * @return \app\Make
+	 * @return \app\Mockup
 	 */
 	static function counter($id)
 	{
@@ -238,7 +234,7 @@ class Make extends \app\Instantiatable
 	}
 
 	/**
-	 * @return \app\Make
+	 * @return \app\Mockup
 	 */
 	static function title()
 	{
@@ -246,7 +242,7 @@ class Make extends \app\Instantiatable
 	}
 
 	/**
-	 * @return \app\Make
+	 * @return \app\Mockup
 	 */
 	static function word()
 	{
@@ -254,14 +250,16 @@ class Make extends \app\Instantiatable
 	}
 
 	/**
-	 * @param integer count
-	 * @return \app\Make
+	 * @return \app\Mockup
 	 */
 	static function words($count = 10)
 	{
 		return static::instance('words', \func_get_args());
 	}
 
+	/**
+	 * @return \app\Mockup
+	 */
 	static function rand(array $values)
 	{
 		$instance = static::instance('rand');
@@ -271,8 +269,6 @@ class Make extends \app\Instantiatable
 	}
 
 	/**
-	 * @param mixed source
-	 * @param integer copies
 	 * @return array
 	 */
 	static function copies($source, $count = null, array $counters = null)
@@ -307,6 +303,14 @@ class Make extends \app\Instantiatable
 		}
 
 		return $copies;
+	}
+
+	/**
+	 * @return mixed
+	 */
+	private static function random(array $collection)
+	{
+		return $collection[\rand(0, \count($collection) - 1)];
 	}
 
 	/**
@@ -500,14 +504,6 @@ class Make extends \app\Instantiatable
 				return '';
 			}
 		}
-	}
-
-	/**
-	 * @return mixed
-	 */
-	private static function random(array $collection)
-	{
-		return $collection[\rand(0, \count($collection) - 1)];
 	}
 
 } # class
