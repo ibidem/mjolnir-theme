@@ -1,8 +1,8 @@
 {
 	"name": "mjolnir/theme",
 	"version": "0.0",
-	"description": "Mjolnir theme module",
-	"keywords": ["theme"],
+	"description": "Theme drivers, Theme composition, Theme management and Mockup helpers.",
+	"keywords": [ ],
 	"homepage": "https://github.com/ibidem",
 	"type": "library",
 	"license": "BSD-2",
@@ -12,17 +12,17 @@
 			"homepage": "https://github.com/srcspider"
 		}
 	],
-	
+
 	"require": {
-		"php": ">=5.4.0"
+		"php": ">=5.4.4"
 	},
-	
+
 	"autoload": {
 		"psr-0": {
 			"mjolnir\\theme": "../.."
 		}
 	},
-	
+
 	"extra": {
 		"branch-alias": {
 			"dev-wip/v1.0": "1.0.x-dev"
