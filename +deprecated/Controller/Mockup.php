@@ -12,10 +12,10 @@ class Controller_Mockup extends \app\Controller_Web
 	protected static $target = null;
 
 	/**
-	 * @var \app\ThemeView 
+	 * @var \app\ThemeView
 	 */
 	protected $theme_view = null;
-	
+
 	/**
 	 * Do before any action...
 	 */
@@ -23,33 +23,33 @@ class Controller_Mockup extends \app\Controller_Web
 	{
 		$target = $this->params->get('target');
 		\app\GlobalEvent::fire('webpage:title', $target.' Mockup');
-		$user_role = isset($_GET['view_as']) ? $_GET['view_as'] : \app\A12n::guest();
-		\app\A12n::instance()->set_role($user_role);
+		$user_role = isset($_GET['view_as']) ? $_GET['view_as'] : \app\Auth::guest();
+		\app\Auth::instance()->overwriterole($user_role);
 	}
-	
+
 	/**
-	 * The mockup main action. Targets pass in and are processed. Note a 
-	 * \app\ Mockup class is required to act as a mockup content provider. If 
+	 * The mockup main action. Targets pass in and are processed. Note a
+	 * \app\ Mockup class is required to act as a mockup content provider. If
 	 * you need $control functions just extend this class in a mockup module in
 	 * your project.
-	 * 
+	 *
 	 * Tip. Use the \mjolnir\base\Make class to generate random mockup content.
 	 */
 	function action_testing()
 	{
 		$target = $this->params->get('target');
 		$this->setup_role();
-		
+
 		// check if theme is set and if them_view isn't overwritten
 		if (isset($_GET['theme']) && $this->theme_view === null)
 		{
 			$this->theme_view = \app\ThemeView::instance()
 				->theme($_GET['theme']);
 		}
-		
+
 		$mockup_ns = \app\CFS::config('mjolnir/base')['mockup-ns'];
 		$mockup_class = '\\'.$mockup_ns.'\Context_'.\ucfirst(\preg_replace('#\..*$#', '', $target));
-		
+
 		if ($this->theme_view === null)
 		{
 			$this->body
@@ -74,26 +74,26 @@ class Controller_Mockup extends \app\Controller_Web
 					->render()
 			);
 		}
-		
+
 	}
-	
+
 	/**
 	 * Action.
-	 * 
+	 *
 	 * Targets provided resolve to the error within them theme.
 	 */
 	function action_errortesting()
 	{
 		$target = $this->params->get('target');
 		$this->setup_role();
-		
+
 		// check if theme is set and if them_view isn't overwritten
 		if (isset($_GET['theme']) && $this->theme_view === null)
 		{
 			$this->theme_view = \app\ThemeView::instance()
 				->theme($_GET['theme']);
 		}
-		
+
 		if ($this->theme_view === null)
 		{
 			$this->body
@@ -119,7 +119,7 @@ class Controller_Mockup extends \app\Controller_Web
 			);
 		}
 	}
-	
+
 	/**
 	 * Outputs GET and POST values. Acts as a crude form field tester.
 	 */
@@ -129,14 +129,14 @@ class Controller_Mockup extends \app\Controller_Web
 		\var_dump($_POST);
 		echo '<br>GET<br>';
 		\var_dump($_GET);
-	}	
-	
+	}
+
 	/**
 	 * All forms are redirected to the form tester action above.
-	 * 
+	 *
 	 * @param string action
-	 * @return string 
-	 */	
+	 * @return string
+	 */
 	function action($action)
 	{
 		return \app\URL::route('\mjolnir\theme\mockup-form')->url();
