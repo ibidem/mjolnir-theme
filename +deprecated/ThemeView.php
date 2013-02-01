@@ -224,9 +224,9 @@ class ThemeView extends \app\Instantiatable	implements \mjolnir\types\ErrorView
 	 * @param array or null errors
 	 * @return \app\ThemeView $this
 	 */
-	function errors(array & $errors = null)
+	function errors(array &$errors = null)
 	{
-		$this->errors = & $errors;
+		$this->errors = &$errors;
 		return $this;
 	}
 

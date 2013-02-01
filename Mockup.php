@@ -286,7 +286,7 @@ class Mockup extends \app\Instantiatable implements \mjolnir\types\Renderable
 			// resolve various counter fields (id, views, time, etc)
 			if ($counters)
 			{
-				foreach ($counters as $counter => & $count_type)
+				foreach ($counters as $counter => &$count_type)
 				{
 					if (\is_array($count_type)) # random (viewcount, etc)
 					{
