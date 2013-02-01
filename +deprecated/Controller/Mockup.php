@@ -7,7 +7,7 @@
  * @copyright  (c) 2012, Ibidem Team
  * @license    https://github.com/ibidem/ibidem/blob/master/LICENSE.md
  */
-class Controller_Mockup extends \app\Controller_Web
+class Controller_Mockup extends \app\Controller_Contextual
 {
 	protected static $target = null;
 

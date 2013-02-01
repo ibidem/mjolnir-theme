@@ -249,7 +249,7 @@ class ThemeView extends \app\Instantiatable	implements \mjolnir\types\ErrorView
 	{
 		$settings = \app\CFS::config('mjolnir/themes');
 
-		$env_config = include DOCROOT.'environment'.EXT;
+		$env_config = include ENVFILE;
 		$env_is_set = isset($env_config['themes']) && isset($env_config['themes'][$this->theme]);
 
 		if ($env_is_set)

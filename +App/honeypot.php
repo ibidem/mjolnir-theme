@@ -5,16 +5,20 @@
 
 // HowTo: order honeypot -n 'mjolnir\theme'
 
-class Context_Exception_NotAllowed extends \mjolnir\theme\Context_Exception_NotAllowed { /** @return \mjolnir\theme\Context_Exception_NotAllowed */ static function instance() { return parent::instance(); } }
-class Context_Exception_NotApplicable extends \mjolnir\theme\Context_Exception_NotApplicable { /** @return \mjolnir\theme\Context_Exception_NotApplicable */ static function instance() { return parent::instance(); } }
-class Context_Exception_NotFound extends \mjolnir\theme\Context_Exception_NotFound { /** @return \mjolnir\theme\Context_Exception_NotFound */ static function instance() { return parent::instance(); } }
-class Context_Exception_Unknown extends \mjolnir\theme\Context_Exception_Unknown { /** @return \mjolnir\theme\Context_Exception_Unknown */ static function instance() { return parent::instance(); } }
-class Context_Ref extends \mjolnir\theme\Context_Ref { /** @return \mjolnir\theme\Context_Ref */ static function instance() { return parent::instance(); } }
-class Controller_Mockup extends \mjolnir\theme\Controller_Mockup { /** @return \mjolnir\theme\Controller_Mockup */ static function instance() { return parent::instance(); } }
-class Layer_Theme extends \mjolnir\theme\Layer_Theme { /** @return \mjolnir\theme\Layer_Theme */ static function instance() { return parent::instance(); } }
-class Make extends \mjolnir\theme\Make { /** @return \mjolnir\theme\Make */ static function instance($type = 'paragraph', array $args = null) { return parent::instance($type, $args); } }
-class Task_Make_Style extends \mjolnir\theme\Task_Make_Style { /** @return \mjolnir\theme\Task_Make_Style */ static function instance($encoded_task = null) { return parent::instance($encoded_task); } }
-class Task_Make_Theme extends \mjolnir\theme\Task_Make_Theme { /** @return \mjolnir\theme\Task_Make_Theme */ static function instance($encoded_task = null) { return parent::instance($encoded_task); } }
-class ThemeFooterInclude extends \mjolnir\theme\ThemeFooterInclude { /** @return \mjolnir\theme\ThemeFooterInclude */ static function instance($file = null, $ext = '.php') { return parent::instance($file, $ext); } }
-class ThemeHeadInclude extends \mjolnir\theme\ThemeHeadInclude { /** @return \mjolnir\theme\ThemeHeadInclude */ static function instance($file = null, $ext = '.php') { return parent::instance($file, $ext); } }
+class Mockup extends \mjolnir\theme\Mockup { /** @return \mjolnir\theme\Mockup */ static function instance($type = 'paragraph', array $args = null) { return parent::instance($type, $args); } }
+class ThemeDriver_Dart extends \mjolnir\theme\ThemeDriver_Dart { /** @return \mjolnir\theme\ThemeDriver_Dart */ static function instance() { return parent::instance(); } }
+class ThemeDriver_DartJavascript extends \mjolnir\theme\ThemeDriver_DartJavascript { /** @return \mjolnir\theme\ThemeDriver_DartJavascript */ static function instance() { return parent::instance(); } }
+class ThemeDriver_DartJavascriptMap extends \mjolnir\theme\ThemeDriver_DartJavascriptMap { /** @return \mjolnir\theme\ThemeDriver_DartJavascriptMap */ static function instance() { return parent::instance(); } }
+class ThemeDriver_DartMap extends \mjolnir\theme\ThemeDriver_DartMap { /** @return \mjolnir\theme\ThemeDriver_DartMap */ static function instance() { return parent::instance(); } }
+class ThemeDriver_DartResource extends \mjolnir\theme\ThemeDriver_DartResource { /** @return \mjolnir\theme\ThemeDriver_DartResource */ static function instance() { return parent::instance(); } }
+class ThemeDriver_Javascript extends \mjolnir\theme\ThemeDriver_Javascript { /** @return \mjolnir\theme\ThemeDriver_Javascript */ static function instance() { return parent::instance(); } }
+class ThemeDriver_JavascriptComplete extends \mjolnir\theme\ThemeDriver_JavascriptComplete { /** @return \mjolnir\theme\ThemeDriver_JavascriptComplete */ static function instance() { return parent::instance(); } }
+class ThemeDriver_JavascriptCompleteMap extends \mjolnir\theme\ThemeDriver_JavascriptCompleteMap { /** @return \mjolnir\theme\ThemeDriver_JavascriptCompleteMap */ static function instance() { return parent::instance(); } }
+class ThemeDriver_JavascriptCompleteSource extends \mjolnir\theme\ThemeDriver_JavascriptCompleteSource { /** @return \mjolnir\theme\ThemeDriver_JavascriptCompleteSource */ static function instance() { return parent::instance(); } }
+class ThemeDriver_JavascriptMap extends \mjolnir\theme\ThemeDriver_JavascriptMap { /** @return \mjolnir\theme\ThemeDriver_JavascriptMap */ static function instance() { return parent::instance(); } }
+class ThemeDriver_JavascriptSource extends \mjolnir\theme\ThemeDriver_JavascriptSource { /** @return \mjolnir\theme\ThemeDriver_JavascriptSource */ static function instance() { return parent::instance(); } }
+class ThemeDriver_JsonBootstrap extends \mjolnir\theme\ThemeDriver_JsonBootstrap { /** @return \mjolnir\theme\ThemeDriver_JsonBootstrap */ static function instance() { return parent::instance(); } }
+class ThemeDriver_Style extends \mjolnir\theme\ThemeDriver_Style { /** @return \mjolnir\theme\ThemeDriver_Style */ static function instance() { return parent::instance(); } }
+class ThemeDriver_StyleComplete extends \mjolnir\theme\ThemeDriver_StyleComplete { /** @return \mjolnir\theme\ThemeDriver_StyleComplete */ static function instance() { return parent::instance(); } }
+class ThemeDriver_StyleResource extends \mjolnir\theme\ThemeDriver_StyleResource { /** @return \mjolnir\theme\ThemeDriver_StyleResource */ static function instance() { return parent::instance(); } }
 class ThemeView extends \mjolnir\theme\ThemeView { /** @return \mjolnir\theme\ThemeView */ static function instance() { return parent::instance(); } }
