@@ -10,60 +10,120 @@
 class Theme extends \app\Instantiatable implements \mjolnir\types\Theme
 {
 	use \app\Trait_Theme;
-	
+
+	static $maintheme = null;
+
 	/**
 	 * @return string
 	 */
 	static function instance($themename = null, $themepath = null)
 	{
-		$instance = parent::instance();
-		
 		if ($themename === null && $themepath == null)
 		{
-			$theme = isset($_GET['theme']) ? $_GET['theme'] : null;
-
-			if ($theme === null)
+			if (static::$maintheme !== null)
 			{
-				$theme = \app\Session::get('theme', null);
+				return static::$maintheme;
 			}
-			
-			if ($theme === null)
+			else # new default instance by detection
 			{
-				$themedetectors = \app\CFS::config('mjolnir/theme-detectors');
-				
-				foreach ($themedetectors as $detector)
+				$instance = parent::instance();
+
+				$themename = isset($_GET['theme']) ? $_GET['theme'] : null;
+
+				if ($themename === null)
 				{
-					$theme = $detector();
-					
-					if ($theme !== null)
+					$themename = \app\Session::get('theme', null);
+				}
+
+				if ($themename === null)
+				{
+					$themedetectors = \app\CFS::config('mjolnir/theme-detectors');
+
+					foreach ($themedetectors as $detector)
 					{
-						break;
+						$themename = $detector();
+
+						if ($themename !== null)
+						{
+							break;
+						}
+					}
+				}
+
+				if ($themename !== null)
+				{
+					$instance->themename_is($themename);
+					$instance->themepath_for($themename);
+				}
+				else # use default, ie. first theme
+				{
+					$corethemes = static::corethemes();
+
+					if ( ! empty($corethemes))
+					{
+						$themename = \key($corethemes);
+
+						$instance->themename_is($themename);
+						$instance->themepath_is($corethemes[$themename]);
+					}
+					else # empty core themes
+					{
+						throw new \app\Exception('Theme Corruption: No themes present in environment file.');
 					}
 				}
 			}
-			
-			if ($theme !== null)
-			{
-				$this->themename_is($theme);
-				$this->themepath_for($theme);
-			}
+
+			return static::$maintheme = $instance;
 		}
-		
-		return $instance;
+		else # standalone instance
+		{
+			$instance = parent::instance();
+			$instance->themename_is($themename);
+
+			if ($themepath !== null)
+			{
+				$instance->themepath_is($themepath);
+			}
+			else # try core themes
+			{
+				$instance->themepath_for($themename);
+			}
+
+			// this is a standalone theme instance; we don't update maintheme
+			return $instance;
+		}
 	}
-	
+
+	/**
+	 * @return \mjolnir\types\ThemeView
+	 */
+	function themeview($viewtarget)
+	{
+		$themepath = $this->get('themepath', null);
+
+		if ($themepath === null)
+		{
+			throw new \app\Exception('Corrupt Theme: Could not find theme path.');
+		}
+
+		return \app\ThemeView::instance()
+			->channel_is($this->channel())
+			->themepath_is($themepath)
+			->viewtarget_is($viewtarget);
+	}
+
 	/**
 	 * List of core themes. Core themes are themes defined in ENVFILE under the
-	 * key themes. Any themes located in the cascading file system are ancilary 
-	 * themes since they are used for various misc pages and may appear even 
+	 * key themes. Any themes located in the cascading file system are ancilary
+	 * themes since they are used for various misc pages and may appear even
 	 * outside of DOCROOT.
-	 * 
+	 *
 	 * @return array or null
 	 */
 	static function corethemes()
 	{
 		$environment = include ENVFILE;
-		
+
 		if (isset($environment['themes']))
 		{
 			return $environment['themes'];
@@ -73,5 +133,5 @@ class Theme extends \app\Instantiatable implements \mjolnir\types\Theme
 			return null;
 		}
 	}
-	
+
 } # class

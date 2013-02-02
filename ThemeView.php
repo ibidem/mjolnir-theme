@@ -14,21 +14,82 @@ class ThemeView extends \app\View implements \mjolnir\types\ThemeView
 	/**
 	 * @return \mjolnir\types\ThemeView
 	 */
-	function instance()
+	static function instance()
 	{
 		$instance = parent::instance();
-		$instance->set('theme', static::theme());
+		return $instance;
 	}
-	
+
 	/**
 	 * @return \mjolnir\types\ThemeView
 	 */
-	function for_target($viewtarget)
+	static function fortarget($viewtarget, \mjolnir\types\Theme $theme = null)
 	{
-		$instance = static::instance();
-		$this->set('viewtarget', $viewtarget);
-		
-		return $instance;
+		$theme !== null or $theme = \app\Theme::instance();
+		return $theme->themeview($viewtarget);
 	}
-	
+
+	// ------------------------------------------------------------------------
+	// interface: Renderable
+
+	/**
+	 * @return string
+	 */
+	function render()
+	{
+		if ($this->filepath !== null)
+		{
+			return parent::render();
+		}
+		else # computed view
+		{
+			// get configuration
+			$themepath = $this->themepath();
+			$configname = '+theme';
+
+			$themeconfig = include $themepath.$configname.EXT;
+
+			if (isset($themeconfig['mapping'][$this->viewtarget]))
+			{
+				$composition = $themeconfig['mapping'][$this->viewtarget];
+				$base = $this->compileview(\array_shift($composition), $themepath);
+
+				foreach ($composition as $view)
+				{
+					if (\is_string($view))
+					{
+						$base->pass('view', $this->compileview($view, $themepath)->render());
+					}
+					else # assume array
+					{
+						$compiled = '';
+						foreach ($view as $viewfile)
+						{
+							$compiled .= $this->compileview($viewfile, $themepath)->render();
+						}
+
+						$base->pass('view', $compiled);
+					}
+				}
+
+				return $base->render();
+			}
+			else # failed
+			{
+				throw new \app\Exception
+					('Theme Corruption: undefined target ['.$this->viewtarget.']');
+			}
+		}
+	}
+
+	/**
+	 * @return \mjolnir\types\Rendereable
+	 */
+	protected function compileview($file, $themepath)
+	{
+		return \app\View::instance()
+			->inherit($this)
+			->file_path($themepath.$file.EXT);
+	}
+
 } # class
