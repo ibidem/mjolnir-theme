@@ -49,6 +49,41 @@ class ThemeView extends \app\View implements \mjolnir\types\ThemeView
 
 			$themeconfig = include $themepath.$configname.EXT;
 
+			// run loaders
+			if ($themeconfig['loaders'] !== null)
+			{
+				foreach ($themeconfig['loaders'] as $loadername => $config)
+				{
+					$loaderclass = '\app\ThemeLoader_'.\ucfirst($loadername);
+					$loader = $loaderclass::instance()
+						->channel_is($this->channel())
+						->set('viewtarget', $this->viewtarget);
+
+					$themeloaders = \app\CFS::config('mjolnir/theme-loaders');
+
+					if (isset($themeloaders[$loadername]))
+					{
+						$loaderconfig = \app\CFS::config('mjolnir/theme-loaders')[$loadername];
+					}
+					else # no configuration
+					{
+						throw new \app\Exception('No default configuration for '.$loadername);
+					}
+
+					if ($config !== null)
+					{
+						$loaderconfig = \app\Arr::merge($loaderconfig, $config);
+					}
+
+					foreach ($loaderconfig as $key => $value)
+					{
+						$loader->set($key, $value);
+					}
+
+					$loader->run();
+				}
+			}
+
 			if (isset($themeconfig['mapping'][$this->viewtarget]))
 			{
 				$composition = $themeconfig['mapping'][$this->viewtarget];

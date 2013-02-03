@@ -11,6 +11,9 @@ class Theme extends \app\Instantiatable implements \mjolnir\types\Theme
 {
 	use \app\Trait_Theme;
 
+	/**
+	 * @var \mjolnir\types\Theme
+	 */
 	static $maintheme = null;
 
 	/**
@@ -113,6 +116,51 @@ class Theme extends \app\Instantiatable implements \mjolnir\types\Theme
 	}
 
 	/**
+	 * @return array
+	 */
+	function config()
+	{
+		static $config = null;
+
+		$config !== null or $config = \app\Arr::merge(include $this->themepath().'+theme'.EXT, \app\CFS::config('mjolnir/themes'));
+
+		return $config;
+	}
+
+	/**
+	 * @return mixed
+	 */
+	function configvalue($key, $default = null)
+	{
+		$config = $this->config();
+		if (isset($config[$key]))
+		{
+			return $config[$key];
+		}
+		else # no value set
+		{
+			return $default;
+		}
+	}
+
+	/**
+	 * @return string
+	 */
+	function version()
+	{
+		return $this->configvalue('version', '0.0');
+	}
+
+	/**
+	 * @return mixed
+	 */
+	function loadrelative($path)
+	{
+		$path = \ltrim($path, '\\/');
+		return include $this->themepath().$path;
+	}
+
+	/**
 	 * List of core themes. Core themes are themes defined in ENVFILE under the
 	 * key themes. Any themes located in the cascading file system are ancilary
 	 * themes since they are used for various misc pages and may appear even
@@ -133,5 +181,6 @@ class Theme extends \app\Instantiatable implements \mjolnir\types\Theme
 			return null;
 		}
 	}
+
 
 } # class

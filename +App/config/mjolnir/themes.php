@@ -1,6 +1,6 @@
 <?php return array
 	(
-		'styles.default' => '+styles',
-		'scripts.default' => '+scripts',
-		'darts.default' => '+darts',
+		'default.styles.dir'  => '+styles',
+		'default.scripts.dir' => '+scripts',
+		'default.darts.dir'   => '+darts',
 	);
