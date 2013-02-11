@@ -93,7 +93,9 @@ class ThemeView extends \app\View implements \mjolnir\types\ThemeView
 				{
 					if (\is_string($view))
 					{
-						$base->pass('view', $this->compileview($view, $themepath)->render());
+						$base
+							->pass('theme', $this)
+							->pass('view', $this->compileview($view, $themepath)->render());
 					}
 					else # assume array
 					{
@@ -103,7 +105,9 @@ class ThemeView extends \app\View implements \mjolnir\types\ThemeView
 							$compiled .= $this->compileview($viewfile, $themepath)->render();
 						}
 
-						$base->pass('view', $compiled);
+						$base
+							->pass('theme', $this)
+							->pass('view', $compiled);
 					}
 				}
 
@@ -116,6 +120,17 @@ class ThemeView extends \app\View implements \mjolnir\types\ThemeView
 			}
 		}
 	}
+	
+	/**
+	 * @return string
+	 */
+	function partial($path)
+	{
+		return \app\View::instance()
+			->inherit($this)
+			->pass('theme', $this)
+			->file_path($this->themepath().$path.EXT);
+	}
 
 	/**
 	 * @return \mjolnir\types\Rendereable
@@ -124,7 +139,8 @@ class ThemeView extends \app\View implements \mjolnir\types\ThemeView
 	{
 		return \app\View::instance()
 			->inherit($this)
+			->pass('theme', $this)
 			->file_path($themepath.$file.EXT);
 	}
-
+	
 } # class
