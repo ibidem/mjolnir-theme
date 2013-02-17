@@ -23,7 +23,7 @@ class Controller_Mockup extends \app\Controller_Contextual
 	{
 		$target = $this->params->get('target');
 		\app\GlobalEvent::fire('webpage:title', $target.' Mockup');
-		$user_role = isset($_GET['view_as']) ? $_GET['view_as'] : \app\Auth::guest();
+		$user_role = isset($_GET['view_as']) ? $_GET['view_as'] : \app\Auth::Guest;
 		\app\Auth::instance()->overwriterole($user_role);
 	}
 

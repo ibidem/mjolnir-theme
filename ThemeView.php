@@ -120,7 +120,7 @@ class ThemeView extends \app\View implements \mjolnir\types\ThemeView
 			}
 		}
 	}
-	
+
 	/**
 	 * @return string
 	 */
@@ -142,5 +142,5 @@ class ThemeView extends \app\View implements \mjolnir\types\ThemeView
 			->pass('theme', $this)
 			->file_path($themepath.$file.EXT);
 	}
-	
+
 } # class
