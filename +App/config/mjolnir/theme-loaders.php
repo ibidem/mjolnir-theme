@@ -15,5 +15,8 @@
 				'head' => [ /* no head scripts */ ],
 				'scripts' => [ /* no end of document scripts */ ],
 			),
-
+		'resource' => array
+			(
+				// empty
+			),
 	);

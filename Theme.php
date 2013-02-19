@@ -21,7 +21,7 @@ class Theme extends \app\Instantiatable implements \mjolnir\types\Theme
 	 */
 	static function instance($themename = null, $themepath = null)
 	{
-		if ($themename === null && $themepath == null)
+		if ($themename === null && $themepath === null)
 		{
 			if (static::$maintheme !== null)
 			{

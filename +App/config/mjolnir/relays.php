@@ -214,6 +214,21 @@ return array
 				'theme.driver' => 'style-source',
 			),
 	
+	# theme resources (images, embeds, etc)
+
+		'mjolnir:theme/themedriver/resource.route' => array
+			(
+				'matcher' => \app\URLRoute::instance()
+					->urlpattern
+						(
+							'media/themes/<theme>/resources/<version>/<path>',
+							$theme + $version + $path
+						),
+
+			// Theme Driver
+				'theme.driver' => 'resource',
+			),
+	
 	# misc
 	
 		'mjolnir:theme/themedriver/json-bootstrap.route' => array

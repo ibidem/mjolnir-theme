@@ -122,7 +122,7 @@ class ThemeView extends \app\View implements \mjolnir\types\ThemeView
 	}
 
 	/**
-	 * @return string
+	 * @return \mjolnir\types\View
 	 */
 	function partial($path)
 	{
@@ -130,6 +130,22 @@ class ThemeView extends \app\View implements \mjolnir\types\ThemeView
 			->inherit($this)
 			->pass('theme', $this)
 			->file_path($this->themepath().$path.EXT);
+	}
+	
+	/**
+	 * @return string resource url
+	 */
+	function resource($path)
+	{
+		return \app\URL::href
+			(
+				'mjolnir:theme/themedriver/resource.route', 
+				[
+					'theme' => \app\Theme::instance()->themename(),
+					'version' => \app\Theme::instance()->version(),
+					'path' => $path
+				]
+			);
 	}
 
 	/**

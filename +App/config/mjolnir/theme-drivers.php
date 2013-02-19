@@ -12,6 +12,7 @@
 			(
 				# no type is understood as "default"
 			
+				'resource'                   => [ 'enabled' => true, 'type' => 'resource' ],
 				'json-bootstrap'             => [ 'enabled' => true ],
 
 				'dart'                       => [ 'enabled' => true ],
