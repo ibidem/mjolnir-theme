@@ -160,7 +160,7 @@ return array
 				'theme.driver' => 'javascript-complete-source',
 			),
 
-	# css
+	# style
 
 		'mjolnir:theme/themedriver/style.route' => array
 			(
@@ -193,7 +193,7 @@ return array
 				'matcher' => \app\URLRoute::instance()
 					->urlpattern
 						(
-							'media/themes/<theme>/styles/<style>/<version>/<path>',
+							'media/themes/<theme>/styles/<style>/<version>(-complete)/<path>',
 							$theme + $style + $version + $path
 						),
 
