@@ -106,7 +106,8 @@ class ThemeView extends \app\View implements \mjolnir\types\ThemeView
 						}
 
 						$composite = \app\ViewComposite::instance()
-							->views_ara($compiled);
+							->views_are($compiled)
+							->inherit($base);
 
 						$base
 							->pass('theme', $this)
