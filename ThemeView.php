@@ -95,19 +95,22 @@ class ThemeView extends \app\View implements \mjolnir\types\ThemeView
 					{
 						$base
 							->pass('theme', $this)
-							->pass('view', $this->compileview($view, $themepath)->render());
+							->pass('entrypoint', $this->compileview($view, $themepath));
 					}
 					else # assume array
 					{
-						$compiled = '';
+						$compiled = [];
 						foreach ($view as $viewfile)
 						{
-							$compiled .= $this->compileview($viewfile, $themepath)->render();
+							$compiled[] = $this->compileview($viewfile, $themepath);
 						}
+
+						$composite = \app\ViewComposite::instance()
+							->views_ara($compiled);
 
 						$base
 							->pass('theme', $this)
-							->pass('view', $compiled);
+							->pass('entrypoint', $composite);
 					}
 				}
 
@@ -131,7 +134,7 @@ class ThemeView extends \app\View implements \mjolnir\types\ThemeView
 			->pass('theme', $this)
 			->file_path($this->themepath().$path.EXT);
 	}
-	
+
 	/**
 	 * @return string resource url
 	 */
@@ -139,7 +142,7 @@ class ThemeView extends \app\View implements \mjolnir\types\ThemeView
 	{
 		return \app\URL::href
 			(
-				'mjolnir:theme/themedriver/resource.route', 
+				'mjolnir:theme/themedriver/resource.route',
 				[
 					'theme' => \app\Theme::instance()->themename(),
 					'version' => \app\Theme::instance()->version(),

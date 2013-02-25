@@ -78,7 +78,7 @@ class Theme extends \app\Instantiatable implements \mjolnir\types\Theme
 
 			return static::$maintheme = $instance;
 		}
-		else # standalone instance
+		else # embeded instance
 		{
 			$instance = parent::instance();
 			$instance->themename_is($themename);
@@ -92,8 +92,7 @@ class Theme extends \app\Instantiatable implements \mjolnir\types\Theme
 				$instance->themepath_for($themename);
 			}
 
-			// this is a standalone theme instance; we don't update maintheme
-			return $instance;
+			return static::$maintheme = $instance;
 		}
 	}
 
