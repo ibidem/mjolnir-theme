@@ -43,7 +43,19 @@ class ThemeDriver_Javascript extends \app\Instantiatable implements \mjolnir\typ
 		// they cause mismatch between script and source map
 		$this->channel()->add('http:header', ['X-SourceMap', \preg_replace('#.*/#', '', $sourcemap_url)]);
 		
-		return \app\Filesystem::gets($rootpath.$target.'.min.js', 'console.log("failed to load target ['.$target.']");');
+		$fallback_script = 'console.log("failed to load target ['.$target.']");';
+		
+		$file = \app\Filesystem::gets($rootpath.$target.'.min.js', null);
+		
+		if ($file !== null)
+		{
+			return $file;
+		}
+		else # failed to load script
+		{
+			\mjolnir\log('Theme', "Failed to load {$rootpath}{$target}.min.js");
+			return $fallback_script;
+		}
 	}
 
 } # class
