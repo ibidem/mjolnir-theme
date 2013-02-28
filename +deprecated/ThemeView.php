@@ -60,7 +60,7 @@ class ThemeView extends \app\Instantiatable	implements \mjolnir\types\ErrorView
 	protected $base_path;
 
 	/**
-	 * @return \app\ThemeView
+	 * @return static
 	 */
 	static function instance()
 	{
@@ -146,7 +146,7 @@ class ThemeView extends \app\Instantiatable	implements \mjolnir\types\ErrorView
 	}
 
 	/**
-	 * @return \app\ThemeView
+	 * @return static $this
 	 */
 	function exception(\Exception $exception)
 	{
@@ -157,7 +157,7 @@ class ThemeView extends \app\Instantiatable	implements \mjolnir\types\ErrorView
 
 	/**
 	 * @param string theme name
-	 * @return \app\ThemeView
+	 * @return static $this
 	 */
 	function theme($theme)
 	{
@@ -167,7 +167,7 @@ class ThemeView extends \app\Instantiatable	implements \mjolnir\types\ErrorView
 
 	/**
 	 * @param string style name
-	 * @return \app\ThemeView
+	 * @return static $this
 	 */
 	function style($style)
 	{
@@ -179,7 +179,7 @@ class ThemeView extends \app\Instantiatable	implements \mjolnir\types\ErrorView
 	 * Target should usually be equivalent to the default route name.
 	 *
 	 * @param string target name
-	 * @return \app\ThemeView
+	 * @return static $this
 	 */
 	function target($target)
 	{
@@ -212,7 +212,7 @@ class ThemeView extends \app\Instantiatable	implements \mjolnir\types\ErrorView
 	 * coupled to the object, and vise versa.
 	 *
 	 * @param mixed context object
-	 * @return \app\ThemeView
+	 * @return static $this
 	 */
 	function context($context)
 	{
@@ -222,7 +222,7 @@ class ThemeView extends \app\Instantiatable	implements \mjolnir\types\ErrorView
 
 	/**
 	 * @param array or null errors
-	 * @return \app\ThemeView $this
+	 * @return static $this
 	 */
 	function errors(array &$errors = null)
 	{
@@ -234,7 +234,7 @@ class ThemeView extends \app\Instantiatable	implements \mjolnir\types\ErrorView
 	 * Typically this would be the controller.
 	 *
 	 * @param mixed control object
-	 * @return \app\ThemeView
+	 * @return static $this
 	 */
 	function control($control)
 	{
@@ -505,7 +505,7 @@ class ThemeView extends \app\Instantiatable	implements \mjolnir\types\ErrorView
 
 	/**
 	 * @param \mjolnir\types\Layer layer
-	 * @return \app\ThemeView
+	 * @return static $this
 	 */
 	function layer(\mjolnir\types\Layer $layer)
 	{

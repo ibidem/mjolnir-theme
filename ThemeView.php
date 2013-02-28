@@ -12,7 +12,7 @@ class ThemeView extends \app\View implements \mjolnir\types\ThemeView
 	use \app\Trait_ThemeView;
 
 	/**
-	 * @return \mjolnir\types\ThemeView
+	 * @return static
 	 */
 	static function instance()
 	{
@@ -21,7 +21,7 @@ class ThemeView extends \app\View implements \mjolnir\types\ThemeView
 	}
 
 	/**
-	 * @return \mjolnir\types\ThemeView
+	 * @return static
 	 */
 	static function fortarget($viewtarget, \mjolnir\types\Theme $theme = null)
 	{

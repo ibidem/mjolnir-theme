@@ -30,7 +30,7 @@ class Mockup extends \app\Instantiatable implements \mjolnir\types\Renderable
 	protected static $counters = array();
 
 	/**
-	 * @return \app\Mockup
+	 * @return static
 	 */
 	static function instance($type = 'paragraph', array $args = null)
 	{
@@ -51,7 +51,7 @@ class Mockup extends \app\Instantiatable implements \mjolnir\types\Renderable
 	}
 
 	/**
-	 * @return \app\Mockup
+	 * @return static
 	 */
 	static function name()
 	{
@@ -98,7 +98,7 @@ class Mockup extends \app\Instantiatable implements \mjolnir\types\Renderable
 	 *
 	 * Set category to random to get random categories.
 	 *
-	 * @return \app\Mockup
+	 * @return static
 	 */
 	static function lorempixel($width, $height, $category = null, $grayscale = null)
 	{
@@ -123,7 +123,7 @@ class Mockup extends \app\Instantiatable implements \mjolnir\types\Renderable
 	}
 
 	/**
-	 * @return \app\Mockup
+	 * @return static
 	 */
 	static function given_name()
 	{
@@ -131,7 +131,7 @@ class Mockup extends \app\Instantiatable implements \mjolnir\types\Renderable
 	}
 
 	/**
-	 * @return \app\Mockup
+	 * @return static
 	 */
 	static function family_name()
 	{
@@ -139,7 +139,7 @@ class Mockup extends \app\Instantiatable implements \mjolnir\types\Renderable
 	}
 
 	/**
-	 * @return \app\Mockup
+	 * @return static
 	 */
 	static function telephone()
 	{
@@ -147,7 +147,7 @@ class Mockup extends \app\Instantiatable implements \mjolnir\types\Renderable
 	}
 
 	/**
-	 * @return \app\Mockup
+	 * @return static
 	 */
 	static function email()
 	{
@@ -155,7 +155,7 @@ class Mockup extends \app\Instantiatable implements \mjolnir\types\Renderable
 	}
 
 	/**
-	 * @return \app\Mockup
+	 * @return static
 	 */
 	static function ssn()
 	{
@@ -163,7 +163,7 @@ class Mockup extends \app\Instantiatable implements \mjolnir\types\Renderable
 	}
 
 	/**
-	 * @return \app\Mockup
+	 * @return static
 	 */
 	static function address()
 	{
@@ -171,7 +171,7 @@ class Mockup extends \app\Instantiatable implements \mjolnir\types\Renderable
 	}
 
 	/**
-	 * @return \app\Mockup
+	 * @return static
 	 */
 	static function city()
 	{
@@ -179,7 +179,7 @@ class Mockup extends \app\Instantiatable implements \mjolnir\types\Renderable
 	}
 
 	/**
-	 * @return \app\Mockup
+	 * @return static
 	 */
 	static function paragraph()
 	{
@@ -187,7 +187,7 @@ class Mockup extends \app\Instantiatable implements \mjolnir\types\Renderable
 	}
 
 	/**
-	 * @return \app\Mockup
+	 * @return static
 	 */
 	static function action()
 	{
@@ -198,7 +198,7 @@ class Mockup extends \app\Instantiatable implements \mjolnir\types\Renderable
 	}
 
 	/**
-	 * @return \app\Mockup
+	 * @return static
 	 */
 	static function url($mockup = null)
 	{
@@ -226,7 +226,7 @@ class Mockup extends \app\Instantiatable implements \mjolnir\types\Renderable
 	}
 
 	/**
-	 * @return \app\Mockup
+	 * @return static
 	 */
 	static function counter($id)
 	{
@@ -234,7 +234,7 @@ class Mockup extends \app\Instantiatable implements \mjolnir\types\Renderable
 	}
 
 	/**
-	 * @return \app\Mockup
+	 * @return static
 	 */
 	static function title()
 	{
@@ -242,7 +242,7 @@ class Mockup extends \app\Instantiatable implements \mjolnir\types\Renderable
 	}
 
 	/**
-	 * @return \app\Mockup
+	 * @return static
 	 */
 	static function word()
 	{
@@ -250,7 +250,7 @@ class Mockup extends \app\Instantiatable implements \mjolnir\types\Renderable
 	}
 
 	/**
-	 * @return \app\Mockup
+	 * @return static
 	 */
 	static function words($count = 10)
 	{
@@ -258,7 +258,7 @@ class Mockup extends \app\Instantiatable implements \mjolnir\types\Renderable
 	}
 
 	/**
-	 * @return \app\Mockup
+	 * @return static
 	 */
 	static function rand(array $values)
 	{
