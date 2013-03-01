@@ -13,7 +13,7 @@
 				# no type is understood as "default"
 			
 				'resource'                   => [ 'enabled' => true, 'type' => 'resource' ],
-				'json-bootstrap'             => [ 'enabled' => true ],
+				'bootstrap'                  => [ 'enabled' => true ],
 
 				'dart'                       => [ 'enabled' => true ],
 				'dart-map'                   => [ 'enabled' => true, 'type' => 'source-map' ],

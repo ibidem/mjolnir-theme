@@ -231,7 +231,7 @@ return array
 	
 	# misc
 	
-		'mjolnir:theme/themedriver/json-bootstrap.route' => array
+		'mjolnir:theme/themedriver/bootstrap.route' => array
 			(
 				'matcher' => \app\URLRoute::instance()
 					->urlpattern
@@ -241,7 +241,7 @@ return array
 						),
 
 			// Theme Driver
-				'theme.driver' => 'json-bootstrap',
+				'theme.driver' => 'bootstrap',
 			),
 
 	);

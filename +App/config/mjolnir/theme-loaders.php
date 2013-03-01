@@ -19,4 +19,8 @@
 			(
 				// empty
 			),
+		'bootstrap' => array
+			(
+				// empty
+			),
 	);

@@ -7,7 +7,7 @@
  * @copyright  (c) 2012, Ibidem Team
  * @license    https://github.com/ibidem/ibidem/blob/master/LICENSE.md
  */
-class ThemeDriver_JsonBootstrap extends \app\Instantiatable implements \mjolnir\types\ThemeDriver
+class ThemeDriver_Bootstrap extends \app\Instantiatable implements \mjolnir\types\ThemeDriver
 {
 	use \app\Trait_ThemeDriver;
 	
@@ -19,16 +19,7 @@ class ThemeDriver_JsonBootstrap extends \app\Instantiatable implements \mjolnir\
 		$this->channel()->add('themedriver:type', 'dynamic');
 		$this->channel()->add('http:header', ['content-type', 'application/json']);
 		
-		// build configuration
-		$bootstrap = \app\CFS::config('mjolnir/bootstrap');
-		$config = [];
-		
-		foreach ($bootstrap as $key => $resolver)
-		{
-			$config[$key] = $resolver();
-		}
-		
-		return \json_encode($config);
+		return "// Mjolnir Bootstrap\nvar mjb = ".\htmlspecialchars(\json_encode(\app\CFS::config('mjolnir/bootstrap')), ENT_NOQUOTES).';';
 	}
 
 } # class
