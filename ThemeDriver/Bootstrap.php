@@ -19,7 +19,7 @@ class ThemeDriver_Bootstrap extends \app\Instantiatable implements \mjolnir\type
 		$this->channel()->add('themedriver:type', 'dynamic');
 		$this->channel()->add('http:header', ['content-type', 'application/json']);
 		
-		return "// Mjolnir Bootstrap\nvar mjb = ".\htmlspecialchars(\json_encode(\app\CFS::config('mjolnir/bootstrap')), ENT_NOQUOTES).';';
+		return "// Mjolnir Bootstrap\nvar mjb = ".\json_encode(\app\CFS::config('mjolnir/bootstrap')).';';
 	}
 
 } # class
