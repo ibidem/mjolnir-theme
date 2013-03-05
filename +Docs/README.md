@@ -1,5 +1,5 @@
-Foundation
-==========
+Theme
+=====
 
 by Ibidem Team
 
