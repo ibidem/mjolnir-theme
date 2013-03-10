@@ -236,7 +236,7 @@ return array
 				'matcher' => \app\URLRoute::instance()
 					->urlpattern
 						(
-							'media/themes/<theme>/bootstrap.json',
+							'media/themes/<theme>/bootstrap.js',
 							$theme
 						),
 
