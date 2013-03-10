@@ -28,8 +28,15 @@ class ThemeLoader_Javascript extends \app\Instantiatable implements \mjolnir\typ
 
 		if ($javascriptconfig['mode'] === 'targeted')
 		{
-			if (isset($javascriptconfig['targeted-mapping'][$this->get('viewtarget')]))
+			$target = $this->get('viewtarget');
+			if (isset($javascriptconfig['targeted-mapping'][$target]))
 			{
+				// find true target
+				while (\is_string($styleconfig['targeted-mapping'][$target]))
+				{
+					$target = $styleconfig['targeted-mapping'][$target];
+				}
+
 				$htmllayer->add
 					(
 						'script',
@@ -41,7 +48,7 @@ class ThemeLoader_Javascript extends \app\Instantiatable implements \mjolnir\typ
 									[
 										'theme'   => $theme->themename(),
 										'version' => isset($javascriptconfig['version']) ? $javascriptconfig : $theme->version(),
-										'target'  => $this->get('viewtarget'),
+										'target'  => $target,
 									]
 								)
 						]

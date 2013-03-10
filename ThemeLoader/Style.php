@@ -28,8 +28,15 @@ class ThemeLoader_Style extends \app\Instantiatable implements \mjolnir\types\Th
 
 		if ($styleconfig['mode'] === 'targeted')
 		{
-			if (isset($styleconfig['targeted-mapping'][$this->get('viewtarget')]))
+			$target = $this->get('viewtarget');
+			if (isset($styleconfig['targeted-mapping'][$target]))
 			{
+				// find true target
+				while (\is_string($styleconfig['targeted-mapping'][$target]))
+				{
+					$target = $styleconfig['targeted-mapping'][$target];
+				}
+
 				$htmllayer->add
 					(
 						'stylesheet',
@@ -42,7 +49,7 @@ class ThemeLoader_Style extends \app\Instantiatable implements \mjolnir\types\Th
 										'theme'   => $theme->themename(),
 										'style'   => $theme->get('style', $this->get('default.style')),
 										'version' => isset($styleconfig['version']) ? $styleconfig : $theme->version(),
-										'target'  => $this->get('viewtarget'),
+										'target'  => $target,
 									]
 								)
 						]

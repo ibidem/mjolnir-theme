@@ -64,6 +64,18 @@ class Theme extends \mjolnir\theme\Theme
 }
 
 /**
+ * @method \app\ThemeDriver_Bootstrap channel_is($channel)
+ * @method \app\Channel channel()
+ * @method \app\ThemeDriver_Bootstrap addmetarenderer($key, $metarenderer)
+ * @method \app\ThemeDriver_Bootstrap injectmetarenderers(array $metarenderers = null)
+ */
+class ThemeDriver_Bootstrap extends \mjolnir\theme\ThemeDriver_Bootstrap
+{
+	/** @return \app\ThemeDriver_Bootstrap */
+	static function instance() { return parent::instance(); }
+}
+
+/**
  * @method \app\ThemeDriver_Dart channel_is($channel)
  * @method \app\Channel channel()
  * @method \app\ThemeDriver_Dart addmetarenderer($key, $metarenderer)
@@ -196,18 +208,6 @@ class ThemeDriver_JavascriptSource extends \mjolnir\theme\ThemeDriver_Javascript
 }
 
 /**
- * @method \app\ThemeDriver_JsonBootstrap channel_is($channel)
- * @method \app\Channel channel()
- * @method \app\ThemeDriver_JsonBootstrap addmetarenderer($key, $metarenderer)
- * @method \app\ThemeDriver_JsonBootstrap injectmetarenderers(array $metarenderers = null)
- */
-class ThemeDriver_JsonBootstrap extends \mjolnir\theme\ThemeDriver_JsonBootstrap
-{
-	/** @return \app\ThemeDriver_JsonBootstrap */
-	static function instance() { return parent::instance(); }
-}
-
-/**
  * @method \app\ThemeDriver_Resource channel_is($channel)
  * @method \app\Channel channel()
  * @method \app\ThemeDriver_Resource addmetarenderer($key, $metarenderer)
@@ -252,6 +252,19 @@ class ThemeDriver_StyleComplete extends \mjolnir\theme\ThemeDriver_StyleComplete
 class ThemeDriver_StyleResource extends \mjolnir\theme\ThemeDriver_StyleResource
 {
 	/** @return \app\ThemeDriver_StyleResource */
+	static function instance() { return parent::instance(); }
+}
+
+/**
+ * @method \app\ThemeLoader_Bootstrap set($name, $value)
+ * @method \app\ThemeLoader_Bootstrap add($name, $value)
+ * @method \app\ThemeLoader_Bootstrap metadata_is(array $metadata = null)
+ * @method \app\ThemeLoader_Bootstrap channel_is($channel)
+ * @method \app\Channel channel()
+ */
+class ThemeLoader_Bootstrap extends \mjolnir\theme\ThemeLoader_Bootstrap
+{
+	/** @return \app\ThemeLoader_Bootstrap */
 	static function instance() { return parent::instance(); }
 }
 
