@@ -32,9 +32,9 @@ class ThemeLoader_Javascript extends \app\Instantiatable implements \mjolnir\typ
 			if (isset($javascriptconfig['targeted-mapping'][$target]))
 			{
 				// find true target
-				while (\is_string($styleconfig['targeted-mapping'][$target]))
+				while (\is_string($javascriptconfig['targeted-mapping'][$target]))
 				{
-					$target = $styleconfig['targeted-mapping'][$target];
+					$target = $javascriptconfig['targeted-mapping'][$target];
 				}
 
 				$htmllayer->add
