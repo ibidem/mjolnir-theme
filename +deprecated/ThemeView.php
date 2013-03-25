@@ -122,7 +122,7 @@ class ThemeView extends \app\Instantiatable	implements \mjolnir\types\ErrorView
 						echo '<pre>';
 					}
 					echo "\n";
-					echo \str_replace(DOCROOT, '', $e->getTraceAsString());
+					echo \str_replace(\app\Env::key('sys.path'), '', $e->getTraceAsString());
 				}
 				else # non development
 				{
@@ -249,7 +249,7 @@ class ThemeView extends \app\Instantiatable	implements \mjolnir\types\ErrorView
 	{
 		$settings = \app\CFS::config('mjolnir/themes');
 
-		$env_config = include ENVFILE;
+		$env_config = \app\Env::key('environment.config');
 		$env_is_set = isset($env_config['themes']) && isset($env_config['themes'][$this->theme]);
 
 		if ($env_is_set)

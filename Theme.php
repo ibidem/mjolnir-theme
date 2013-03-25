@@ -160,16 +160,16 @@ class Theme extends \app\Instantiatable implements \mjolnir\types\Theme
 	}
 
 	/**
-	 * List of core themes. Core themes are themes defined in ENVFILE under the
-	 * key themes. Any themes located in the cascading file system are ancilary
-	 * themes since they are used for various misc pages and may appear even
-	 * outside of DOCROOT.
+	 * List of core themes. Core themes are themes defined in the
+	 * environment.file under the key themes. Any themes located in the
+	 * cascading file system are ancilary themes since they are used for various
+	 * misc pages and may appear even outside of sys path.
 	 *
 	 * @return array or null
 	 */
 	static function corethemes()
 	{
-		$environment = include ENVFILE;
+		$environment = \app\Env::key('environment.config');
 
 		if (isset($environment['themes']))
 		{
