@@ -16,27 +16,50 @@ class ThemeLoader_Style extends \app\Instantiatable implements \mjolnir\types\Th
 	 */
 	function run()
 	{
-		$htmllayer = $this->channel()->get('layer:html');
-
-		if ($htmllayer === null)
+		if ($this->channel() !== null)
 		{
-			return; # we do not support other hooks at this time
-		}
+			$htmllayer = $this->channel()->get('layer:html');
 
-		$theme = $this->channel()->get('theme', \app\Theme::instance());
-		$styleconfig = $this->styleconfig($theme);
-
-		if ($styleconfig['mode'] === 'targeted')
-		{
-			$target = $this->get('viewtarget');
-			if (isset($styleconfig['targeted-mapping'][$target]))
+			if ($htmllayer === null)
 			{
-				// find true target
-				while (\is_string($styleconfig['targeted-mapping'][$target]))
-				{
-					$target = $styleconfig['targeted-mapping'][$target];
-				}
+				return; # we do not support other hooks at this time
+			}
 
+			$theme = $this->channel()->get('theme', \app\Theme::instance());
+			$styleconfig = $this->styleconfig($theme);
+
+			if ($styleconfig['mode'] === 'targeted')
+			{
+				$target = $this->get('viewtarget');
+				if (isset($styleconfig['targeted-mapping'][$target]))
+				{
+					// find true target
+					while (\is_string($styleconfig['targeted-mapping'][$target]))
+					{
+						$target = $styleconfig['targeted-mapping'][$target];
+					}
+
+					$htmllayer->add
+						(
+							'stylesheet',
+							[
+								'type' => 'text/css',
+								'href' => \app\URL::href
+									(
+										'mjolnir:theme/themedriver/style.route',
+										[
+											'theme'   => $theme->themename(),
+											'style'   => $theme->get('style', $this->get('default.style')),
+											'version' => isset($styleconfig['version']) ? $styleconfig : $theme->version(),
+											'target'  => $target,
+										]
+									)
+							]
+						);
+				}
+			}
+			else if ($styleconfig['mode'] === 'complete')
+			{
 				$htmllayer->add
 					(
 						'stylesheet',
@@ -44,40 +67,20 @@ class ThemeLoader_Style extends \app\Instantiatable implements \mjolnir\types\Th
 							'type' => 'text/css',
 							'href' => \app\URL::href
 								(
-									'mjolnir:theme/themedriver/style.route',
+									'mjolnir:theme/themedriver/style-complete.route',
 									[
 										'theme'   => $theme->themename(),
 										'style'   => $theme->get('style', $this->get('default.style')),
 										'version' => isset($styleconfig['version']) ? $styleconfig : $theme->version(),
-										'target'  => $target,
 									]
 								)
 						]
 					);
 			}
-		}
-		else if ($styleconfig['mode'] === 'complete')
-		{
-			$htmllayer->add
-				(
-					'stylesheet',
-					[
-						'type' => 'text/css',
-						'href' => \app\URL::href
-							(
-								'mjolnir:theme/themedriver/style-complete.route',
-								[
-									'theme'   => $theme->themename(),
-									'style'   => $theme->get('style', $this->get('default.style')),
-									'version' => isset($styleconfig['version']) ? $styleconfig : $theme->version(),
-								]
-							)
-					]
-				);
-		}
-		else # undefined mode
-		{
-			throw new \app\Exception('Unrecognized style mode: '.$styleconfig['mode']);
+			else # undefined mode
+			{
+				throw new \app\Exception('Unrecognized style mode: '.$styleconfig['mode']);
+			}
 		}
 	}
 

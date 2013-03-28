@@ -16,27 +16,49 @@ class ThemeLoader_Javascript extends \app\Instantiatable implements \mjolnir\typ
 	 */
 	function run()
 	{
-		$htmllayer = $this->channel()->get('layer:html');
-
-		if ($htmllayer === null)
+		if ($this->channel() !== null)
 		{
-			return; # we do not support other hooks at this time
-		}
+			$htmllayer = $this->channel()->get('layer:html');
 
-		$theme = $this->channel()->get('theme', \app\Theme::instance());
-		$javascriptconfig = $this->javascriptconfig($theme);
-
-		if ($javascriptconfig['mode'] === 'targeted')
-		{
-			$target = $this->get('viewtarget');
-			if (isset($javascriptconfig['targeted-mapping'][$target]))
+			if ($htmllayer === null)
 			{
-				// find true target
-				while (\is_string($javascriptconfig['targeted-mapping'][$target]))
-				{
-					$target = $javascriptconfig['targeted-mapping'][$target];
-				}
+				return; # we do not support other hooks at this time
+			}
 
+			$theme = $this->channel()->get('theme', \app\Theme::instance());
+			$javascriptconfig = $this->javascriptconfig($theme);
+
+			if ($javascriptconfig['mode'] === 'targeted')
+			{
+				$target = $this->get('viewtarget');
+				if (isset($javascriptconfig['targeted-mapping'][$target]))
+				{
+					// find true target
+					while (\is_string($javascriptconfig['targeted-mapping'][$target]))
+					{
+						$target = $javascriptconfig['targeted-mapping'][$target];
+					}
+
+					$htmllayer->add
+						(
+							'script',
+							[
+								'type' => 'application/javascript',
+								'src' => \app\URL::href
+									(
+										'mjolnir:theme/themedriver/javascript.route',
+										[
+											'theme'   => $theme->themename(),
+											'version' => isset($javascriptconfig['version']) ? $javascriptconfig : $theme->version(),
+											'target'  => $target,
+										]
+									)
+							]
+						);
+				}
+			}
+			else if ($javascriptconfig['mode'] === 'complete')
+			{
 				$htmllayer->add
 					(
 						'script',
@@ -44,38 +66,19 @@ class ThemeLoader_Javascript extends \app\Instantiatable implements \mjolnir\typ
 							'type' => 'application/javascript',
 							'src' => \app\URL::href
 								(
-									'mjolnir:theme/themedriver/javascript.route',
+									'mjolnir:theme/themedriver/javascript-complete.route',
 									[
 										'theme'   => $theme->themename(),
 										'version' => isset($javascriptconfig['version']) ? $javascriptconfig : $theme->version(),
-										'target'  => $target,
 									]
 								)
 						]
 					);
 			}
-		}
-		else if ($javascriptconfig['mode'] === 'complete')
-		{
-			$htmllayer->add
-				(
-					'script',
-					[
-						'type' => 'application/javascript',
-						'src' => \app\URL::href
-							(
-								'mjolnir:theme/themedriver/javascript-complete.route',
-								[
-									'theme'   => $theme->themename(),
-									'version' => isset($javascriptconfig['version']) ? $javascriptconfig : $theme->version(),
-								]
-							)
-					]
-				);
-		}
-		else # undefined mode
-		{
-			throw new \app\Exception('Unrecognized script mode: '.$javascriptconfig['mode']);
+			else # undefined mode
+			{
+				throw new \app\Exception('Unrecognized script mode: '.$javascriptconfig['mode']);
+			}
 		}
 	}
 

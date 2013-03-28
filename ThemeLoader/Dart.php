@@ -16,73 +16,75 @@ class ThemeLoader_Dart extends \app\Instantiatable implements \mjolnir\types\The
 	 */
 	function run()
 	{
-		$htmllayer = $this->channel()->get('layer:html');
-
-		if ($htmllayer === null)
+		if ($this->channel() !== null)
 		{
-			return; # we do not support other hooks at this time
-		}
+			$htmllayer = $this->channel()->get('layer:html');
 
-		$theme = $this->channel()->get('theme', \app\Theme::instance());
+			if ($htmllayer === null)
+			{
+				return; # we do not support other hooks at this time
+			}
 
-		foreach ($this->get('head', []) as $path)
-		{
+			$theme = $this->channel()->get('theme', \app\Theme::instance());
+
+			foreach ($this->get('head', []) as $path)
+			{
+				$htmllayer->add
+					(
+						'headscript',
+						[
+							'type' => 'application/dart',
+							'src' => \app\URL::href
+								(
+									'mjolnir:theme/themedriver/dart.route',
+									[
+										'theme'   => $theme->themename(),
+										'version' => $theme->version(),
+										'path'    => $path
+									]
+								)
+						]
+					);
+			}
+
+			foreach ($this->get('script', []) as $path)
+			{
+				$htmllayer->add
+					(
+						'script',
+						[
+							'type' => 'application/dart',
+							'src' => \app\URL::href
+								(
+									'mjolnir:theme/themedriver/dart.route',
+									[
+										'theme'   => $theme->themename(),
+										'version' => $theme->version(),
+										'path'    => $path
+									]
+								)
+						]
+					);
+			}
+
+			// fallback code
 			$htmllayer->add
 				(
 					'headscript',
 					[
-						'type' => 'application/dart',
+						'type' => 'application/x-javascript',
 						'src' => \app\URL::href
 							(
-								'mjolnir:theme/themedriver/dart.route',
+								'mjolnir:theme/themedriver/dart-resource.route',
 								[
 									'theme'   => $theme->themename(),
 									'version' => $theme->version(),
-									'path'    => $path
+									'path'    => '/packages/browser/dart.js'
 								]
 							)
 					]
 				);
 		}
-
-		foreach ($this->get('script', []) as $path)
-		{
-			$htmllayer->add
-				(
-					'script',
-					[
-						'type' => 'application/dart',
-						'src' => \app\URL::href
-							(
-								'mjolnir:theme/themedriver/dart.route',
-								[
-									'theme'   => $theme->themename(),
-									'version' => $theme->version(),
-									'path'    => $path
-								]
-							)
-					]
-				);
-		}
-
-		// fallback code
-		$htmllayer->add
-			(
-				'headscript',
-				[
-					'type' => 'application/x-javascript',
-					'src' => \app\URL::href
-						(
-							'mjolnir:theme/themedriver/dart-resource.route',
-							[
-								'theme'   => $theme->themename(),
-								'version' => $theme->version(),
-								'path'    => '/packages/browser/dart.js'
-							]
-						)
-				]
-			);
-
 	}
 
 } # class

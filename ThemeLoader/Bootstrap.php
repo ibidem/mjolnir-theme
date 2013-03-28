@@ -16,29 +16,32 @@ class ThemeLoader_Bootstrap extends \app\Instantiatable implements \mjolnir\type
 	 */
 	function run()
 	{
-		$htmllayer = $this->channel()->get('layer:html');
-
-		if ($htmllayer === null)
+		if ($this->channel() !== null)
 		{
-			return; # we do not support other hooks at this time
-		}
+			$htmllayer = $this->channel()->get('layer:html');
 
-		$theme = $this->channel()->get('theme', \app\Theme::instance());
-		
-		$htmllayer->add
-			(
-				'script',
-				[
-					'type' => 'application/javascript',
-					'src' => \app\URL::href
-						(
-							'mjolnir:theme/themedriver/bootstrap.route',
-							[
-								'theme'   => $theme->themename(),
-							]
-						)
-				]
-			);
+			if ($htmllayer === null)
+			{
+				return; # we do not support other hooks at this time
+			}
+
+			$theme = $this->channel()->get('theme', \app\Theme::instance());
+
+			$htmllayer->add
+				(
+					'script',
+					[
+						'type' => 'application/javascript',
+						'src' => \app\URL::href
+							(
+								'mjolnir:theme/themedriver/bootstrap.route',
+								[
+									'theme'   => $theme->themename(),
+								]
+							)
+					]
+				);
+		}
 	}
 
 } # class
