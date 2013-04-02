@@ -8,7 +8,7 @@ return array
 					{
 						if (\extension_loaded('fileinfo'))
 						{
-							return 'available';
+							return 'satisfied';
 						}
 
 						return 'error';
