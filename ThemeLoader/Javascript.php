@@ -39,6 +39,95 @@ class ThemeLoader_Javascript extends \app\Instantiatable implements \mjolnir\typ
 						$target = $javascriptconfig['targeted-mapping'][$target];
 					}
 
+					if (\app\CFS::config('mjolnir/base')['development'])
+					{
+						foreach ($javascriptconfig['targeted-common'] as $script)
+						{
+							$htmllayer->add
+								(
+									'script',
+									[
+										'type' => 'application/javascript',
+										'src' => \app\URL::href
+											(
+												'mjolnir:theme/themedriver/javascript-source.route',
+												[
+													'theme'   => $theme->themename(),
+													'version' => isset($javascriptconfig['version']) ? $javascriptconfig : $theme->version(),
+													'path'  => $script,
+												]
+											)
+									]
+								);
+						}
+						
+						foreach ($javascriptconfig['targeted-mapping'][$target] as $script)
+						{
+							$htmllayer->add
+								(
+									'script',
+									[
+										'type' => 'application/javascript',
+										'src' => \app\URL::href
+											(
+												'mjolnir:theme/themedriver/javascript-source.route',
+												[
+													'theme'   => $theme->themename(),
+													'version' => isset($javascriptconfig['version']) ? $javascriptconfig : $theme->version(),
+													'path'  => $script,
+												]
+											)
+									]
+								);
+						}
+					}
+					else # production
+					{
+						$htmllayer->add
+							(
+								'script',
+								[
+									'type' => 'application/javascript',
+									'src' => \app\URL::href
+										(
+											'mjolnir:theme/themedriver/javascript.route',
+											[
+												'theme'   => $theme->themename(),
+												'version' => isset($javascriptconfig['version']) ? $javascriptconfig : $theme->version(),
+												'target'  => $target,
+											]
+										)
+								]
+							);
+					}
+				}
+			}
+			else if ($javascriptconfig['mode'] === 'complete')
+			{
+				if (\app\CFS::config('mjolnir/base')['development'])
+				{
+					foreach ($javascriptconfig['complete-mapping'] as $script)
+					{
+						$htmllayer->add
+							(
+								'script',
+								[
+									'type' => 'application/javascript',
+									'src' => \app\URL::href
+										(
+											'mjolnir:theme/themedriver/javascript-source.route',
+											[
+												'theme'   => $theme->themename(),
+												'version' => isset($javascriptconfig['version']) ? $javascriptconfig : $theme->version(),
+												'path'  => $script,
+											]
+										)
+								]
+							);
+					}
+				}	
+				else # production
+				{
 					$htmllayer->add
 						(
 							'script',
@@ -46,34 +135,15 @@ class ThemeLoader_Javascript extends \app\Instantiatable implements \mjolnir\typ
 								'type' => 'application/javascript',
 								'src' => \app\URL::href
 									(
-										'mjolnir:theme/themedriver/javascript.route',
+										'mjolnir:theme/themedriver/javascript-complete.route',
 										[
 											'theme'   => $theme->themename(),
 											'version' => isset($javascriptconfig['version']) ? $javascriptconfig : $theme->version(),
-											'target'  => $target,
 										]
 									)
 							]
 						);
 				}
-			}
-			else if ($javascriptconfig['mode'] === 'complete')
-			{
-				$htmllayer->add
-					(
-						'script',
-						[
-							'type' => 'application/javascript',
-							'src' => \app\URL::href
-								(
-									'mjolnir:theme/themedriver/javascript-complete.route',
-									[
-										'theme'   => $theme->themename(),
-										'version' => isset($javascriptconfig['version']) ? $javascriptconfig : $theme->version(),
-									]
-								)
-						]
-					);
 			}
 			else # undefined mode
 			{
