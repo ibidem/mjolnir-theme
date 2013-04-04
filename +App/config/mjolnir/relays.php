@@ -206,8 +206,8 @@ return array
 				'matcher' => \app\URLRoute::instance()
 					->urlpattern
 						(
-							'media/themes/<theme>/styles/<style>/<version>/src/<target>.css',
-							$theme + $style + $version + $target
+							'media/themes/<theme>/styles/<style>/<version>/src/<path>.css',
+							$theme + $style + $version + $path
 						),
 
 			// Theme Driver
