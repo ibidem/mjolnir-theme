@@ -153,6 +153,34 @@ class ThemeView extends \app\View implements \mjolnir\types\ThemeView
 	}
 
 	/**
+	 * Shorthand for including a piece of code into the head of the page.
+	 *
+	 * @return \app\ThemeHeadInclude
+	 */
+	function headinclude($path)
+	{
+		return \app\ThemeHeadInclude::instance()
+			->channel_is($this->channel())
+			->inherit($this)
+			->pass('theme', $this)
+			->file_path($this->themepath().$path.EXT);
+	}
+
+	/**
+	 * Shorthand for including a piece of code into the head of the page.
+	 *
+	 * @return \app\ThemeFooterInclude
+	 */
+	function footerinclude($path)
+	{
+		return \app\ThemeFooterInclude::instance()
+			->channel_is($this->channel())
+			->inherit($this)
+			->pass('theme', $this)
+			->file_path($this->themepath().$path.EXT);
+	}
+	
+	/**
 	 * @return \mjolnir\types\Rendereable
 	 */
 	protected function compileview($file, $themepath)
@@ -162,5 +190,5 @@ class ThemeView extends \app\View implements \mjolnir\types\ThemeView
 			->pass('theme', $this)
 			->file_path($themepath.$file.EXT);
 	}
-
+	
 } # class
