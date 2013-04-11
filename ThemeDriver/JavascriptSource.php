@@ -26,9 +26,7 @@ class ThemeDriver_JavascriptSource extends \app\Instantiatable implements \mjoln
 		$this->security_pathcheck($path);
 
 		$srcfile = $srcpath.$path.'.js';
-		$mimetype = \app\Filesystem::mimetype($srcfile);
-
-		$this->channel()->add('http:header', ['content-type', $mimetype]);
+		$this->channel()->add('http:header', ['content-type', 'application/javascript']);
 
 		return \app\Filesystem::gets($srcfile);
 	}

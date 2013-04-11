@@ -72,7 +72,7 @@ class ThemeLoader_Dart extends \app\Instantiatable implements \mjolnir\types\The
 				(
 					'headscript',
 					[
-						'type' => 'application/x-javascript',
+						'type' => 'application/javascript',
 						'src' => \app\URL::href
 							(
 								'mjolnir:theme/themedriver/dart-resource.route',
