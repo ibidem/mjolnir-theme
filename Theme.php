@@ -151,6 +151,15 @@ class Theme extends \app\Instantiatable implements \mjolnir\types\Theme
 	}
 
 	/**
+	 * @return bool
+	 */
+	function relativepathexists($path)
+	{
+		$path = \ltrim($path, '\\/');
+		return \file_exists($this->themepath().$path);
+	}
+	
+	/**
 	 * @return mixed
 	 */
 	function loadrelative($path)

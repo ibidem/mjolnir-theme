@@ -92,7 +92,24 @@ class ThemeLoader_Style extends \app\Instantiatable implements \mjolnir\types\Th
 		$stylesconfig = $theme->configvalue('styles.configname', '+style');
 		$stylesdir = $theme->configvalue('default.styles.dir', '+styles');
 		$style = $theme->get('style', $this->get('default.style'));
-		return $theme->loadrelative("/$stylesdir/$style/$stylesconfig".EXT);
+		// check if style exists
+		$styleconfig = "/$stylesdir/$style/$stylesconfig".EXT;
+		if ($theme->relativepathexists($styleconfig))
+		{
+			return $theme->loadrelative($styleconfig);
+		}
+		else # invalid path
+		{
+			if ($style !== $this->get('default.style'))
+			{
+				// reset to default and try again
+				return $this->styleconfig($theme->set('style', $this->get('default.style')));
+			}
+			else # default style
+			{
+				throw new \app\Exception("Unable to load default style ($style)");
+			}
+		}
 	}
 
 } # class

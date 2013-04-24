@@ -267,10 +267,38 @@ class ThemeDriver_StyleSource extends \mjolnir\theme\ThemeDriver_StyleSource
 	static function instance() { return parent::instance(); }
 }
 
+/**
+ * @method \app\ThemeFooterInclude file_is($file, $ext = '.php')
+ * @method \app\ThemeFooterInclude file_path($filepath)
+ * @method \app\ThemeFooterInclude bind($name,  & $non_object)
+ * @method \app\ThemeFooterInclude pass($name, $value)
+ * @method \app\ThemeFooterInclude inherit($view)
+ * @method \app\ThemeFooterInclude addmetarenderer($key, $metarenderer)
+ * @method \app\ThemeFooterInclude injectmetarenderers(array $metarenderers = null)
+ * @method \app\ThemeFooterInclude channel_is($channel = null)
+ * @method \app\Channel channel()
+ */
 class ThemeFooterInclude extends \mjolnir\theme\ThemeFooterInclude
 {
 	/** @return \app\ThemeFooterInclude */
-	static function instance() { return parent::instance(); }
+	static function instance($file = null, $ext = '.php') { return parent::instance($file, $ext); }
+}
+
+/**
+ * @method \app\ThemeHeadInclude file_is($file, $ext = '.php')
+ * @method \app\ThemeHeadInclude file_path($filepath)
+ * @method \app\ThemeHeadInclude bind($name,  & $non_object)
+ * @method \app\ThemeHeadInclude pass($name, $value)
+ * @method \app\ThemeHeadInclude inherit($view)
+ * @method \app\ThemeHeadInclude addmetarenderer($key, $metarenderer)
+ * @method \app\ThemeHeadInclude injectmetarenderers(array $metarenderers = null)
+ * @method \app\ThemeHeadInclude channel_is($channel = null)
+ * @method \app\Channel channel()
+ */
+class ThemeHeadInclude extends \mjolnir\theme\ThemeHeadInclude
+{
+	/** @return \app\ThemeHeadInclude */
+	static function instance($file = null, $ext = '.php') { return parent::instance($file, $ext); }
 }
 
 /**
