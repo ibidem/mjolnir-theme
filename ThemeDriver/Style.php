@@ -34,6 +34,10 @@ class ThemeDriver_Style extends \app\Instantiatable implements \mjolnir\types\Th
 		
 		$this->channel()->add('http:header', ['content-type', 'text/css']);
 		
+		// cache headers
+		$this->channel()->add('http:header', ['Cache-Control', 'private']);
+		$this->channel()->add('http:header', ['Expires', \date(DATE_RFC822, \strtotime("7 days"))]);
+		
 		return $this->combine($rootpath, \array_merge($common, $styleconfig['targeted-mapping'][$target]), '.css');
 	}
 

@@ -30,6 +30,10 @@ class ThemeDriver_Dart extends \app\Instantiatable implements \mjolnir\types\The
 		// Filesystem::mimetype won't correctly recognize dart mimetype at the
 		// time this code was written (early 2013)
 		$this->channel()->add('http:header', ['content-type', 'application/dart']);
+		
+		// cache headers
+		$this->channel()->add('http:header', ['Cache-Control', 'private']);
+		$this->channel()->add('http:header', ['Expires', \date(DATE_RFC822, \strtotime("7 days"))]);
 
 		return \app\Filesystem::gets($resourcepath);
 	}

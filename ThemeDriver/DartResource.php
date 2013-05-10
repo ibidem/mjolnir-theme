@@ -29,6 +29,10 @@ class ThemeDriver_DartResource extends \app\Instantiatable implements \mjolnir\t
 		$mimetype = \app\Filesystem::mimetype($resourcepath);
 
 		$this->channel()->add('http:header', ['content-type', $mimetype]);
+		
+		// cache headers
+		$this->channel()->add('http:header', ['Cache-Control', 'private']);
+		$this->channel()->add('http:header', ['Expires', \date(DATE_RFC822, \strtotime("7 days"))]);
 
 		return \app\Filesystem::gets($resourcepath);
 	}

@@ -28,6 +28,10 @@ class ThemeDriver_DartJavascript extends \app\Instantiatable implements \mjolnir
 		$resourcepath = $rootpath.$path.'.dart.js';
 		
 		$this->channel()->add('http:header', ['content-type', 'application/javascript']);
+		
+		// cache headers
+		$this->channel()->add('http:header', ['Cache-Control', 'private']);
+		$this->channel()->add('http:header', ['Expires', \date(DATE_RFC822, \strtotime("7 days"))]);
 
 		return \app\Filesystem::gets($resourcepath);
 	}
