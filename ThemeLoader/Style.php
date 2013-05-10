@@ -50,7 +50,7 @@ class ThemeLoader_Style extends \app\Instantiatable implements \mjolnir\types\Th
 										[
 											'theme'   => $theme->themename(),
 											'style'   => $theme->get('style', $this->get('default.style')),
-											'version' => isset($styleconfig['version']) ? $styleconfig : $theme->version(),
+											'version' => isset($styleconfig['version']) ? $styleconfig['version'] : $theme->version(),
 											'target'  => $target,
 										]
 									)
@@ -71,7 +71,7 @@ class ThemeLoader_Style extends \app\Instantiatable implements \mjolnir\types\Th
 									[
 										'theme'   => $theme->themename(),
 										'style'   => $theme->get('style', $this->get('default.style')),
-										'version' => isset($styleconfig['version']) ? $styleconfig : $theme->version(),
+										'version' => isset($styleconfig['version']) ? $styleconfig['version'] : $theme->version(),
 									]
 								)
 						]

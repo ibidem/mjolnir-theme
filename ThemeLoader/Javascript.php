@@ -53,7 +53,7 @@ class ThemeLoader_Javascript extends \app\Instantiatable implements \mjolnir\typ
 												'mjolnir:theme/themedriver/javascript-source.route',
 												[
 													'theme'   => $theme->themename(),
-													'version' => isset($javascriptconfig['version']) ? $javascriptconfig : $theme->version(),
+													'version' => isset($javascriptconfig['version']) ? $javascriptconfig['version'] : $theme->version(),
 													'path'  => $script,
 												]
 											)
@@ -73,7 +73,7 @@ class ThemeLoader_Javascript extends \app\Instantiatable implements \mjolnir\typ
 												'mjolnir:theme/themedriver/javascript-source.route',
 												[
 													'theme'   => $theme->themename(),
-													'version' => isset($javascriptconfig['version']) ? $javascriptconfig : $theme->version(),
+													'version' => isset($javascriptconfig['version']) ? $javascriptconfig['version'] : $theme->version(),
 													'path'  => $script,
 												]
 											)
@@ -93,7 +93,7 @@ class ThemeLoader_Javascript extends \app\Instantiatable implements \mjolnir\typ
 											'mjolnir:theme/themedriver/javascript.route',
 											[
 												'theme'   => $theme->themename(),
-												'version' => isset($javascriptconfig['version']) ? $javascriptconfig : $theme->version(),
+												'version' => isset($javascriptconfig['version']) ? $javascriptconfig['version'] : $theme->version(),
 												'target'  => $target,
 											]
 										)
@@ -118,7 +118,7 @@ class ThemeLoader_Javascript extends \app\Instantiatable implements \mjolnir\typ
 											'mjolnir:theme/themedriver/javascript-source.route',
 											[
 												'theme'   => $theme->themename(),
-												'version' => isset($javascriptconfig['version']) ? $javascriptconfig : $theme->version(),
+												'version' => isset($javascriptconfig['version']) ? $javascriptconfig['version'] : $theme->version(),
 												'path'  => $script,
 											]
 										)
@@ -138,7 +138,7 @@ class ThemeLoader_Javascript extends \app\Instantiatable implements \mjolnir\typ
 										'mjolnir:theme/themedriver/javascript-complete.route',
 										[
 											'theme'   => $theme->themename(),
-											'version' => isset($javascriptconfig['version']) ? $javascriptconfig : $theme->version(),
+											'version' => isset($javascriptconfig['version']) ? $javascriptconfig['version'] : $theme->version(),
 										]
 									)
 							]

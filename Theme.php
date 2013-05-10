@@ -147,6 +147,11 @@ class Theme extends \app\Instantiatable implements \mjolnir\types\Theme
 	 */
 	function version()
 	{
+		if (\defined('VERSION'))
+		{
+			return VERSION;
+		}
+		
 		return $this->configvalue('version', '0.0');
 	}
 
