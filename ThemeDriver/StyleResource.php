@@ -29,6 +29,8 @@ class ThemeDriver_StyleResource extends \app\Instantiatable implements \mjolnir\
 		$mimetype = \app\Filesystem::mimetype($resourcepath);
 
 		$this->channel()->add('http:header', ['Content-Type', $mimetype]);
+		
+		// cache headers
 		$this->channel()->add('http:header', ['Cache-Control', 'private']);
 		$this->channel()->add('http:header', ['Expires', \date(DATE_RFC822, \strtotime("7 days"))]);
 
