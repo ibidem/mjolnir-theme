@@ -467,6 +467,7 @@ class Layer_Theme extends \app\Layer
 					}
 					else if ($mode === 'complete-script')
 					{
+						\app\GlobalEvent::fire('http:expires', \strtotime('+9 days'));
 						
 						\app\GlobalEvent::fire
 							(
@@ -503,6 +504,7 @@ class Layer_Theme extends \app\Layer
 					else # targetted closure file
 					{						
 						\app\GlobalEvent::fire('http:attributes', ['X-SourceMap' => $target.'.min.js.map']);
+						\app\GlobalEvent::fire('http:expires', \strtotime('+9 days'));
 
 						$file_to_load = $absolute_script_dir.'/closure/'.$target.'.min.js';
 						if (\file_exists($file_to_load))
@@ -537,6 +539,8 @@ class Layer_Theme extends \app\Layer
 							}
 						}
 
+						\app\GlobalEvent::fire('http:expires', \strtotime('+9 days'));
+						
 						try
 						{
 							// combine all files; if necesary
@@ -567,6 +571,8 @@ class Layer_Theme extends \app\Layer
 					}
 					else # targetted mode
 					{
+						\app\GlobalEvent::fire('http:expires', \strtotime('+9 days'));
+						
 						if ( ! isset($script_config['targets'][$target]))
 						{
 							throw new \app\Exception
