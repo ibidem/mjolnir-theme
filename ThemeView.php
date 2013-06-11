@@ -14,9 +14,9 @@ class ThemeView extends \app\View implements \mjolnir\types\ThemeView
 	/**
 	 * @return static
 	 */
-	static function instance()
+	static function instance($file = null, $ext = EXT)
 	{
-		$instance = parent::instance();
+		$instance = parent::instance($file = null, $ext = EXT);
 		return $instance;
 	}
 
