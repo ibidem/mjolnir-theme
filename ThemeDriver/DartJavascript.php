@@ -20,7 +20,15 @@ class ThemeDriver_DartJavascript extends \app\Instantiatable implements \mjolnir
 		$this->channel()->set('dartsconfig', $dartsconfig);
 
 		$dartspath = $this->channel()->get('dartspath');
-		$rootpath = $dartspath.$dartsconfig['root'];
+		
+		if (\app\CFS::config('mjolnir/base')['theme']['packaged'])
+		{
+			$rootpath = $dartspath.'packages/'.VERSION.'/';
+		}
+		else # non-packaged mode
+		{
+			$rootpath = $dartspath.$dartsconfig['root'];
+		}
 
 		$path = $this->channel()->get('relaynode')->get('path');
 		$this->security_pathcheck($path);

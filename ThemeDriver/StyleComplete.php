@@ -20,9 +20,15 @@ class ThemeDriver_StyleComplete extends \app\Instantiatable implements \mjolnir\
 		$this->channel()->set('styleconfig', $styleconfig);
 
 		$stylepath = $this->channel()->get('stylepath');
-		$rootpath = $stylepath.$styleconfig['root'];
-
-		$target = $this->channel()->get('relaynode')->get('target');
+		
+		if (\app\CFS::config('mjolnir/base')['theme']['packaged'])
+		{
+			$rootpath = $stylepath.'packages/'.VERSION.'/';
+		}
+		else # non-packaged mode
+		{
+			$rootpath = $stylepath.$styleconfig['root'];
+		}
 		
 		$this->channel()->add('http:header', ['content-type', 'text/css']);
 		

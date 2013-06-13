@@ -20,7 +20,15 @@ class ThemeDriver_JavascriptCompleteMap extends \app\Instantiatable implements \
 		$this->channel()->set('scriptsconfig', $javascriptconfig);
 
 		$javascriptpath = $this->channel()->get('scriptspath');
-		$rootpath = $javascriptpath.$javascriptconfig['root'];
+		
+		if (\app\CFS::config('mjolnir/base')['theme']['packaged'])
+		{
+			$rootpath = $javascriptpath.'packages/'.VERSION.'/';
+		}
+		else # non-packaged mode
+		{
+			$rootpath = $javascriptpath.$javascriptconfig['root'];
+		}
 
 		$target = $this->channel()->get('relaynode')->get('target');
 		

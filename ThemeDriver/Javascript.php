@@ -20,7 +20,15 @@ class ThemeDriver_Javascript extends \app\Instantiatable implements \mjolnir\typ
 		$this->channel()->set('scriptsconfig', $javascriptconfig);
 
 		$javascriptpath = $this->channel()->get('scriptspath');
-		$rootpath = $javascriptpath.$javascriptconfig['root'];
+		
+		if (\app\CFS::config('mjolnir/base')['theme']['packaged'])
+		{
+			$rootpath = $javascriptpath.'packages/'.VERSION.'/';
+		}
+		else # non-packaged mode
+		{
+			$rootpath = $javascriptpath.$javascriptconfig['root'];
+		}
 
 		$relaynode = $this->channel()->get('relaynode');
 		$target = $relaynode->get('target');
