@@ -10,22 +10,30 @@
 class ThemeDriver_DartMap extends \app\Instantiatable implements \mjolnir\types\ThemeDriver
 {
 	use \app\Trait_ThemeDriver;
-	
+
 	/**
 	 * ...
 	 */
 	function render()
 	{
 		$this->channel()->add('themedriver:type', 'dynamic');
-		
+
 		$dartsconfig = $this->collectionfile('darts');
 		$this->channel()->set('dartsconfig', $dartsconfig);
 
 		$dartspath = $this->channel()->get('dartspath');
-		
+
 		if (\app\CFS::config('mjolnir/base')['theme']['packaged'])
 		{
-			$rootpath = $dartspath.'packages/'.VERSION.'/';
+			if (isset($dartsconfig['version']))
+			{
+				$rootpath = $dartspath.'packages/'.$dartsconfig['version'].'/';
+			}
+			else # fallback to theme version
+			{
+				$theme = $this->channel()->get('theme');
+				$rootpath = $dartspath.'packages/'.$theme->version().'/';
+			}
 		}
 		else # non-packaged mode
 		{
@@ -36,10 +44,10 @@ class ThemeDriver_DartMap extends \app\Instantiatable implements \mjolnir\types\
 		$this->security_pathcheck($path);
 
 		$resourcepath = $rootpath.$path.'.dart.map';
-		
+
 		$this->channel()->add('http:header', ['expires', strtotime('-1 day')]);
 
 		return \app\Filesystem::gets($resourcepath);
 	}
-	
+
 } # class

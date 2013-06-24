@@ -10,7 +10,7 @@
 class ThemeDriver_StyleComplete extends \app\Instantiatable implements \mjolnir\types\ThemeDriver
 {
 	use \app\Trait_ThemeDriver;
-	
+
 	/**
 	 * ...
 	 */
@@ -20,22 +20,30 @@ class ThemeDriver_StyleComplete extends \app\Instantiatable implements \mjolnir\
 		$this->channel()->set('styleconfig', $styleconfig);
 
 		$stylepath = $this->channel()->get('stylepath');
-		
+
 		if (\app\CFS::config('mjolnir/base')['theme']['packaged'])
 		{
-			$rootpath = $stylepath.'packages/'.VERSION.'/';
+			if (isset($styleconfig['version']))
+			{
+				$rootpath = $stylepath.'packages/'.$styleconfig['version'].'/';
+			}
+			else # fallback to theme version
+			{
+				$theme = $this->channel()->get('theme');
+				$rootpath = $stylepath.'packages/'.$theme->version().'/';
+			}
 		}
 		else # non-packaged mode
 		{
 			$rootpath = $stylepath.$styleconfig['root'];
 		}
-		
+
 		$this->channel()->add('http:header', ['content-type', 'text/css']);
-		
+
 		// cache headers
 		$this->channel()->add('http:header', ['Cache-Control', 'private']);
 		$this->channel()->add('http:header', ['Expires', \date(DATE_RFC822, \strtotime("7 days"))]);
-		
+
 		return $this->combine($rootpath, $styleconfig['complete-mapping'], '.css');
 	}
 

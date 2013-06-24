@@ -10,7 +10,7 @@
 class ThemeDriver_JavascriptMap extends \app\Instantiatable implements \mjolnir\types\ThemeDriver
 {
 	use \app\Trait_ThemeDriver;
-	
+
 	/**
 	 * ...
 	 */
@@ -20,17 +20,25 @@ class ThemeDriver_JavascriptMap extends \app\Instantiatable implements \mjolnir\
 		$this->channel()->set('scriptsconfig', $javascriptconfig);
 
 		$javascriptpath = $this->channel()->get('scriptspath');
-		
+
 		if (\app\CFS::config('mjolnir/base')['theme']['packaged'])
 		{
-			$rootpath = $javascriptpath.'packages/'.VERSION.'/';
+			if (isset($javascriptconfig['version']))
+			{
+				$rootpath = $javascriptpath.'packages/'.$javascriptconfig['version'].'/';
+			}
+			else # fallback to theme version
+			{
+				$theme = $this->channel()->get('theme');
+				$rootpath = $javascriptpath.'packages/'.$theme->version().'/';
+			}
 		}
 		else # non-packaged mode
 		{
 			$rootpath = $javascriptpath.$javascriptconfig['root'];
 		}
 
-		$target = $this->channel()->get('relaynode')->get('target');		
+		$target = $this->channel()->get('relaynode')->get('target');
 
 		return \app\Filesystem::gets($rootpath.$target.'.min.js.map');
 	}

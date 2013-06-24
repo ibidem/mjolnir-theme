@@ -10,7 +10,7 @@
 class ThemeDriver_DartJavascript extends \app\Instantiatable implements \mjolnir\types\ThemeDriver
 {
 	use \app\Trait_ThemeDriver;
-	
+
 	/**
 	 * ...
 	 */
@@ -20,10 +20,18 @@ class ThemeDriver_DartJavascript extends \app\Instantiatable implements \mjolnir
 		$this->channel()->set('dartsconfig', $dartsconfig);
 
 		$dartspath = $this->channel()->get('dartspath');
-		
+
 		if (\app\CFS::config('mjolnir/base')['theme']['packaged'])
 		{
-			$rootpath = $dartspath.'packages/'.VERSION.'/';
+			if (isset($dartsconfig['version']))
+			{
+				$rootpath = $dartspath.'packages/'.$dartsconfig['version'].'/';
+			}
+			else # fallback to theme version
+			{
+				$theme = $this->channel()->get('theme');
+				$rootpath = $dartspath.'packages/'.$theme->version().'/';
+			}
 		}
 		else # non-packaged mode
 		{
@@ -34,9 +42,9 @@ class ThemeDriver_DartJavascript extends \app\Instantiatable implements \mjolnir
 		$this->security_pathcheck($path);
 
 		$resourcepath = $rootpath.$path.'.dart.js';
-		
+
 		$this->channel()->add('http:header', ['content-type', 'application/javascript']);
-		
+
 		// cache headers
 		$this->channel()->add('http:header', ['Cache-Control', 'private']);
 		$this->channel()->add('http:header', ['Expires', \date(DATE_RFC822, \strtotime("7 days"))]);

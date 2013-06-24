@@ -25,13 +25,14 @@
 		 * in the command's documentation (ie. description). Preferably use flags though
 		 * and/or have that only as a shorthand and not as the only way.
 		 */
-		
+
 		'theme:packager' => array
 			(
-				'category' => 'Experimental',
+				'category' => 'Tools',
 				'description' => array
 					(
 						'Package theme files for production.',
+						'Make sure you have your files compiled before running.'
 					),
 				'flags' => array
 					(

@@ -10,7 +10,7 @@
 class ThemeDriver_StyleResource extends \app\Instantiatable implements \mjolnir\types\ThemeDriver
 {
 	use \app\Trait_ThemeDriver;
-	
+
 	/**
 	 * ...
 	 */
@@ -20,10 +20,18 @@ class ThemeDriver_StyleResource extends \app\Instantiatable implements \mjolnir\
 		$this->channel()->set('styleconfig', $styleconfig);
 
 		$stylepath = $this->channel()->get('stylepath');
-		
+
 		if (\app\CFS::config('mjolnir/base')['theme']['packaged'])
 		{
-			$rootpath = $stylepath.'packages/'.VERSION.'/';
+			if (isset($styleconfig['version']))
+			{
+				$rootpath = $stylepath.'packages/'.$styleconfig['version'].'/';
+			}
+			else # fallback to theme version
+			{
+				$theme = $this->channel()->get('theme');
+				$rootpath = $stylepath.'packages/'.$theme->version().'/';
+			}
 		}
 		else # non-packaged mode
 		{
@@ -37,7 +45,7 @@ class ThemeDriver_StyleResource extends \app\Instantiatable implements \mjolnir\
 		$mimetype = \app\Filesystem::mimetype($resourcepath);
 
 		$this->channel()->add('http:header', ['Content-Type', $mimetype]);
-		
+
 		// cache headers
 		$this->channel()->add('http:header', ['Cache-Control', 'private']);
 		$this->channel()->add('http:header', ['Expires', \date(DATE_RFC822, \strtotime("7 days"))]);

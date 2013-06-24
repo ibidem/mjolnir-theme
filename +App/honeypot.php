@@ -51,6 +51,20 @@ class Mockup extends \mjolnir\theme\Mockup
 }
 
 /**
+ * @method \app\Task_Theme_Packager set($name, $value)
+ * @method \app\Task_Theme_Packager add($name, $value)
+ * @method \app\Task_Theme_Packager metadata_is(array $metadata = null)
+ * @method \app\Task_Theme_Packager writer_is($writer)
+ * @method \app\Writer writer()
+ */
+class Task_Theme_Packager extends \mjolnir\theme\Task_Theme_Packager
+{
+	/** @return \app\Task_Theme_Packager */
+	static function instance() { return parent::instance(); }
+}
+
+/**
+ * @method \app\Theme package()
  * @method \app\ThemeView themeview($viewtarget)
  * @method \app\Theme channel_is($channel = null)
  * @method \app\Channel channel()
@@ -64,6 +78,7 @@ class Theme extends \mjolnir\theme\Theme
 }
 
 /**
+ * @method \app\ThemeDriver_Bootstrap package($theme, $parentversion)
  * @method \app\ThemeDriver_Bootstrap channel_is($channel = null)
  * @method \app\Channel channel()
  * @method \app\ThemeDriver_Bootstrap addmetarenderer($key, $metarenderer)
@@ -76,6 +91,7 @@ class ThemeDriver_Bootstrap extends \mjolnir\theme\ThemeDriver_Bootstrap
 }
 
 /**
+ * @method \app\ThemeDriver_Dart package($theme, $parentversion)
  * @method \app\ThemeDriver_Dart channel_is($channel = null)
  * @method \app\Channel channel()
  * @method \app\ThemeDriver_Dart addmetarenderer($key, $metarenderer)
@@ -88,6 +104,7 @@ class ThemeDriver_Dart extends \mjolnir\theme\ThemeDriver_Dart
 }
 
 /**
+ * @method \app\ThemeDriver_DartJavascript package($theme, $parentversion)
  * @method \app\ThemeDriver_DartJavascript channel_is($channel = null)
  * @method \app\Channel channel()
  * @method \app\ThemeDriver_DartJavascript addmetarenderer($key, $metarenderer)
@@ -100,6 +117,7 @@ class ThemeDriver_DartJavascript extends \mjolnir\theme\ThemeDriver_DartJavascri
 }
 
 /**
+ * @method \app\ThemeDriver_DartJavascriptMap package($theme, $parentversion)
  * @method \app\ThemeDriver_DartJavascriptMap channel_is($channel = null)
  * @method \app\Channel channel()
  * @method \app\ThemeDriver_DartJavascriptMap addmetarenderer($key, $metarenderer)
@@ -112,6 +130,7 @@ class ThemeDriver_DartJavascriptMap extends \mjolnir\theme\ThemeDriver_DartJavas
 }
 
 /**
+ * @method \app\ThemeDriver_DartMap package($theme, $parentversion)
  * @method \app\ThemeDriver_DartMap channel_is($channel = null)
  * @method \app\Channel channel()
  * @method \app\ThemeDriver_DartMap addmetarenderer($key, $metarenderer)
@@ -124,6 +143,7 @@ class ThemeDriver_DartMap extends \mjolnir\theme\ThemeDriver_DartMap
 }
 
 /**
+ * @method \app\ThemeDriver_DartResource package($theme, $parentversion)
  * @method \app\ThemeDriver_DartResource channel_is($channel = null)
  * @method \app\Channel channel()
  * @method \app\ThemeDriver_DartResource addmetarenderer($key, $metarenderer)
@@ -136,6 +156,7 @@ class ThemeDriver_DartResource extends \mjolnir\theme\ThemeDriver_DartResource
 }
 
 /**
+ * @method \app\ThemeDriver_Javascript package($theme, $parentversion)
  * @method \app\ThemeDriver_Javascript channel_is($channel = null)
  * @method \app\Channel channel()
  * @method \app\ThemeDriver_Javascript addmetarenderer($key, $metarenderer)
@@ -148,6 +169,7 @@ class ThemeDriver_Javascript extends \mjolnir\theme\ThemeDriver_Javascript
 }
 
 /**
+ * @method \app\ThemeDriver_JavascriptComplete package($theme, $parentversion)
  * @method \app\ThemeDriver_JavascriptComplete channel_is($channel = null)
  * @method \app\Channel channel()
  * @method \app\ThemeDriver_JavascriptComplete addmetarenderer($key, $metarenderer)
@@ -160,6 +182,7 @@ class ThemeDriver_JavascriptComplete extends \mjolnir\theme\ThemeDriver_Javascri
 }
 
 /**
+ * @method \app\ThemeDriver_JavascriptCompleteMap package($theme, $parentversion)
  * @method \app\ThemeDriver_JavascriptCompleteMap channel_is($channel = null)
  * @method \app\Channel channel()
  * @method \app\ThemeDriver_JavascriptCompleteMap addmetarenderer($key, $metarenderer)
@@ -172,6 +195,7 @@ class ThemeDriver_JavascriptCompleteMap extends \mjolnir\theme\ThemeDriver_Javas
 }
 
 /**
+ * @method \app\ThemeDriver_JavascriptCompleteSource package($theme, $parentversion)
  * @method \app\ThemeDriver_JavascriptCompleteSource channel_is($channel = null)
  * @method \app\Channel channel()
  * @method \app\ThemeDriver_JavascriptCompleteSource addmetarenderer($key, $metarenderer)
@@ -184,6 +208,7 @@ class ThemeDriver_JavascriptCompleteSource extends \mjolnir\theme\ThemeDriver_Ja
 }
 
 /**
+ * @method \app\ThemeDriver_JavascriptMap package($theme, $parentversion)
  * @method \app\ThemeDriver_JavascriptMap channel_is($channel = null)
  * @method \app\Channel channel()
  * @method \app\ThemeDriver_JavascriptMap addmetarenderer($key, $metarenderer)
@@ -196,6 +221,7 @@ class ThemeDriver_JavascriptMap extends \mjolnir\theme\ThemeDriver_JavascriptMap
 }
 
 /**
+ * @method \app\ThemeDriver_JavascriptSource package($theme, $parentversion)
  * @method \app\ThemeDriver_JavascriptSource channel_is($channel = null)
  * @method \app\Channel channel()
  * @method \app\ThemeDriver_JavascriptSource addmetarenderer($key, $metarenderer)
@@ -208,6 +234,7 @@ class ThemeDriver_JavascriptSource extends \mjolnir\theme\ThemeDriver_Javascript
 }
 
 /**
+ * @method \app\ThemeDriver_Resource package($theme, $parentversion)
  * @method \app\ThemeDriver_Resource channel_is($channel = null)
  * @method \app\Channel channel()
  * @method \app\ThemeDriver_Resource addmetarenderer($key, $metarenderer)
@@ -220,6 +247,7 @@ class ThemeDriver_Resource extends \mjolnir\theme\ThemeDriver_Resource
 }
 
 /**
+ * @method \app\ThemeDriver_Style package($theme, $parentversion)
  * @method \app\ThemeDriver_Style channel_is($channel = null)
  * @method \app\Channel channel()
  * @method \app\ThemeDriver_Style addmetarenderer($key, $metarenderer)
@@ -232,6 +260,7 @@ class ThemeDriver_Style extends \mjolnir\theme\ThemeDriver_Style
 }
 
 /**
+ * @method \app\ThemeDriver_StyleComplete package($theme, $parentversion)
  * @method \app\ThemeDriver_StyleComplete channel_is($channel = null)
  * @method \app\Channel channel()
  * @method \app\ThemeDriver_StyleComplete addmetarenderer($key, $metarenderer)
@@ -244,6 +273,7 @@ class ThemeDriver_StyleComplete extends \mjolnir\theme\ThemeDriver_StyleComplete
 }
 
 /**
+ * @method \app\ThemeDriver_StyleResource package($theme, $parentversion)
  * @method \app\ThemeDriver_StyleResource channel_is($channel = null)
  * @method \app\Channel channel()
  * @method \app\ThemeDriver_StyleResource addmetarenderer($key, $metarenderer)
@@ -256,6 +286,7 @@ class ThemeDriver_StyleResource extends \mjolnir\theme\ThemeDriver_StyleResource
 }
 
 /**
+ * @method \app\ThemeDriver_StyleSource package($theme, $parentversion)
  * @method \app\ThemeDriver_StyleSource channel_is($channel = null)
  * @method \app\Channel channel()
  * @method \app\ThemeDriver_StyleSource addmetarenderer($key, $metarenderer)
@@ -270,7 +301,7 @@ class ThemeDriver_StyleSource extends \mjolnir\theme\ThemeDriver_StyleSource
 /**
  * @method \app\ThemeFooterInclude file_is($file, $ext = '.php')
  * @method \app\ThemeFooterInclude file_path($filepath)
- * @method \app\ThemeFooterInclude bind($name,  & $non_object)
+ * @method \app\ThemeFooterInclude bind($name,  & $value)
  * @method \app\ThemeFooterInclude pass($name, $value)
  * @method \app\ThemeFooterInclude inherit($view)
  * @method \app\ThemeFooterInclude addmetarenderer($key, $metarenderer)
@@ -287,7 +318,7 @@ class ThemeFooterInclude extends \mjolnir\theme\ThemeFooterInclude
 /**
  * @method \app\ThemeHeadInclude file_is($file, $ext = '.php')
  * @method \app\ThemeHeadInclude file_path($filepath)
- * @method \app\ThemeHeadInclude bind($name,  & $non_object)
+ * @method \app\ThemeHeadInclude bind($name,  & $value)
  * @method \app\ThemeHeadInclude pass($name, $value)
  * @method \app\ThemeHeadInclude inherit($view)
  * @method \app\ThemeHeadInclude addmetarenderer($key, $metarenderer)
@@ -371,7 +402,7 @@ class ThemeLoader_Style extends \mjolnir\theme\ThemeLoader_Style
  * @method \app\Rendereable compileview($file, $themepath)
  * @method \app\ThemeView file_is($file, $ext = '.php')
  * @method \app\ThemeView file_path($filepath)
- * @method \app\ThemeView bind($name,  & $non_object)
+ * @method \app\ThemeView bind($name,  & $value)
  * @method \app\ThemeView pass($name, $value)
  * @method \app\ThemeView inherit($view)
  * @method \app\ThemeView addmetarenderer($key, $metarenderer)
@@ -384,7 +415,8 @@ class ThemeLoader_Style extends \mjolnir\theme\ThemeLoader_Style
 class ThemeView extends \mjolnir\theme\ThemeView
 {
 	/** @return \app\ThemeView */
-	static function instance() { return parent::instance(); }
+	static function instance($file = null, $ext = '.php') { return parent::instance($file, $ext); }
 	/** @return \app\ThemeView */
 	static function fortarget($viewtarget, $theme = null) { return parent::fortarget($viewtarget, $theme); }
 }
+trait Trait_ThemeDriver_JavascriptCommon { use \mjolnir\theme\Trait_ThemeDriver_JavascriptCommon; }

@@ -17,6 +17,11 @@ class Theme extends \app\Instantiatable implements \mjolnir\types\Theme
 	static $maintheme = null;
 
 	/**
+	 * @var array
+	 */
+	protected $themeconfig = null;
+
+	/**
 	 * @return string
 	 */
 	static function instance($themename = null, $themepath = null)
@@ -97,6 +102,26 @@ class Theme extends \app\Instantiatable implements \mjolnir\types\Theme
 	}
 
 	/**
+	 * Package theme assets. Compile is assumed for dependencies that require
+	 * compilation.
+	 *
+	 * @return static
+	 */
+	function package()
+	{
+		// compute version
+		$config = $this->config();
+		$parentversion = $this->version();
+
+		// run though drivers
+		foreach ($config['loaders'] as $driver => $info)
+		{
+			$driverclass = '\app\ThemeDriver_'.\ucfirst($driver);
+			$driverclass::instance()->package($this, $parentversion);
+		}
+	}
+
+	/**
 	 * @return \mjolnir\types\ThemeView
 	 */
 	function themeview($viewtarget)
@@ -119,11 +144,9 @@ class Theme extends \app\Instantiatable implements \mjolnir\types\Theme
 	 */
 	function config()
 	{
-		static $config = null;
+		$this->themeconfig !== null or $this->themeconfig = \app\Arr::merge(include $this->themepath().'+theme'.EXT, \app\CFS::config('mjolnir/themes'));
 
-		$config !== null or $config = \app\Arr::merge(include $this->themepath().'+theme'.EXT, \app\CFS::config('mjolnir/themes'));
-
-		return $config;
+		return $this->themeconfig;
 	}
 
 	/**
@@ -147,12 +170,22 @@ class Theme extends \app\Instantiatable implements \mjolnir\types\Theme
 	 */
 	function version()
 	{
-		if (\defined('VERSION'))
+		$config = $this->config();
+		if (isset($config['version']))
 		{
-			return VERSION;
+			return $config['version'];
 		}
-		
-		return $this->configvalue('version', '0.0');
+		else if (\defined('MJ_APP_VERSION'))
+		{
+			return MJ_APP_VERSION;
+		}
+		else # no usable version
+		{
+			throw new \app\Exception
+				(
+					'Unable to located usable version for packaging.'
+				);
+		}
 	}
 
 	/**
@@ -163,7 +196,7 @@ class Theme extends \app\Instantiatable implements \mjolnir\types\Theme
 		$path = \ltrim($path, '\\/');
 		return \file_exists($this->themepath().$path);
 	}
-	
+
 	/**
 	 * @return mixed
 	 */
