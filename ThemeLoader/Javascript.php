@@ -39,7 +39,7 @@ class ThemeLoader_Javascript extends \app\Instantiatable implements \mjolnir\typ
 						$target = $javascriptconfig['targeted-mapping'][$target];
 					}
 
-					if (\app\CFS::config('mjolnir/base')['development'])
+					if (\app\CFS::config('mjolnir/base')['development'] && \app\CFS::config('mjolnir/base')['dev:conf']['raw:js'])
 					{
 						foreach ($javascriptconfig['targeted-common'] as $script)
 						{
