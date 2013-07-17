@@ -10,5 +10,5 @@
 class ThemeDriver_JavascriptCompleteSource extends \app\ThemeDriver_JavascriptSource
 {
 	// practically exact class
-	
+
 } # class

@@ -10,10 +10,10 @@
 class ThemeHeadInclude extends \app\View implements \mjolnir\types\View
 {
 	use \app\Trait_Channeled;
-	
+
 	// ------------------------------------------------------------------------
 	// interface: Renderable
-	
+
 	/**
 	 * ...
 	 */

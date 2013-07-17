@@ -60,7 +60,7 @@ class ThemeLoader_Javascript extends \app\Instantiatable implements \mjolnir\typ
 									]
 								);
 						}
-						
+
 						foreach ($javascriptconfig['targeted-mapping'][$target] as $script)
 						{
 							$htmllayer->add
@@ -125,7 +125,7 @@ class ThemeLoader_Javascript extends \app\Instantiatable implements \mjolnir\typ
 								]
 							);
 					}
-				}	
+				}
 				else # production
 				{
 					$htmllayer->add

@@ -10,10 +10,10 @@
 class ThemeFooterInclude extends \app\View implements \mjolnir\types\View
 {
 	use \app\Trait_Channeled;
-	
+
 	// ------------------------------------------------------------------------
 	// interface: Renderable
-	
+
 	/**
 	 * ...
 	 */
@@ -22,7 +22,7 @@ class ThemeFooterInclude extends \app\View implements \mjolnir\types\View
 		$contents = parent::render();
 
 		$htmllayer = $this->channel()->get('layer:html', null);
-		
+
 		if ($htmllayer !== null)
 		{
 			$htmllayer->add('extra_footer_markup', $contents);

@@ -5,7 +5,7 @@
 				'category' => 'technics',
 				'grayscale' => true,
 			),
-	
+
 		'given_names' => array
 			(
 				//// male

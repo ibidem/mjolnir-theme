@@ -10,7 +10,7 @@
 class ThemeDriver_JavascriptSource extends \app\Instantiatable implements \mjolnir\types\ThemeDriver
 {
 	use \app\Trait_ThemeDriver;
-	
+
 	/**
 	 * ...
 	 */

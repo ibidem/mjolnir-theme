@@ -64,7 +64,7 @@ return array
 			// Theme Driver
 				'theme.driver' => 'dart-javascript-map',
 			),
-	
+
 		'mjolnir:theme/themedriver/dart-resource.route' => array
 			(
 				'matcher' => \app\URLRoute::instance()
@@ -77,7 +77,7 @@ return array
 			// Theme Driver
 				'theme.driver' => 'dart-resource',
 			),
-	
+
 	# javascripts
 
 		'mjolnir:theme/themedriver/javascript.route' => array
@@ -105,7 +105,7 @@ return array
 			// Theme Driver
 				'theme.driver' => 'javascript-map',
 			),
-	
+
 		'mjolnir:theme/themedriver/javascript-source.route' => array
 			(
 				'matcher' => \app\URLRoute::instance()
@@ -145,8 +145,8 @@ return array
 				'theme.driver' => 'javascript-complete-map',
 			),
 
-		
-	
+
+
 		'mjolnir:theme/themedriver/javascript-complete-source.route' => array
 			(
 				'matcher' => \app\URLRoute::instance()
@@ -187,7 +187,7 @@ return array
 			// Theme Driver
 				'theme.driver' => 'style-complete',
 			),
-	
+
 		'mjolnir:theme/themedriver/style-resource.route' => array
 			(
 				'matcher' => \app\URLRoute::instance()
@@ -200,7 +200,7 @@ return array
 			// Theme Driver
 				'theme.driver' => 'style-resource',
 			),
-	
+
 		'mjolnir:theme/themedriver/style-source.route' => array
 			(
 				'matcher' => \app\URLRoute::instance()
@@ -213,7 +213,7 @@ return array
 			// Theme Driver
 				'theme.driver' => 'style-source',
 			),
-	
+
 	# theme resources (images, embeds, etc)
 
 		'mjolnir:theme/themedriver/resource.route' => array
@@ -228,9 +228,9 @@ return array
 			// Theme Driver
 				'theme.driver' => 'resource',
 			),
-	
+
 	# misc
-	
+
 		'mjolnir:theme/themedriver/bootstrap.route' => array
 			(
 				'matcher' => \app\URLRoute::instance()

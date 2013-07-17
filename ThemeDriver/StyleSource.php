@@ -10,7 +10,7 @@
 class ThemeDriver_StyleSource extends \app\Instantiatable implements \mjolnir\types\ThemeDriver
 {
 	use \app\Trait_ThemeDriver;
-	
+
 	/**
 	 * ...
 	 */
@@ -20,7 +20,7 @@ class ThemeDriver_StyleSource extends \app\Instantiatable implements \mjolnir\ty
 		$this->channel()->set('styleconfig', $styleconfig);
 
 		$stylepath = $this->channel()->get('stylepath');
-		
+
 		if (\app\CFS::config('mjolnir/base')['theme']['packaged'])
 		{
 			$rootpath = $stylepath.'packages/'.VERSION.'/';

@@ -7,11 +7,11 @@
 				'source-map' => 300,
 				'resource'   => 400,
 			),
-	
+
 		'drivers' => array
 			(
 				# no type is understood as "default"
-			
+
 				'resource'                   => [ 'enabled' => true, 'type' => 'resource' ],
 				'bootstrap'                  => [ 'enabled' => true ],
 
@@ -20,7 +20,7 @@
 				'dart-javascript'            => [ 'enabled' => true ],
 				'dart-javascript-map'        => [ 'enabled' => true, 'type' => 'source-map' ],
 				'dart-resource'              => [ 'enabled' => true, 'type' => 'resource' ],
-   
+
 				'style'                      => [ 'enabled' => true ],
 				'style-map'                  => [ 'enabled' => true, 'type' => 'source-map' ],
 				'style-complete'             => [ 'enabled' => true ],
@@ -34,7 +34,7 @@
 				'javascript-complete'        => [ 'enabled' => true ],
 				'javascript-complete-source' => [ 'enabled' => true, 'type' => 'source' ],
 				'javascript-complete-map'    => [ 'enabled' => true, 'type' => 'source-map' ],
-				
+
 			),
 
 	);
