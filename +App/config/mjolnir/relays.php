@@ -167,7 +167,7 @@ return array
 				'matcher' => \app\URLRoute::instance()
 					->urlpattern
 						(
-							'media/themes/<theme>/styles/<style>/<version>/<target>.css',
+							'media/themes/<theme>/styles/<style>/<version>/root/<target>.css',
 							$theme + $style + $version + $target
 						),
 
@@ -180,7 +180,7 @@ return array
 				'matcher' => \app\URLRoute::instance()
 					->urlpattern
 						(
-							'media/themes/<theme>/styles/<style>/<version>-complete/master.css',
+							'media/themes/<theme>/styles/<style>/<version>-complete/root/master.css',
 							$theme + $style + $version
 						),
 
@@ -193,7 +193,7 @@ return array
 				'matcher' => \app\URLRoute::instance()
 					->urlpattern
 						(
-							'media/themes/<theme>/styles/<style>/<version>(-complete)/<path>',
+							'media/themes/<theme>/styles/<style>/<version>(-complete)/root/<path>',
 							$theme + $style + $version + $path
 						),
 
@@ -206,7 +206,7 @@ return array
 				'matcher' => \app\URLRoute::instance()
 					->urlpattern
 						(
-							'media/themes/<theme>/styles/<style>/<version>/src/<path>.css',
+							'media/themes/<theme>/styles/<style>/<version>/src/<path>',
 							$theme + $style + $version + $path
 						),
 
@@ -221,7 +221,7 @@ return array
 				'matcher' => \app\URLRoute::instance()
 					->urlpattern
 						(
-							'media/themes/<theme>/resources/<version>/<path>',
+							'media/themes/<theme>/resources/<version>/root/<path>',
 							$theme + $version + $path
 						),
 
