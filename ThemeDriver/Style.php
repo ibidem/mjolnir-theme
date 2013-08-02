@@ -123,7 +123,7 @@ class ThemeDriver_Style extends \app\Instantiatable implements \mjolnir\types\Th
 
 			if (\app\CFS::config('mjolnir/base')['development'])
 			{
-				return 'body:before { content: "Failed to load ['.$rootpath.$target.'.min.css]"; padding: 50px; font-size: 20px; line-height: 1; background: white; color: black; font-family: monospace; }';
+				return 'body:before { content: "Failed to load '.\str_replace('\\', '/', $rootpath.$target).'.min.css"; padding: 50px; font-size: 20px; line-height: 1; background: white; color: black; font-family: monospace; }';
 			}
 			else # user land
 			{
