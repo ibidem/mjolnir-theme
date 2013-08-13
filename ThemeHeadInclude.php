@@ -21,12 +21,7 @@ class ThemeHeadInclude extends \app\View implements \mjolnir\types\View
 	{
 		$contents = parent::render();
 
-		$htmllayer = $this->channel()->get('layer:html', null);
-
-		if ($htmllayer !== null)
-		{
-			$htmllayer->add('extra_markup', $contents);
-		}
+		$this->channel()->add('html:extra-markup', $contents);
 
 		return $contents;
 	}

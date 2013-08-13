@@ -419,4 +419,3 @@ class ThemeView extends \mjolnir\theme\ThemeView
 	/** @return \app\ThemeView */
 	static function fortarget($viewtarget, $theme = null) { return parent::fortarget($viewtarget, $theme); }
 }
-trait Trait_ThemeDriver_JavascriptCommon { use \mjolnir\theme\Trait_ThemeDriver_JavascriptCommon; }
