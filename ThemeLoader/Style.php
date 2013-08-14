@@ -22,7 +22,7 @@ class ThemeLoader_Style extends \app\Instantiatable implements \mjolnir\types\Th
 
 			if ($htmllayer === null)
 			{
-				return; # we do not support other hooks at this time
+				return; # we do not support other layers at this time
 			}
 
 			$theme = $this->channel()->get('theme', \app\Theme::instance());
@@ -39,9 +39,9 @@ class ThemeLoader_Style extends \app\Instantiatable implements \mjolnir\types\Th
 						$target = $styleconfig['targeted-mapping'][$target];
 					}
 
-					$htmllayer->add
+					$this->channel()->add
 						(
-							'stylesheet',
+							'html:stylesheet',
 							[
 								'type' => 'text/css',
 								'href' => \app\URL::href
@@ -60,9 +60,9 @@ class ThemeLoader_Style extends \app\Instantiatable implements \mjolnir\types\Th
 			}
 			else if ($styleconfig['mode'] === 'complete')
 			{
-				$htmllayer->add
+				$this->channel()->add
 					(
-						'stylesheet',
+						'html:stylesheet',
 						[
 							'type' => 'text/css',
 							'href' => \app\URL::href

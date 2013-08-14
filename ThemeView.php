@@ -47,7 +47,21 @@ class ThemeView extends \app\View implements \mjolnir\types\ThemeView
 			$themepath = $this->themepath();
 			$configname = '+theme';
 
-			$themeconfig = include $themepath.$configname.EXT;
+			if (\file_exists($themepath.$configname.EXT))
+			{
+				$themeconfig = include $themepath.$configname.EXT;
+			}
+			else # missing theme configuration file
+			{
+				if ($themepath === null)
+				{
+					throw new \app\Exception('The [themepath] was not set. Please check your Theme objects for errors. A view must be initialized though a Theme object, or if initializing the [viewtarget] manually you must provide the [themepath].');
+				}
+				else # themepath was set
+				{
+					throw new \app\Exception('Missing theme configuration file. Expected path: '.$themepath.$configname.EXT);
+				}
+			}
 
 			// run loaders
 			if ($themeconfig['loaders'] !== null)

@@ -228,5 +228,4 @@ class Theme extends \app\Instantiatable implements \mjolnir\types\Theme
 		}
 	}
 
-
 } # class
