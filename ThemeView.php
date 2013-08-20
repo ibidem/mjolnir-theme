@@ -134,7 +134,7 @@ class ThemeView extends \app\View implements \mjolnir\types\ThemeView
 			else # failed
 			{
 				throw new \app\Exception
-					('Theme Corruption: undefined target ['.$this->viewtarget.']');
+					('Theme Corruption: undefined target ['.$this->viewtarget.'] for theme ['.\str_replace(\str_replace('\\', '/', \app\Env::key('sys.path')), '', \str_replace('\\', '/', $themepath)).']');
 			}
 		}
 	}
