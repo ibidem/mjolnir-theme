@@ -101,7 +101,7 @@ class ThemeDriver_Style extends \app\Instantiatable implements \mjolnir\types\Th
 			throw new \Exception("Missing target [$target] in style [$style].");
 		}
 
-//		$common = isset($styleconfig['targeted-common']) ? $styleconfig['targeted-common'] : [];
+		$common = isset($styleconfig['targeted-common']) ? $styleconfig['targeted-common'] : [];
 
 		$this->channel()->add('http:header', ['content-type', 'text/css']);
 
@@ -109,27 +109,27 @@ class ThemeDriver_Style extends \app\Instantiatable implements \mjolnir\types\Th
 		$this->channel()->add('http:header', ['Cache-Control', 'private']);
 		$this->channel()->add('http:header', ['Expires', \date(DATE_RFC822, \strtotime("7 days"))]);
 
-//		return $this->combine($rootpath, \array_merge($common, $styleconfig['targeted-mapping'][$target]), '.css');
+		return $this->combine($rootpath, \array_merge($common, $styleconfig['targeted-mapping'][$target]), '.css');
 
-		$file = \app\Filesystem::gets($rootpath.$target.'.min.css', null);
-
-		if ($file !== null)
-		{
-			return $file;
-		}
-		else # failed to load script
-		{
-			\mjolnir\log('Theme', "Failed to load {$rootpath}{$target}.min.css");
-
-			if (\app\CFS::config('mjolnir/base')['development'])
-			{
-				return 'body:before { content: "Failed to load '.\str_replace('\\', '/', $rootpath.$target).'.min.css"; padding: 50px; font-size: 20px; line-height: 1; background: white; color: black; font-family: monospace; }';
-			}
-			else # user land
-			{
-				return ''; # user friendly
-			}
-		}
+//		$file = \app\Filesystem::gets($rootpath.$target.'.min.css', null);
+//
+//		if ($file !== null)
+//		{
+//			return $file;
+//		}
+//		else # failed to load script
+//		{
+//			\mjolnir\log('Theme', "Failed to load {$rootpath}{$target}.min.css");
+//
+//			if (\app\CFS::config('mjolnir/base')['development'])
+//			{
+//				return 'body:before { content: "Failed to load '.\str_replace('\\', '/', $rootpath.$target).'.min.css" !important; padding: 50px !important; font-size: 20px !important; line-height: 1; background: white !important; color: black !important; font-family: monospace !important; }';
+//			}
+//			else # user land
+//			{
+//				return ''; # user friendly
+//			}
+//		}
 	}
 
 } # class
