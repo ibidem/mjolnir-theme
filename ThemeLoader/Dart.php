@@ -31,7 +31,7 @@ class ThemeLoader_Dart extends \app\Instantiatable implements \mjolnir\types\The
 			{
 				$htmllayer->add
 					(
-						'headscript',
+						'startup-script',
 						[
 							'type' => 'application/dart',
 							'src' => \app\URL::href
@@ -70,7 +70,7 @@ class ThemeLoader_Dart extends \app\Instantiatable implements \mjolnir\types\The
 			// fallback code
 			$htmllayer->add
 				(
-					'headscript',
+					'startup-script',
 					[
 						'type' => 'application/javascript',
 						'src' => \app\URL::href
