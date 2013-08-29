@@ -2,7 +2,7 @@
 
 use \mjolnir\theme\ThemeDriver_JavascriptCompleteMap;
 
-class ThemeDriver_JavascriptCompleteMapTest extends \PHPUnit_Framework_TestCase
+class ThemeDriver_JavascriptCompleteMapTest extends \app\PHPUnit_Framework_TestCase
 {
 	/** @test */ function
 	can_be_loaded()

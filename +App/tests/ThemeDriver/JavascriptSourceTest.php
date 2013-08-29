@@ -2,7 +2,7 @@
 
 use \mjolnir\theme\ThemeDriver_JavascriptSource;
 
-class ThemeDriver_JavascriptSourceTest extends \PHPUnit_Framework_TestCase
+class ThemeDriver_JavascriptSourceTest extends \app\PHPUnit_Framework_TestCase
 {
 	/** @test */ function
 	can_be_loaded()

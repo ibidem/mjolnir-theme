@@ -2,7 +2,7 @@
 
 use \mjolnir\theme\ThemeLoader_Style;
 
-class ThemeLoader_StyleTest extends \PHPUnit_Framework_TestCase
+class ThemeLoader_StyleTest extends \app\PHPUnit_Framework_TestCase
 {
 	/** @test */ function
 	can_be_loaded()

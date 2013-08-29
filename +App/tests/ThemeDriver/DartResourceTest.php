@@ -2,7 +2,7 @@
 
 use \mjolnir\theme\ThemeDriver_DartResource;
 
-class ThemeDriver_DartResourceTest extends \PHPUnit_Framework_TestCase
+class ThemeDriver_DartResourceTest extends \app\PHPUnit_Framework_TestCase
 {
 	/** @test */ function
 	can_be_loaded()

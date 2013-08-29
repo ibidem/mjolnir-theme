@@ -2,7 +2,7 @@
 
 use \mjolnir\theme\Task_Theme_Packager;
 
-class Task_Theme_PackagerTest extends \PHPUnit_Framework_TestCase
+class Task_Theme_PackagerTest extends \app\PHPUnit_Framework_TestCase
 {
 	/** @test */ function
 	can_be_loaded()

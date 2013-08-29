@@ -2,7 +2,7 @@
 
 use \mjolnir\theme\ThemeDriver_DartJavascriptMap;
 
-class ThemeDriver_DartJavascriptMapTest extends \PHPUnit_Framework_TestCase
+class ThemeDriver_DartJavascriptMapTest extends \app\PHPUnit_Framework_TestCase
 {
 	/** @test */ function
 	can_be_loaded()

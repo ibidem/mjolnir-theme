@@ -2,7 +2,7 @@
 
 use \mjolnir\theme\ThemeLoader_Dart;
 
-class ThemeLoader_DartTest extends \PHPUnit_Framework_TestCase
+class ThemeLoader_DartTest extends \app\PHPUnit_Framework_TestCase
 {
 	/** @test */ function
 	can_be_loaded()
