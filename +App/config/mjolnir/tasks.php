@@ -43,4 +43,49 @@
 							),
 					),
 			),
-	);
+
+		'make:theme' => array
+			(
+				'category' => 'Tools',
+				'description' => array
+					(
+						'Create a basic theme.'
+					),
+				'flags' => array
+					(
+						'path' => array
+							(
+								'description' => 'Path of theme',
+								'type' => 'text',
+								'short' => 'p',
+							),
+						'forced' => array
+							(
+								'description' => 'Force file overwrites.'
+							),
+					),
+			),
+
+		'make:style' => array
+			(
+				'category' => 'Tools',
+				'description' => array
+					(
+						'Create a basic theme style.'
+					),
+				'flags' => array
+					(
+						'path' => array
+							(
+								'description' => 'Path of theme',
+								'type' => 'text',
+								'short' => 'p',
+							),
+						'forced' => array
+							(
+								'description' => 'Force file overwrites.'
+							),
+					),
+			),
+
+	); # config
