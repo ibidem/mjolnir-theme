@@ -31,29 +31,76 @@ class Task_Make_Theme extends \app\Task_Base
 
 		$ds = DIRECTORY_SEPARATOR;
 
-		// create the directory structure
-		\file_exists($themepath) or \mkdir($themepath, 0777, true); # base dir
-		$scriptsdir = $themepath.$ds.'+scripts';
-		\file_exists($scriptsdir) or \mkdir($scriptsdir, 0777, true); # scripts dir
-		$scriptsroot = $scriptsdir.$ds.'root';
-		\file_exists($scriptsroot) or \mkdir($scriptsroot, 0777, true); # scripts root
-		$scriptssrc = $scriptsdir.$ds.'src';
-		\file_exists($scriptssrc) or \mkdir($scriptssrc, 0777, true); # scripts src
+		$dirs = array
+			(
+				$themepath,
+				$themepath.$ds.'+scripts',
+				$themepath.$ds.'+scripts'.$ds.'bin',
+				$themepath.$ds.'+scripts'.$ds.'bin'.$ds.'etc',
+				$themepath.$ds.'+scripts'.$ds.'bin'.$ds.'tmp',
+				$themepath.$ds.'+scripts'.$ds.'root',
+				$themepath.$ds.'+scripts'.$ds.'src',
 
-		\file_put_contents($scriptssrc.$ds.'.gitkeep', '');
-		\file_put_contents($scriptsroot.$ds.'.gitignore', "*\n!.gitignore");
-		\file_put_contents($scriptsdir.$ds.'.gitignore', "library/*");
+			);
 
-		\file_put_contents($scriptsdir.$ds.'+scripts.php', $this->scripts_config());
-		\file_put_contents($scriptsdir.$ds.'+compile.rb', $this->scripts_compile());
-		\file_put_contents($scriptsdir.$ds.'+start.rb', $this->scripts_watch());
-		\file_put_contents($themepath.$ds.'+theme.php', $this->theme_config());
+		foreach ($dirs as $dir)
+		{
+			\app\Filesystem::makedir($dir);
+		}
+
+		\app\Filesystem::puts($themepath.$ds.'+scripts'.$ds.'bin'.$ds.'etc'.$ds.'.gitkeep', '');
+		\app\Filesystem::puts($themepath.$ds.'+scripts'.$ds.'bin'.$ds.'tmp'.$ds.'.gitignore', $this->bin_ignore_file());
+		\app\Filesystem::puts($themepath.$ds.'+scripts'.$ds.'src'.$ds.'.gitkeep', '');
+		\app\Filesystem::puts($themepath.$ds.'+scripts'.$ds.'root'.$ds.'.gitignore', "*\n!.gitignore");
+		\app\Filesystem::puts($themepath.$ds.'+scripts'.$ds.'+scripts.php', $this->scripts_config());
+		\app\Filesystem::puts($themepath.$ds.'+scripts'.$ds.'+compile.rb', $this->scripts_compile());
+		\app\Filesystem::puts($themepath.$ds.'+scripts'.$ds.'start.rb', $this->scripts_watch());
+		\app\Filesystem::puts($themepath.$ds.'+scripts'.$ds.'nyx.json', $this->sample_nyx_config());
+		\app\Filesystem::puts($themepath.$ds.'+theme.php', $this->theme_config());
 
 		$this->writer->writef(' Theme created.')->eol();
 	}
 
 	/**
-	 * ...
+	 * @return string
+	 */
+	protected function sample_nyx_config()
+	{
+		return
+			  "{".PHP_EOL
+			. "\t\"interface\": \"1.1.0\",".PHP_EOL
+			. PHP_EOL
+			. "\t\"cores\": [".PHP_EOL
+			. "\t\t{".PHP_EOL
+			. "\t\t\t\"repo\": \"https://github.com/alademann/sass-bootstrap.git\",".PHP_EOL
+			. "\t\t\t\"path\": \"src/vendor/twbs\",".PHP_EOL
+			. "\t\t\t\"version\": \"v3.0.0_sass\",".PHP_EOL
+			. "\t\t\t\"keep\": [\"js\", \"README.md\", \"LICENSE\"]".PHP_EOL
+			. "\t\t}".PHP_EOL
+			. "\t]".PHP_EOL
+			. PHP_EOL
+			. "}".PHP_EOL
+			;
+	}
+
+	/**
+	 * @return string
+	 */
+	protected function bin_ignore_file()
+	{
+		return
+			  '# build process may require extra tools to be downloaded, temporary files or'.PHP_EOL
+			. '# various other junk; any scripts should use bin/tmp for this. Configuration'.PHP_EOL
+			. '# files should be placed directly in bin or variations such as bin/etc,'.PHP_EOL
+			. '# bin/settings, etc (in the mjolnir library bin/etc is generally prefered for'.PHP_EOL
+			. '# configuration files)'.PHP_EOL
+			. '*'.PHP_EOL
+			. '!.gitignore'.PHP_EOL
+			;
+	}
+
+	/**
+	 * @return string
 	 */
 	protected function scripts_config()
 	{
@@ -89,7 +136,7 @@ class Task_Make_Theme extends \app\Task_Base
 	}
 
 	/**
-	 * ...
+	 * @return string
 	 */
 	protected function scripts_compile()
 	{
@@ -99,12 +146,14 @@ class Task_Make_Theme extends \app\Task_Base
 			. "require 'rubygems'".PHP_EOL
 			. "require 'nyx'".PHP_EOL
 			. PHP_EOL
+			. 'basedir = File.expand_path(File.dirname(__FILE__))'.PHP_EOL
+			. 'Dir.chdir basedir'.PHP_EOL
 			. "Nyx.new.compile_scripts".PHP_EOL
 			;
 	}
 
 	/**
-	 * ...
+	 * @return string
 	 */
 	protected function scripts_watch()
 	{
@@ -114,12 +163,14 @@ class Task_Make_Theme extends \app\Task_Base
 			. "require 'rubygems'".PHP_EOL
 			. "require 'nyx'".PHP_EOL
 			. PHP_EOL
+			. 'basedir = File.expand_path(File.dirname(__FILE__))'.PHP_EOL
+			. 'Dir.chdir basedir'.PHP_EOL
 			. "Nyx.new.watch_scripts".PHP_EOL
 			;
 	}
 
 	/**
-	 * ...
+	 * @return string
 	 */
 	protected function theme_config()
 	{
