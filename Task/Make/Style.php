@@ -56,7 +56,7 @@ class Task_Make_Style extends \app\Task_Base
 		\app\Filesystem::puts($stylepath.$ds.'bin'.$ds.'etc'.$ds.'compass'.$ds.'production.rb', $this->compass_production());
 		\app\Filesystem::puts($stylepath.$ds.'+style.php', $this->style_config());
 		\app\Filesystem::puts($stylepath.$ds.'+compile.rb', $this->style_compile());
-		\app\Filesystem::puts($stylepath.$ds.'start.rb', $this->style_watch());
+		\app\Filesystem::puts($stylepath.$ds.'watch.rb', $this->style_watch());
 		\app\Filesystem::puts($stylepath.$ds.'nyx.json', $this->sample_nyx_config());
 
 		$this->writer->writef(' Style created.')->eol();

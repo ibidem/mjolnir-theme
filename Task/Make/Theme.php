@@ -54,7 +54,7 @@ class Task_Make_Theme extends \app\Task_Base
 		\app\Filesystem::puts($themepath.$ds.'+scripts'.$ds.'root'.$ds.'.gitignore', "*\n!.gitignore");
 		\app\Filesystem::puts($themepath.$ds.'+scripts'.$ds.'+scripts.php', $this->scripts_config());
 		\app\Filesystem::puts($themepath.$ds.'+scripts'.$ds.'+compile.rb', $this->scripts_compile());
-		\app\Filesystem::puts($themepath.$ds.'+scripts'.$ds.'start.rb', $this->scripts_watch());
+		\app\Filesystem::puts($themepath.$ds.'+scripts'.$ds.'watch.rb', $this->scripts_watch());
 		\app\Filesystem::puts($themepath.$ds.'+scripts'.$ds.'nyx.json', $this->sample_nyx_config());
 		\app\Filesystem::puts($themepath.$ds.'+theme.php', $this->theme_config());
 
@@ -182,8 +182,8 @@ class Task_Make_Theme extends \app\Task_Base
 			. "\t\t// configure theme drivers".PHP_EOL
 			. "\t\t'loaders' => array".PHP_EOL
 			. "\t\t\t(".PHP_EOL
-			. "\t\t\t\t'javascript' => null,".PHP_EOL
 			. "\t\t\t\t'bootstrap' => null,".PHP_EOL
+			. "\t\t\t\t'javascript' => null,".PHP_EOL
 			. "\t\t\t),".PHP_EOL
 			. PHP_EOL
 			. "\t\t// target-to-file mapping".PHP_EOL
