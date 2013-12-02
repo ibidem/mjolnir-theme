@@ -107,29 +107,9 @@ class ThemeDriver_Style extends \app\Instantiatable implements \mjolnir\types\Th
 
 		// cache headers
 		$this->channel()->add('http:header', ['Cache-Control', 'private']);
-		$this->channel()->add('http:header', ['Expires', \date(DATE_RFC822, \strtotime("7 days"))]);
+		$this->channel()->add('http:header', ['Expires', \gmdate('D, d M Y H:i:s \G\M\T', \time() + 86400 * 7)]);
 
 		return $this->combine($rootpath, \array_merge($common, $styleconfig['targeted-mapping'][$target]), '.css');
-
-//		$file = \app\Filesystem::gets($rootpath.$target.'.min.css', null);
-//
-//		if ($file !== null)
-//		{
-//			return $file;
-//		}
-//		else # failed to load script
-//		{
-//			\mjolnir\log('Theme', "Failed to load {$rootpath}{$target}.min.css");
-//
-//			if (\app\CFS::config('mjolnir/base')['development'])
-//			{
-//				return 'body:before { content: "Failed to load '.\str_replace('\\', '/', $rootpath.$target).'.min.css" !important; padding: 50px !important; font-size: 20px !important; line-height: 1; background: white !important; color: black !important; font-family: monospace !important; }';
-//			}
-//			else # user land
-//			{
-//				return ''; # user friendly
-//			}
-//		}
 	}
 
 } # class

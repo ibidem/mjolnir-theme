@@ -45,7 +45,7 @@ class ThemeDriver_DartMap extends \app\Instantiatable implements \mjolnir\types\
 
 		$resourcepath = $rootpath.$path.'.dart.map';
 
-		$this->channel()->add('http:header', ['expires', strtotime('-1 day')]);
+		$this->channel()->add('http:header', ['Expires', strtotime('-1 day')]);
 
 		return \app\Filesystem::gets($resourcepath);
 	}

@@ -45,7 +45,7 @@ class ThemeDriver_DartJavascriptMap extends \app\Instantiatable implements \mjol
 
 		$resourcepath = $rootpath.$path.'.dart.js.map';
 
-		$this->channel()->add('http:header', ['expires', strtotime('-1 day')]);
+		$this->channel()->add('http:header', ['Expires', \gmdate('D, d M Y H:i:s \G\M\T', \time() + 86400 * -1)]);
 
 		return \app\Filesystem::gets($resourcepath);
 	}

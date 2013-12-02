@@ -46,7 +46,7 @@ class ThemeDriver_JavascriptComplete extends \app\Instantiatable implements \mjo
 
 		// cache headers
 		$this->channel()->add('http:header', ['Cache-Control', 'private']);
-		$this->channel()->add('http:header', ['Expires', \date(DATE_RFC822, \strtotime("7 days"))]);
+		$this->channel()->add('http:header', ['Expires', \gmdate('D, d M Y H:i:s \G\M\T', \time() + 86400 * 7)]);
 
 		$sourcemap_url = \app\URL::href
 			(
