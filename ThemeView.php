@@ -140,12 +140,27 @@ class ThemeView extends \app\View implements \mjolnir\types\ThemeView
 	}
 
 	/**
+	 * Same as view but inherits the current themeview context.
+	 *
 	 * @return \mjolnir\types\View
 	 */
 	function partial($path)
 	{
 		return \app\View::instance()
 			->inherit($this)
+			->pass('theme', $this)
+			->file_path($this->themepath().$path.EXT);
+	}
+
+	/**
+	 * Loads the view relative to the theme.
+	 * The $theme variable is passed to the view by default.
+	 *
+	 * @return \mjolnir\types\View
+	 */
+	function view($path)
+	{
+		return \app\View::instance()
 			->pass('theme', $this)
 			->file_path($this->themepath().$path.EXT);
 	}
